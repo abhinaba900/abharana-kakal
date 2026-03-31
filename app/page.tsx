@@ -76,13 +76,11 @@ export default function Home() {
 
         <div className="relative  w-full flex flex-col items-center justify-between mt-6">
           <div className="flex flex-col items-center  justify-center">
-            {/* Chakras Map Area */}
-            <div className="relative   flex flex-col items-center justify-between h-full  w-full max-w-lg min-h-[500px] md:min-h-[700px] justify-between ">
-              {/* Chakra Column (Temporarily Documented Out) */}
-              <div></div>
-              <h1 className="text-4xl md:text-5xl font-light tracking-widest text-center uppercase mb-3"></h1>
+            {/* Center Focus Area */}
+            <div className="relative flex flex-col items-center justify-center h-full w-full min-h-[60vh] md:min-h-[80vh] pt-[15vh]">
+              <h1 className="text-[8vw] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:text-[4vw] font-light tracking-widest text-center uppercase mb-3 z-10 w-[80vw]"></h1>
               <CircularText
-                text="Yoga ✦ Sound Healing ✦ Retreats ✦ Feminine Circles"
+                text="Yoga ✦ Sound Healing ✦ Retreats ✦ Feminine Circles "
                 onHover="speedUp"
                 spinDuration={20}
                 className="custom-class"
