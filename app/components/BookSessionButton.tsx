@@ -7,7 +7,13 @@ const Button = () => {
 
   return (
     <StyledWrapper onClick={() => router.push("/book")}>
-      <button className="button">
+      <button
+        className="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          window.open("https://topmate.io/abharana_kakal");
+        }}
+      >
         <div className="bgContainer">
           <span>Online Classes</span>
           <span>Online Classes</span>
@@ -39,10 +45,10 @@ const StyledWrapper = styled.div`
     padding: 0.6em 0.8em 0.6em 1.5em;
     gap: 1.5em; /* dynamically gives width to button without hacking widths */
     background-color: #bc6746; /* Organic earthy accent */
-    color: #FFFDF8;
+    color: #fffdf8;
     cursor: pointer;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.3); /* Softer drop shadow for modern organic theme */
-    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); /* Softer drop shadow for modern organic theme */
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50px; /* Pill radius */
     position: relative;
     overflow: hidden;
@@ -54,13 +60,13 @@ const StyledWrapper = styled.div`
   }
   button:hover {
     transform: translateY(-2px);
-    box-shadow: 0px 6px 20px rgba(188,103,70,0.4);
+    box-shadow: 0px 6px 20px rgba(188, 103, 70, 0.4);
   }
   button:active {
     filter: saturate(0.75);
     transform: translateY(0px);
   }
-  
+
   /* Sliding hover background */
   button::after {
     content: "";
@@ -91,7 +97,7 @@ const StyledWrapper = styled.div`
     transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     white-space: nowrap;
   }
-  
+
   /* Slide logic */
   .bgContainer span:nth-child(1) {
     transform: translateX(-150%);
@@ -109,12 +115,14 @@ const StyledWrapper = styled.div`
   /* Arrow Settings */
   .arrowContainer {
     padding: 0.7em;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
-    transition: transform 300ms, background-color 300ms;
+    transition:
+      transform 300ms,
+      background-color 300ms;
     z-index: 100;
     display: flex;
     align-items: center;
@@ -125,7 +133,7 @@ const StyledWrapper = styled.div`
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background-color: #FFFDF8;
+    background-color: #fffdf8;
     transform: translateX(-100%);
     z-index: -1;
     transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -144,7 +152,7 @@ const StyledWrapper = styled.div`
     height: 16px;
   }
   .arrowContainer svg path {
-    fill: #FFFDF8;
+    fill: #fffdf8;
     transition: fill 300ms ease-in-out;
   }
   .button:hover .arrowContainer svg path {
