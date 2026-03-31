@@ -158,6 +158,24 @@ const StyledWrapper = styled.div`
   .button:hover .arrowContainer svg path {
     fill: #bc6746;
   }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    button {
+      padding: 0.3em 0.5em 0.3em 0.7em;
+      gap: 0.8em;
+    }
+    .bgContainer {
+      font-size: 0.7rem;
+    }
+    .arrowContainer {
+      padding: 0.3em;
+    }
+    .arrowContainer svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
 `;
 
 export default Button;

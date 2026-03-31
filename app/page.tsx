@@ -59,7 +59,7 @@ export default function Home() {
           <img
             src="/bg-images.png"
             alt="Meditating figure"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center "
           />
         </div>
 
