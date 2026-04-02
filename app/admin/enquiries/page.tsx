@@ -22,6 +22,7 @@ interface Enquiry {
   name: string;
   email: string;
   phone?: string;
+  interest?: string;
   message: string;
   status: 'pending' | 'read' | 'resolved';
   created_at: string;
@@ -110,8 +111,15 @@ export default function EnquiriesPage() {
                     </h3>
                     <p className="text-xs text-[#a55a3d]/50 font-bold tracking-tighter uppercase">{enquiry.email}</p>
                   </div>
-                  <div className={`px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase transition-all duration-300 ${getStatusColor(enquiry.status)}`}>
-                    {enquiry.status}
+                  <div className="flex flex-col items-end gap-1.5">
+                    <div className={`px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase transition-all duration-300 ${getStatusColor(enquiry.status)}`}>
+                      {enquiry.status}
+                    </div>
+                    {enquiry.interest && (
+                      <span className="text-[9px] font-bold text-[#bc6746]/60 border border-[#bc6746]/20 bg-[#bc6746]/5 px-2 py-0.5 rounded-full uppercase tracking-tighter">
+                        {enquiry.interest}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -210,10 +218,18 @@ export default function EnquiriesPage() {
                     <MessageSquare className="w-3 h-3 mr-2" />
                     Seeker's Message
                   </span>
-                  <div className="bg-white/[0.03] p-6 rounded-2xl border border-white/5 relative">
-                    <p className="text-slate-200 leading-relaxed italic text-lg opacity-90">
+                  <div className="bg-[#bc6746]/5 p-6 rounded-2xl border border-[#bc6746]/10 relative">
+                    <p className="text-[#4a3b32]/90 leading-relaxed italic text-lg">
                       "{selectedEnquiry.message}"
                     </p>
+                    {selectedEnquiry.interest && (
+                      <div className="mt-4 flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-[#bc6746]/40 uppercase tracking-widest">Interest:</span>
+                        <span className="text-xs font-bold text-[#bc6746] bg-white px-3 py-1 rounded-full border border-[#bc6746]/10 shadow-sm uppercase tracking-wider">
+                          {selectedEnquiry.interest}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 

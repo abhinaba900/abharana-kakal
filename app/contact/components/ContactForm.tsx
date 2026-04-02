@@ -2,9 +2,19 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { Mail, MapPin } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useState, useRef } from "react";
+import { toast } from "react-toastify";
 
 export default function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    interest: "Yoga",
+    message: ""
+  });
+  const [loading, setLoading] = useState(false);
+
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -12,6 +22,42 @@ export default function ContactForm() {
   });
 
   const imgY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Enquiry sent successfully! I'll get back to you soon.");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          interest: "Yoga",
+          message: ""
+        });
+      } else {
+        throw new Error(data.error || "Failed to send enquiry");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section
@@ -45,27 +91,48 @@ export default function ContactForm() {
               </p>
             </div>
 
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#bc6746]/60 pl-4">
                   Name
                 </label>
                 <input
                   type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Your Name"
                   className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light"
                 />
               </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#bc6746]/60 pl-4">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="hello@domain.com"
-                  className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#bc6746]/60 pl-4">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="hello@domain.com"
+                    className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#bc6746]/60 pl-4">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+91 00000 00000"
+                    className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light"
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col gap-2">
@@ -73,7 +140,11 @@ export default function ContactForm() {
                   Interest
                 </label>
                 <div className="relative">
-                  <select className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light appearance-none italic cursor-pointer">
+                  <select
+                    value={formData.interest}
+                    onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                    className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light appearance-none italic cursor-pointer"
+                  >
                     <option>Yoga</option>
                     <option>Sound Healing</option>
                     <option>Retreats</option>
@@ -102,28 +173,34 @@ export default function ContactForm() {
                 </label>
                 <textarea
                   rows={4}
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder="How can I support your journey?"
                   className="w-full px-8 py-5 rounded-[30px] bg-white/50 border border-[#f1e4da] text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light resize-none"
                 />
               </div>
 
               <button
-                type="button"
-                className="w-full py-5 rounded-full bg-[#bc6746] text-[#FFFDF8] uppercase tracking-[0.2em] text-xs font-semibold hover:bg-[#a55a3d] transition-all hover:shadow-[0_20px_40px_rgba(188,103,70,0.25)] flex items-center justify-center group"
+                type="submit"
+                disabled={loading}
+                className={`w-full py-5 rounded-full bg-[#bc6746] text-[#FFFDF8] uppercase tracking-[0.2em] text-xs font-semibold hover:bg-[#a55a3d] transition-all hover:shadow-[0_20px_40px_rgba(188,103,70,0.25)] flex items-center justify-center group ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                Send Message
-                <div className="ml-4 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </div>
+                {loading ? "Sending..." : "Send Message"}
+                {!loading && (
+                  <div className="ml-4 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                )}
               </button>
             </form>
           </div>

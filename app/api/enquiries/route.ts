@@ -39,7 +39,7 @@ async function getHandler(req: NextRequest, { admin }: any) {
  */
 export async function POST(req: Request) {
   try {
-    const { name, email, phone, message } = await req.json();
+    const { name, email, phone, message, interest } = await req.json();
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: 'Name, email, and message are required' }, { status: 400 });
@@ -47,7 +47,14 @@ export async function POST(req: Request) {
 
     const { data: enquiry, error } = await supabaseAdmin
       .from('enquiries')
-      .insert({ name, email, phone, message, status: 'pending' })
+      .insert({ 
+        name, 
+        email, 
+        phone, 
+        message, 
+        interest,
+        status: 'pending' 
+      })
       .select()
       .single();
 

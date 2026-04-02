@@ -4,6 +4,8 @@ import "./globals.css";
 import NavbarWrapper from "./components/NavbarWrapper";
 import Footer from "./components/Footer";
 import Script from "next/script";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +44,18 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col" cz-shortcut-listen="true">
         <NavbarWrapper>{children}</NavbarWrapper>
         <Footer />
+        <ToastContainer
+          position="bottom-right"
+          theme="light"
+          toastStyle={{ 
+            backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+            backdropFilter: 'blur(10px)', 
+            border: '1px solid #f1e4da', 
+            borderRadius: '20px',
+            color: '#4a3b32',
+            fontFamily: 'inherit'
+          }}
+        />
 
         <Script id="chatbase-script" strategy="afterInteractive">
           {`
