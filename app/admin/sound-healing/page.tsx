@@ -171,27 +171,45 @@ export default function SoundHealingPage() {
     
     try {
       if (activeTab === 'library') {
+        const payload = {
+          title: formData.title,
+          description: formData.description,
+          audio_url: formData.audio_url,
+          image_url: formData.image_url,
+          metadata: formData.metadata ? JSON.parse(formData.metadata) : null,
+          intent: formData.intent,
+          frequency: formData.frequency,
+          duration: formData.duration,
+          color: formData.color,
+        };
+
         if (editingSession) {
-          await soundService.update(editingSession.id, formData);
+          await soundService.update(editingSession.id, payload);
           toast.success('Library session updated');
         } else {
-          await soundService.create(formData);
+          await soundService.create(payload);
           toast.success('Library session created');
         }
       } else {
-        // Upcoming logic remains the same (assumes JSON for now as per current route)
+        // Upcoming Spotlight Payload
+        const payload = {
+          title: formData.title,
+          description: formData.description,
+          image_url: formData.image_url,
+        };
+
         if (editingSession) {
-          await soundService.upcoming.update(editingSession.id, formData);
+          await soundService.upcoming.update(editingSession.id, payload);
           toast.success('Upcoming session updated');
         } else {
-          await soundService.upcoming.create(formData);
+          await soundService.upcoming.create(payload);
           toast.success('Upcoming session created');
         }
       }
       fetchAll();
       setIsModalOpen(false);
     } catch (err) {
-      toast.error('Operation failed');
+      toast.error('Operation failed. Check JSON or connection.');
     } finally {
       setIsSubmitting(false);
     }

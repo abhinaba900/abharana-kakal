@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Compress output images (lossless PNG, lossy JPEG/AVIF/WebP)
     dangerouslyAllowSVG: false,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'abharanakakal.b-cdn.net',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 
   // ─── Compression ─────────────────────────────────────────────────────────
