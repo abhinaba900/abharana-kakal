@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   title: "Abharana Kakal | Yoga Retreats & Feminine Awakening in Bangalore & Mysore",
   description: "Looking for yoga retreats in Bangalore or Mysore? Discover immersive retreats, sound healing, and mindful practices with Abharana Kakal. Beginners welcome.",
   openGraph: {
-    images: ['/bg-images.png'],
+    images: ['/bg-images.webp'],
   },
 };
 

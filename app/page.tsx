@@ -57,7 +57,7 @@ export default function Home() {
 
         <div className="absolute inset-0 z-0 pointer-events-none  mix-blend-screen w-full h-screen">
           <img
-            src="/bg-images.png"
+            src="/bg-images.webp"
             alt="Meditating figure"
             className="w-full h-full object-cover object-center "
           />
