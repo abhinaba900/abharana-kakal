@@ -20,6 +20,7 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const MOCK_CHART_DATA = [
   { name: 'Mon', value: 40 },
@@ -197,32 +198,62 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Enquiries */}
-        <GlassCard delay={0.5} className="flex flex-col">
-          <div className="mb-6 flex items-center justify-between">
-            <h3 className="text-lg font-bold text-[#4a3b32]">Recent Enquiries</h3>
-            <span className="text-[10px] text-[#bc6746] hover:underline cursor-pointer">View All</span>
+        <GlassCard delay={0.5} className="flex flex-col h-full overflow-hidden">
+          <div className="mb-8 flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+               <div className="h-8 w-1 bg-[#bc6746] rounded-full" />
+               <h3 className="text-xl font-bold text-[#4a3b32] tracking-tight">Recent Enquiries</h3>
+            </div>
+            <Link 
+              href="/admin/enquiries" 
+              className="text-xs font-black uppercase tracking-widest text-[#bc6746] hover:text-[#a55a3d] transition-colors flex items-center group"
+            >
+              View All 
+              <ArrowUpRight className="h-3 w-3 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
           </div>
-          <div className="flex-1 space-y-4">
-            {recentEnquiries.map((enquiry, i) => (
-              <motion.div 
-                key={enquiry.id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + i * 0.1 }}
-                className="group relative rounded-xl border border-[#f1e4da] bg-white transition-all hover:bg-[#fcf9f2]"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-sm font-semibold text-[#4a3b32]">{enquiry.name}</h4>
-                    <p className="text-[10px] text-[#a55a3d]/50">{enquiry.email}</p>
-                  </div>
-                  <div className={`h-2 w-2 rounded-full ${enquiry.status === 'pending' ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]' : 'bg-green-400'}`} />
-                </div>
-                <p className="mt-2 line-clamp-1 text-xs text-[#a55a3d]/70">
-                  {enquiry.message}
-                </p>
-              </motion.div>
-            ))}
+          <div className="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+            {recentEnquiries.length > 0 ? (
+              recentEnquiries.map((enquiry, i) => (
+                <Link 
+                  key={enquiry.id}
+                  href={`/admin/enquiries?id=${enquiry.id}`}
+                  className="block"
+                >
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 + i * 0.1 }}
+                    className="group relative p-4 rounded-2xl border border-[#f1e4da]/50 bg-white/50 backdrop-blur-sm transition-all hover:bg-white hover:shadow-lg shadow-[#bc6746]/5 border-l-4 border-l-[#bc6746]/20 hover:border-l-[#bc6746] cursor-pointer"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="min-w-0">
+                        <h4 className="text-sm font-bold text-[#4a3b32] truncate uppercase tracking-tight">{enquiry.name}</h4>
+                        <p className="text-[10px] text-[#a55a3d]/60 font-medium truncate">{enquiry.email}</p>
+                      </div>
+                      <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${enquiry.status === 'pending' ? 'bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.5)]' : 'bg-green-400'}`} />
+                    </div>
+                    
+                    <div className="relative mt-2 p-3 rounded-xl bg-[#fcf9f2]/50 border border-[#f1e4da]/30 italic text-[11px] text-[#4a3b32]/80 leading-relaxed line-clamp-2">
+                      "{enquiry.message}"
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-end">
+                      <span className="text-[9px] font-bold text-[#a55a3d]/30 uppercase tracking-tighter">
+                        {new Date(enquiry.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </motion.div>
+                </Link>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center py-12">
+                 <div className="h-12 w-12 rounded-full bg-[#f1e4da]/30 flex items-center justify-center text-[#bc6746]/20 mb-4">
+                    <MessageSquare className="h-6 w-6" />
+                 </div>
+                 <p className="text-xs text-[#a55a3d]/50 italic">No recent enquiries found.</p>
+              </div>
+            )}
           </div>
         </GlassCard>
       </div>

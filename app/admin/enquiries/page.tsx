@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { GlassCard } from '@/components/admin/GlassCard';
 import { enquiryService } from '@/lib/api/client';
 import { 
@@ -12,7 +13,8 @@ import {
   Mail, 
   Phone, 
   Eye,
-  X
+  X,
+  Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
@@ -32,10 +34,21 @@ export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     fetchEnquiries();
   }, []);
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    if (id && enquiries.length > 0) {
+      const enquiry = enquiries.find(e => e.id === id);
+      if (enquiry) {
+        setSelectedEnquiry(enquiry);
+      }
+    }
+  }, [enquiries, searchParams]);
 
   const fetchEnquiries = async () => {
     try {
@@ -48,7 +61,10 @@ export default function EnquiriesPage() {
     }
   };
 
+const [isUpdating, setIsUpdating] = useState(false);
+
   const updateStatus = async (id: string, status: string) => {
+    setIsUpdating(true);
     try {
       await enquiryService.update(id, { status });
       setEnquiries(prev => prev.map(e => e.id === id ? { ...e, status: status as any } : e));
@@ -56,6 +72,8 @@ export default function EnquiriesPage() {
       toast.success(`Status updated to ${status}`);
     } catch (err) {
       toast.error('Status update failed');
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -235,18 +253,26 @@ export default function EnquiriesPage() {
 
                  <div className="flex items-center justify-between pt-4 border-t border-[#f1e4da]">
                   <div className="flex space-x-3">
-                    <button 
-                      onClick={() => updateStatus(selectedEnquiry.id, 'resolved')}
-                      className="px-6 py-2 rounded-xl bg-green-50 text-green-700 border border-green-100 text-xs font-bold hover:bg-green-100 transition-all uppercase tracking-widest"
-                    >
-                      Resolve Request
-                    </button>
-                    <button 
-                      onClick={() => updateStatus(selectedEnquiry.id, 'read')}
-                      className="px-6 py-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 text-xs font-bold hover:bg-blue-100 transition-all uppercase tracking-widest"
-                    >
-                      Mark as Read
-                    </button>
+                    {selectedEnquiry.status !== 'resolved' && (
+                      <button 
+                        onClick={() => updateStatus(selectedEnquiry.id, 'resolved')}
+                        disabled={isUpdating}
+                        className="flex items-center px-6 py-2 rounded-xl bg-green-50 text-green-700 border border-green-100 text-xs font-bold hover:bg-green-100 transition-all uppercase tracking-widest disabled:opacity-50"
+                      >
+                        {isUpdating ? <Loader2 className="h-3 w-3 mr-2 animate-spin" /> : null}
+                        Resolve Request
+                      </button>
+                    )}
+                    {selectedEnquiry.status === 'pending' && (
+                      <button 
+                        onClick={() => updateStatus(selectedEnquiry.id, 'read')}
+                        disabled={isUpdating}
+                        className="flex items-center px-6 py-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 text-xs font-bold hover:bg-blue-100 transition-all uppercase tracking-widest disabled:opacity-50"
+                      >
+                        {isUpdating ? <Loader2 className="h-3 w-3 mr-2 animate-spin" /> : null}
+                        Mark as Read
+                      </button>
+                    )}
                   </div>
                   <button 
                     onClick={() => deleteEnquiry(selectedEnquiry.id)}
