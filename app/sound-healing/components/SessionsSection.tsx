@@ -1,46 +1,7 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import Image from "next/image";
-import { useRef } from "react";
-
-const sessions = [
-  {
-    id: "session-1",
-    name: "Crystal Bowl Sound Bath",
-    location: "Mysore",
-    date: "12 APRIL 2025",
-    day: "SATURDAY",
-    time: "7:00 – 8:30 AM",
-    description: "An early-morning immersion in crystal bowl harmonics. Lie down, close your eyes, and let sound do the rest.",
-    spotsLeft: 4,
-    img: "/other-page-bg.jpeg",
-    accent: "#e2b9a7",
-  },
-  {
-    id: "session-2",
-    name: "Tibetan Bowl Journey",
-    location: "Bangalore",
-    date: "20 APRIL 2025",
-    day: "SUNDAY",
-    time: "6:30 – 8:00 PM",
-    description: "Traditional Tibetan singing bowls played live, creating deep resonance that quiets the mind and grounds the body.",
-    spotsLeft: 6,
-    img: "/other-page-bg.jpeg",
-    accent: "#bc6746",
-  },
-  {
-    id: "session-3",
-    name: "Nidra & Gong Bath",
-    location: "Mysore",
-    date: "26 APRIL 2025",
-    day: "SATURDAY",
-    time: "7:30 – 9:00 PM",
-    description: "Yoga Nidra followed by a full gong bath — for complete rest and deep nervous system reset.",
-    spotsLeft: 3,
-    img: "/other-page-bg.jpeg",
-    accent: "#a55a3d",
-  },
-];
+import { useState, useEffect, useRef } from "react";
 
 function SessionCard({ session, idx }: { session: any; idx: number }) {
   const cardRef = useRef(null);
@@ -54,7 +15,6 @@ function SessionCard({ session, idx }: { session: any; idx: number }) {
       transition={{ duration: 1, delay: idx * 0.15, ease: [0.215, 0.61, 0.355, 1] }}
       className={`relative group ${idx === 1 ? "md:mt-12" : ""}`}
     >
-      {/* Background Shadow Blob / Layer */}
       <motion.div
         animate={{ 
           rotate: [0, 5, 0],
@@ -65,50 +25,23 @@ function SessionCard({ session, idx }: { session: any; idx: number }) {
       />
 
       <div className="relative bg-[#fffdf8] border border-[#f1e4da]/50 rounded-[48px] overflow-hidden transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(188,103,70,0.12)] flex flex-col h-full">
-        {/* Image Module with Floating Date */}
         <div className="relative h-64 overflow-hidden">
           <Image 
-            src={session.img} 
-            alt={session.name} 
+            src={session.image_url || "/other-page-bg.jpeg"} 
+            alt={session.title} 
             fill 
             className="object-cover transition-transform duration-1000 group-hover:scale-110" 
           />
           <div className="absolute inset-0 bg-black/10 mix-blend-multiply" />
-          
-          {/* Floating Date Badge */}
-          <div className="absolute top-6 left-6 z-20 flex flex-col items-center bg-[#fffdf8]/90 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-white/20">
-            <span className="text-[#a55a3d] font-mono text-xs tracking-tighter leading-none mb-1 opacity-60">
-              {session.day.slice(0, 3)}
-            </span>
-            <span className="text-[#a55a3d] font-serif text-2xl leading-none">
-              {session.date.split(" ")[0]}
-            </span>
-            <span className="text-[#a55a3d] font-mono text-[10px] tracking-widest uppercase mt-1">
-              {session.date.split(" ")[1]}
-            </span>
-          </div>
-
-          {/* Availability Pulse */}
-          <div className="absolute bottom-6 left-6 z-20 flex items-center gap-2 bg-[#4a3b32]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#bc6746] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#bc6746]"></span>
-            </span>
-            <span className="text-[#FFFDF8] text-[9px] font-mono tracking-widest uppercase">
-              {session.spotsLeft} Available
-            </span>
-          </div>
         </div>
 
-        {/* Content Module */}
         <div className="p-8 flex-1 flex flex-col">
-          <div className="flex items-center justify-between mb-4">
-             <span className="font-handwriting text-[#bc6746] text-xl">{session.location}</span>
-             <span className="text-[#4a3b32]/40 font-mono text-[10px] tracking-widest">{session.time}</span>
+          <div className="mb-6">
+             <span className="text-[#bc6746] text-xs font-mono tracking-[.3em] uppercase opacity-40 italic">Synchronized Gathering</span>
           </div>
           
           <h3 className="text-2xl md:text-3xl font-serif text-[#4a3b32] mb-4 leading-tight group-hover:text-[#bc6746] transition-colors duration-500">
-            {session.name}
+            {session.title}
           </h3>
           
           <p className="text-[#4a3b32]/60 text-sm leading-relaxed mb-8 font-light line-clamp-3 italic">
@@ -142,6 +75,24 @@ function SessionCard({ session, idx }: { session: any; idx: number }) {
 }
 
 export default function SessionsSection() {
+  const [sessions, setSessions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSessions() {
+      try {
+        const res = await fetch("/api/sound-healing/upcoming");
+        const json = await res.json();
+        if (json.success) setSessions(json.data);
+      } catch (err) {
+        console.error("Failed to fetch sessions", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSessions();
+  }, []);
+
   return (
     <section id="sh-sessions" className="relative py-32 px-6 z-10 w-full bg-[#fffdf8]">
       <div className="max-w-7xl mx-auto">
@@ -158,13 +109,20 @@ export default function SessionsSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 pb-20">
-          {sessions.map((session, idx) => (
-            <SessionCard key={session.id} session={session} idx={idx} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-20 text-[#bc6746] italic font-light">Harmonizing schedules...</div>
+        ) : sessions.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 pb-20">
+            {sessions.map((session, idx) => (
+              <SessionCard key={session.id} session={session} idx={idx} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 text-[#4a3b32]/40 italic font-light">
+            The sanctuary is quiet for now. Please check back gently.
+          </div>
+        )}
 
-        {/* Bottom Decorative Line */}
         <div className="flex justify-center mt-20">
            <motion.div 
              initial={{ width: 0 }}
@@ -177,4 +135,3 @@ export default function SessionsSection() {
     </section>
   );
 }
-

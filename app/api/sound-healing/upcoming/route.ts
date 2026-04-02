@@ -12,7 +12,7 @@ export async function GET(req: Request) {
     const { data: sessions, error } = await supabaseAdmin
       .from('upcoming_sessions')
       .select('*')
-      .order('date', { ascending: true }); // Order by event date
+      .order('created_at', { ascending: false });
 
     if (error) {
       console.error('[Upcoming List Error]:', error);
@@ -38,11 +38,6 @@ async function postHandler(req: NextRequest, { admin }: any) {
       const formData = await req.formData();
       const title = formData.get('title') as string;
       const description = formData.get('description') as string;
-      const date = formData.get('date') as string;
-      const time = formData.get('time') as string;
-      const location = formData.get('location') as string;
-      const availability = formData.get('availability') as string;
-      const price = formData.get('price') as string;
       const imageFile = formData.get('image') as File;
 
       let imageUrl = formData.get('image_url') as string;
@@ -57,11 +52,6 @@ async function postHandler(req: NextRequest, { admin }: any) {
         .insert({
           title,
           description,
-          date,
-          time,
-          location,
-          availability: parseInt(availability) || 0,
-          price: parseFloat(price) || 0,
           image_url: imageUrl,
         })
         .select()

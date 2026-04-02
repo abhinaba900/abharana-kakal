@@ -28,6 +28,7 @@ interface SoundSession {
   description: string;
   audio_url: string;
   image_url: string;
+  metadata?: any;
   intent?: string;
   frequency?: string;
   duration?: string;
@@ -39,11 +40,6 @@ interface UpcomingSession {
   id: string;
   title: string;
   description: string;
-  date: string;
-  time: string;
-  location: string;
-  availability: number;
-  price: number;
   image_url: string;
   created_at: string;
 }
@@ -62,18 +58,12 @@ export default function SoundHealingPage() {
     description: '',
     audio_url: '',
     image_url: '',
+    metadata: '',
     intent: '',
     frequency: '',
     duration: '',
     color: '#bc6746',
-    // Upcoming specific fields
-    date: '',
-    time: '',
-    location: '',
-    availability: '',
   });
-  const [audioFile, setAudioFile] = useState<File | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   
   const [isUploadingAudio, setIsUploadingAudio] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -103,18 +93,15 @@ export default function SoundHealingPage() {
     if (session) {
       setEditingSession(session);
       setFormData({
-        title: session.title,
-        description: session.description,
+        title: session.title || '',
+        description: session.description || '',
         audio_url: session.audio_url || '',
         image_url: session.image_url || '',
+        metadata: session.metadata ? JSON.stringify(session.metadata, null, 2) : '',
         intent: session.intent || '',
         frequency: session.frequency || '',
         duration: session.duration || '',
         color: session.color || '#bc6746',
-        date: session.date || '',
-        time: session.time || '',
-        location: session.location || '',
-        availability: session.availability?.toString() || '',
       });
     } else {
       setEditingSession(null);
@@ -123,18 +110,13 @@ export default function SoundHealingPage() {
         description: '', 
         audio_url: '', 
         image_url: '',
+        metadata: '',
         intent: '',
         frequency: '',
         duration: '',
         color: '#bc6746',
-        date: '',
-        time: '',
-        location: '',
-        availability: '',
       });
     }
-    setAudioFile(null);
-    setImageFile(null);
     setIsModalOpen(true);
   };
 
@@ -149,7 +131,6 @@ export default function SoundHealingPage() {
       const res = await mediaService.upload(file, 'images');
       if (res.data.success) {
         setFormData(prev => ({ ...prev, image_url: res.data.url }));
-        setImageFile(file);
         toast.update(toastId, { render: 'Vision captured in storage!', type: 'success', isLoading: false, autoClose: 3000 });
       }
     } catch (err) {
@@ -170,7 +151,6 @@ export default function SoundHealingPage() {
       const res = await mediaService.upload(file, 'audio');
       if (res.data.success) {
         setFormData(prev => ({ ...prev, audio_url: res.data.url }));
-        setAudioFile(file);
         toast.update(toastId, { render: 'Frequency resonated with storage!', type: 'success', isLoading: false, autoClose: 3000 });
       }
     } catch (err) {
@@ -322,14 +302,7 @@ export default function SoundHealingPage() {
               </GlassCard>
             ))
           ) : (
-            // Upcoming Sessions View
             upcomingSessions.map((session, i) => {
-              // Parse date for building the badge
-              const dateObj = new Date(session.date);
-              const day = dateObj.toLocaleDateString('en-US', { day: 'numeric' });
-              const month = dateObj.toLocaleDateString('en-US', { month: 'long' });
-              const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-
               return (
                 <GlassCard key={session.id} noPadding delay={i * 0.05} className="group h-full flex flex-col overflow-hidden">
                   <div className="relative h-56 w-full">
@@ -340,19 +313,8 @@ export default function SoundHealingPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
                     
-                    {/* Date Badge */}
-                    <div className="absolute left-6 top-6 flex flex-col items-center justify-center rounded-2xl bg-white/95 p-3 shadow-xl backdrop-blur-md min-w-[70px]">
-                      <span className="text-[10px] font-black text-slate-400 leading-tight">{dayName}</span>
-                      <span className="text-2xl font-black text-slate-800 leading-none my-0.5">{day}</span>
-                      <span className="text-[10px] font-black text-slate-400 uppercase leading-tight tracking-wider">{month.slice(0, 3)}</span>
-                    </div>
-
                     {/* Meta Tags */}
                     <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                       <span className="rounded-full bg-black/60 px-3 py-1 text-[10px] font-bold text-white backdrop-blur-md border border-white/10 flex items-center">
-                        <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mr-2 animate-pulse" />
-                        {session.availability} AVAILABLE
-                      </span>
                     </div>
 
                     <div className="absolute bottom-4 right-4 flex space-x-2">
@@ -367,8 +329,7 @@ export default function SoundHealingPage() {
 
                   <div className="flex flex-1 flex-col p-6 space-y-3">
                     <div className="flex items-center justify-between text-xs font-black tracking-widest text-[#a855f7] uppercase">
-                      <span>{session.location}</span>
-                      <span className="text-slate-500">{session.time}</span>
+                      <span className="opacity-60">Synchronized Gathering</span>
                     </div>
                     
                     <h3 className="text-xl font-bold text-white transition-colors group-hover:text-purple-300">
@@ -381,7 +342,7 @@ export default function SoundHealingPage() {
                     
                     <div className="pt-4 mt-auto">
                       <div className="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span className="text-lg font-bold text-white">${session.price}</span>
+                        <span className="text-lg font-bold text-white tracking-widest uppercase text-[10px] opacity-40">Guided Session</span>
                         <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-slate-500 group-hover:border-purple-500/50 group-hover:text-purple-400 transition-all">
                           <Plus className="h-4 w-4" />
                         </div>
@@ -434,50 +395,8 @@ export default function SoundHealingPage() {
 
                     {activeTab === 'upcoming' && (
                       <>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Date</label>
-                            <input 
-                              type="date"
-                              value={formData.date}
-                              onChange={e => setFormData({...formData, date: e.target.value})}
-                              className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
-                              required
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Time</label>
-                            <input 
-                              value={formData.time}
-                              onChange={e => setFormData({...formData, time: e.target.value})}
-                              className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
-                              placeholder="7:00 - 8:30 AM"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Location</label>
-                            <input 
-                              value={formData.location}
-                              onChange={e => setFormData({...formData, location: e.target.value})}
-                              className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
-                              placeholder="Mysore"
-                              required
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Available Seats</label>
-                            <input 
-                              type="number"
-                              value={formData.availability}
-                              onChange={e => setFormData({...formData, availability: e.target.value})}
-                              className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
-                              placeholder="10"
-                              required
-                            />
-                          </div>
+                        <div className="p-2 text-[10px] text-slate-500 italic opacity-60">
+                           Upcoming gatherings are currently spotlighted by title and imagery only.
                         </div>
                       </>
                     )}
@@ -543,10 +462,10 @@ export default function SoundHealingPage() {
                         <ImageIcon className="h-3 w-3 mr-2" /> Thumbnail Image
                       </label>
                       <div className="group relative h-40 w-full rounded-2xl border-2 border-dashed border-white/10 bg-white/5 transition-all hover:border-purple-500/30 overflow-hidden">
-                        {(imageFile || formData.image_url) ? (
+                        {formData.image_url ? (
                           <div className="relative h-full w-full">
                             <img 
-                              src={imageFile ? URL.createObjectURL(imageFile) : formData.image_url} 
+                              src={formData.image_url} 
                               className="h-full w-full object-cover" 
                             />
                             {isUploadingImage && (
@@ -582,37 +501,51 @@ export default function SoundHealingPage() {
                     </div>
 
                     {activeTab === 'library' && (
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
-                          <FileAudio className="h-3 w-3 mr-2" /> High-Fidelity Audio
-                        </label>
-                        <div className="relative rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:border-indigo-500/30">
-                          <div className="flex items-center space-x-3">
-                            {isUploadingAudio ? (
-                              <Loader2 className="h-8 w-8 text-indigo-400 animate-spin" />
-                            ) : (
-                              <Music className={`h-8 w-8 ${audioFile || formData.audio_url ? 'text-indigo-400' : 'text-slate-700'}`} />
-                            )}
-                            <div className="flex-1 overflow-hidden">
-                              <p className="text-[10px] text-slate-400 truncate">
-                                {isUploadingAudio ? 'Uploading masterpiece...' : (audioFile ? audioFile.name : (formData.audio_url ? 'Existing Audio Linked' : 'Click to upload masterpiece'))}
-                              </p>
-                              {formData.audio_url && !isUploadingAudio && (
-                                <div className="mt-1 flex items-center text-[8px] text-green-500 font-bold uppercase tracking-widest">
-                                  <CheckCircle className="h-2 w-2 mr-1" /> Ready in Storage
-                                </div>
+                      <>
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                            <FileAudio className="h-3 w-3 mr-2" /> High-Fidelity Audio
+                          </label>
+                          <div className="relative rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:border-indigo-500/30">
+                            <div className="flex items-center space-x-3">
+                              {isUploadingAudio ? (
+                                <Loader2 className="h-8 w-8 text-indigo-400 animate-spin" />
+                              ) : (
+                                <Music className={`h-8 w-8 ${formData.audio_url ? 'text-indigo-400' : 'text-slate-700'}`} />
                               )}
+                              <div className="flex-1 overflow-hidden">
+                                <p className="text-[10px] text-slate-400 truncate">
+                                  {isUploadingAudio ? 'Uploading masterpiece...' : (formData.audio_url ? 'Active Audio Bonded' : 'Click to upload masterpiece')}
+                                </p>
+                                {formData.audio_url && !isUploadingAudio && (
+                                  <div className="mt-1 flex items-center text-[8px] text-green-500 font-bold uppercase tracking-widest">
+                                    <CheckCircle className="h-2 w-2 mr-1" /> Ready in Storage
+                                  </div>
+                                )}
+                              </div>
                             </div>
+                            <input 
+                              type="file" 
+                              accept="audio/*"
+                              onChange={handleAudioUpload}
+                              disabled={isUploadingAudio}
+                              className="absolute inset-0 cursor-pointer opacity-0 disabled:cursor-wait"
+                            />
                           </div>
-                          <input 
-                            type="file" 
-                            accept="audio/*"
-                            onChange={handleAudioUpload}
-                            disabled={isUploadingAudio}
-                            className="absolute inset-0 cursor-pointer opacity-0 disabled:cursor-wait"
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                            Metadata (JSON Integration)
+                          </label>
+                          <textarea 
+                            value={formData.metadata}
+                            onChange={e => setFormData({...formData, metadata: e.target.value})}
+                            className="w-full h-24 rounded-xl border border-white/10 bg-white/5 p-3 text-[10px] font-mono text-slate-400 focus:border-purple-500/50 outline-none resize-none"
+                            placeholder='{ "focus": "cellular-level" }'
                           />
                         </div>
-                      </div>
+                      </>
                     )}
                   </div>
                 </div>

@@ -17,16 +17,19 @@ interface GlassCardProps {
   className?: string;
   delay?: number;
   noPadding?: boolean;
+  onClick?: () => void;
 }
 
 export const GlassCard: React.FC<GlassCardProps> = ({ 
   children, 
   className, 
   delay = 0, 
-  noPadding = false 
+  noPadding = false,
+  onClick
 }) => {
   return (
     <motion.div
+      onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}

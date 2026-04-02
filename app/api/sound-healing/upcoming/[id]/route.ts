@@ -19,8 +19,6 @@ async function patchHandler(req: NextRequest, { params, admin }: any) {
       for (const [key, value] of formData.entries()) {
         if (typeof value === 'string' && key !== 'image') {
           updates[key] = value;
-          if (key === 'price') updates[key] = parseFloat(value) || 0;
-          if (key === 'availability') updates[key] = parseInt(value) || 0;
         }
       }
 
