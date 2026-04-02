@@ -43,9 +43,9 @@ export default function RetreatCards() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 10 }}
+           initial={{ opacity: 0, y: 0 }}
            animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1, ease: "easeOut" }}
+           transition={{ duration: 1.0, ease: "easeOut" }}
            className="text-center mb-32"
         >
           <span className="font-handwriting text-3xl text-[#f1e4da] mb-4 block opacity-80">Join us in Sacred Spaces</span>
@@ -70,9 +70,9 @@ function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 1.0, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       className={`relative group ${retreat.offset} flex flex-col h-[650px] md:h-[750px] rounded-[50px] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[0_40px_100px_rgba(188,103,70,0.25)]`}
     >
       {/* Image Layer */}
@@ -97,9 +97,9 @@ function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
         {/* Header Segment */}
         <div>
            <motion.p 
-             initial={{ opacity: 0, x: -10 }}
+             initial={{ opacity: 0, x: 0 }}
              animate={{ opacity: 0.8, x: 0 }}
-             transition={{ delay: 0.3 + index * 0.1 }}
+             transition={{ duration: 1.0, delay: 0.3 + index * 0.1 }}
              className="font-handwriting text-3xl text-[#f1e4da] mb-2"
            >
              {retreat.location}

@@ -46,9 +46,6 @@ export default function TestimonialsSection() {
           <motion.div
             key={t.id}
             id={t.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
             className={`relative bg-[#fffdf8] p-8 md:p-10 shadow-xl w-full max-w-sm flex flex-col justify-between ${t.rotation} paper-grain border border-black/5`}
           >
             {/* Tape detail — same as retreats */}

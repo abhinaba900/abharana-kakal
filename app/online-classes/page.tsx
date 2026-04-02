@@ -2,7 +2,6 @@
 
 import BookingFlow from "./components/BookingFlow";
 import TrustSection from "./components/TrustSection";
-import FinalCTA from "./components/FinalCTA";
 import { motion } from "framer-motion";
 
 export default function OnlineClassesPage() {
@@ -15,21 +14,9 @@ export default function OnlineClassesPage() {
         
         {/* Animated Sanctuary Blobs */}
         <motion.div 
-          animate={{ 
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           className="absolute -top-1/4 -right-1/4 w-full h-full bg-[#bc6746]/5 rounded-full blur-[140px]"
         />
         <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, -7, 0],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           className="absolute -bottom-1/4 -left-1/4 w-full h-full bg-[#a55a3d]/5 rounded-full blur-[160px]"
         />
       </div>
@@ -44,7 +31,6 @@ export default function OnlineClassesPage() {
 
       <div className="relative z-10">
         <TrustSection />
-        <FinalCTA />
       </div>
 
       {/* Subtle bottom decorative gradient */}

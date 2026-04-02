@@ -71,9 +71,9 @@ export default function HeroSection() {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-[1]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
+        transition={{ duration: 1.0, ease: "easeOut" }}
         className="relative z-10 text-center px-4 max-w-4xl mx-auto"
       >
         <p className="font-handwriting text-2xl text-[#f1e4da] mb-4 opacity-80">

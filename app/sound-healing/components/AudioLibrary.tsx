@@ -142,8 +142,9 @@ export default function AudioLibrary() {
 
       <div className="max-w-6xl mx-auto w-full relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.0 }}
           className="text-center mb-24"
         >
           <span className="inline-block text-[#bc6746] font-mono text-xs uppercase tracking-widest mb-4">
@@ -179,7 +180,7 @@ export default function AudioLibrary() {
             return (
               <motion.div
                 key={track.id}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: idx * 0.1 }}
                 className={`relative group ${idx % 2 === 1 ? "md:mt-16" : ""}`}
@@ -321,8 +322,9 @@ export default function AudioLibrary() {
 
         {/* Listen Anywhere CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.0 }}
           className="mt-32 text-center"
         >
           <p className="text-[#4a3b32]/50 italic mb-4">

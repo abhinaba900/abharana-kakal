@@ -14,7 +14,7 @@ const reasons = [
   {
     id: "02",
     label: "Guided Space",
-    image: "/sh-guided.png",
+    image: "/sh-guided.webp",
     body: "The practitioner holds the intention of the room. Something happens in a shared field of stillness that no recording can replicate.",
     align: "right",
   },
@@ -38,9 +38,7 @@ export default function WhyInPersonSection() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          
           className="text-center mb-24"
         >
           <h2 className="text-4xl md:text-6xl font-serif text-[#a55a3d] mb-4">

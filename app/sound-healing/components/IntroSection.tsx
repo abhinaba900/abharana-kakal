@@ -29,13 +29,9 @@ export default function IntroSection() {
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-32">
         {/* Left Side: Floating Narrative Column */}
         <motion.div
-          style={{ y: textY }}
           className="w-full md:w-2/5 flex flex-col items-start"
         >
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2 }}
             className="flex items-center gap-4 mb-8"
           >
             <div className="w-12 h-px bg-[#bc6746]" />
@@ -45,9 +41,7 @@ export default function IntroSection() {
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
+            
             className="text-5xl md:text-8xl font-serif text-[#a55a3d] leading-[1] mb-12 tracking-tight"
           >
             Ancient Medicine, <br />
@@ -57,9 +51,7 @@ export default function IntroSection() {
           </motion.h2>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
+            
             className="space-y-8"
           >
             <p className="text-xl md:text-2xl font-light text-[#4a3b32] leading-relaxed">
@@ -86,10 +78,7 @@ export default function IntroSection() {
         {/* Right Side: Architectural Imagery Column */}
         <div className="w-full md:w-3/5 relative">
           <motion.div
-            style={{ scale: imgScale }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+            
             className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-t-[200px] rounded-b-[40px] shadow-2xl"
           >
             <Image

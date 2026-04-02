@@ -13,7 +13,7 @@ export default function GallerySection() {
   return (
     <section className="relative py-24 px-6 bg-[#f1e4da]/70 border-t border-[#bc6746]/10">
       <motion.div
-         initial={{ opacity: 0, y: 10 }}
+         initial={{ opacity: 0, y: 0 }}
          animate={{ opacity: 1, y: 0 }}
          transition={{ duration: 0.8 }}
          className="text-center mb-16"
@@ -26,7 +26,7 @@ export default function GallerySection() {
         {images.map((src, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
             style={{ willChange: "transform, opacity" }}

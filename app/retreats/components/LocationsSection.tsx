@@ -27,10 +27,6 @@ export default function LocationsSection() {
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-24">
         {/* Left Side: Editorial Context */}
         <motion.div 
-          style={{ y: textY }}
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="w-full md:w-2/5 flex flex-col items-start"
         >
           <div className="flex items-center gap-4 mb-6 opacity-60">
@@ -71,10 +67,6 @@ export default function LocationsSection() {
 
         {/* Right Side: Interactive Cartography */}
         <motion.div
-          style={{ y: mapY }}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="w-full md:w-3/5 aspect-square md:aspect-[4/5] relative"
         >
           {/* Decorative shadowing for depth */}
@@ -83,11 +75,7 @@ export default function LocationsSection() {
           {/* The Actual Map */}
           <MapComponent />
 
-          {/* Floating legend or accent */}
-          <div className="absolute -bottom-10 -left-10 soft-glass p-8 rounded-[30px] hidden md:block shadow-2xl border-white/40 paper-grain z-10 max-w-[240px]">
-             <span className="font-serif italic text-[#bc6746] text-xl mb-2 block">&quot;The map is but a doorway.&quot;</span>
-             <p className="text-[10px] text-[#4a3b32]/60 leading-relaxed font-light">Find the space that resonates with your current path and let the healing begin.</p>
-          </div>
+          
         </motion.div>
       </div>
     </section>

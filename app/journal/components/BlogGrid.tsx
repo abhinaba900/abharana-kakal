@@ -53,7 +53,7 @@ export default function BlogGrid() {
       <div className="max-w-5xl mx-auto">
         {/* ── Category Filters ───────────────────────── */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex flex-wrap justify-center gap-3 mb-16"
@@ -80,9 +80,9 @@ export default function BlogGrid() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
+            exit={{ opacity: 0, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             {/* ── Featured Card ──────────────────────── */}
@@ -93,7 +93,7 @@ export default function BlogGrid() {
                 className="group block mb-14"
               >
                 <motion.article
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7 }}
                   className="relative w-full rounded-3xl overflow-hidden border border-white/10"
@@ -156,7 +156,7 @@ export default function BlogGrid() {
                   return (
                     <motion.article
                       key={post.slug}
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={{ opacity: 0, y: 0 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: i * 0.08 }}
                       className="group"

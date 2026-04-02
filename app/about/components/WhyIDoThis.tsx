@@ -5,13 +5,6 @@ import { useRef } from "react";
 
 export default function WhyIDoThis() {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const textY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const imgY = useTransform(scrollYProgress, [0, 1], [-40, 40]);
 
   return (
     <section ref={containerRef} className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
@@ -20,10 +13,7 @@ export default function WhyIDoThis() {
         {/* Left Side: Ethereal Visual Anchor */}
         <div className="w-full md:w-2/5 relative group">
           <motion.div 
-            style={{ y: imgY }}
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            
             className="relative aspect-[4/5] rounded-t-[120px] rounded-br-[40px] rounded-bl-[120px] overflow-hidden shadow-2xl z-10 border border-white/20"
           >
             <Image 
@@ -40,13 +30,11 @@ export default function WhyIDoThis() {
 
         {/* Right Side: Deep Reflective Narrative */}
         <motion.div 
-          style={{ y: textY }}
           className="w-full md:w-3/5 flex flex-col items-start relative z-20"
         >
           <div className="space-y-12">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+             
               className="flex items-center gap-6"
             >
                <div className="w-12 h-px bg-[#bc6746]" />
@@ -54,9 +42,7 @@ export default function WhyIDoThis() {
             </motion.div>
 
             <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              
               className="text-4xl md:text-7xl font-serif text-[#a55a3d] leading-none tracking-tighter"
             >
               The Calling of <br />
@@ -65,18 +51,14 @@ export default function WhyIDoThis() {
 
             <div className="max-w-xl space-y-10 group">
               <motion.p 
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.5, delay: 0.4 }}
+              
                 className="text-2xl md:text-4xl font-light text-[#4a3b32] leading-relaxed italic border-l-4 border-[#bc6746]/10 pl-8 group-hover:border-[#bc6746]/30 transition-all duration-700"
               >
                 &ldquo;Supporting others is not an action, but a way of being with them.&rdquo;
               </motion.p>
               
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.6 }}
+                
                 className="text-xl md:text-2xl font-light text-[#4a3b32]/70 leading-relaxed"
               >
                 Holding space is about creating a container of deep safety. It is a way of supporting another’s transformation without trying to control it—witnessing their journey with compassion and silence.

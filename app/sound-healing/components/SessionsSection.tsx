@@ -9,7 +9,7 @@ function SessionCard({ session, idx }: { session: any; idx: number }) {
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, delay: idx * 0.1, ease: [0.215, 0.61, 0.355, 1] }}
       className={`relative group ${idx === 1 ? "md:mt-12" : ""}`}
@@ -96,7 +96,7 @@ export default function SessionsSection() {
     <section id="sh-sessions" className="relative py-24 px-6 z-10 w-full bg-[#fffdf8]">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-24"
         >

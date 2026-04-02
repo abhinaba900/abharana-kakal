@@ -20,10 +20,7 @@ export default function JourneySection() {
         {/* Left Side: Heritage Visual Anchor */}
         <div className="w-full md:w-1/2 relative group">
           <motion.div 
-            style={{ y: imgY }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+         
             className="relative aspect-[3/4] md:aspect-[4/5] rounded-tr-[120px] md:rounded-tr-[240px] rounded-bl-[40px] md:rounded-bl-[80px] overflow-hidden shadow-[0_40px_100px_rgba(188,103,70,0.1)] z-10 border border-white/20"
           >
             <Image 
@@ -44,14 +41,11 @@ export default function JourneySection() {
 
         {/* Right Side: Floating Editorial Narrative */}
         <motion.div 
-          style={{ y: textY }}
           className="w-full md:w-1/2 flex flex-col items-start relative z-20 md:-ml-24"
         >
           <div className="soft-glass p-8 md:p-16 rounded-[40px] md:rounded-[60px] shadow-2xl space-y-10 border border-white/40">
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
+              
               className="flex items-center gap-4 mb-4"
             >
                <div className="w-12 h-px bg-[#bc6746]" />
@@ -59,18 +53,13 @@ export default function JourneySection() {
             </motion.div>
 
             <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
               className="text-2xl md:text-3xl font-light text-[#4a3b32] leading-relaxed"
             >
               It didn’t begin as a career, but as a survival. I found myself in the quiet, in the space between breaths, where the noise of the world couldn’t reach. 
             </motion.p>
             
             <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.4 }}
+              
               className="text-lg md:text-xl font-light text-[#4a3b32]/80 leading-relaxed"
             >
               Over the years, the practice of yoga evolved from a physical discipline into a doorway—a way to return to the original self. This path led me to the resonant power of sound and the deep, communal healing of shared silence.

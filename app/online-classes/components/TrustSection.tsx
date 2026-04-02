@@ -30,16 +30,14 @@ export default function TrustSection() {
           {features.map((f, i) => (
             <motion.div 
               key={i}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.8 }}
+              
               className="text-center space-y-6 group"
             >
               <div className="w-20 h-20 rounded-3xl bg-white flex items-center justify-center mx-auto text-[#bc6746] shadow-xl shadow-[#bc6746]/5 group-hover:scale-105 group-hover:shadow-[#bc6746]/10 transition-all duration-500">
                 {f.icon}
               </div>
-              <h3 className="text-sm font-black uppercase tracking-[0.4em] text-[#4a3b32]">{f.title}</h3>
-              <p className="text-sm text-[#a55a3d]/70 font-light italic leading-relaxed px-4">
+              <h3 className="text-md font-black uppercase tracking-[0.4em] text-[#4a3b32]">{f.title}</h3>
+              <p className="text-md text-[#a55a3d]/70 font-light italic leading-relaxed px-4">
                 {f.desc}
               </p>
             </motion.div>

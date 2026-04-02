@@ -8,9 +8,9 @@ export default function JournalHero() {
       <div className="absolute inset-0 bg-[#f1e4da]/30 pointer-events-none" />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        transition={{ duration: 1.0, ease: "easeOut" }}
         className="relative z-10 max-w-2xl mx-auto"
       >
         <p className="font-handwriting text-2xl text-[#bc6746] mb-3 opacity-80">

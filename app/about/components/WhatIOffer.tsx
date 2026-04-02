@@ -63,7 +63,7 @@ export default function WhatIOffer() {
           {offerings.map((offer, idx) => (
             <motion.div
               key={offer.id}
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 1 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: idx * 0.15 }}
               className="relative group cursor-default"

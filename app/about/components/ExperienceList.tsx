@@ -27,9 +27,7 @@ export default function ExperienceList() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center">
         <motion.div
-           initial={{ opacity: 0, y: 10 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1.2 }}
+           
            className="text-center mb-32"
         >
           <span className="text-[#bc6746] font-mono text-xs uppercase tracking-[0.4em] mb-4 block">professional lineage</span>
@@ -40,15 +38,11 @@ export default function ExperienceList() {
         </motion.div>
 
         <motion.div 
-          style={{ y: textY }}
           className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-x-24 md:gap-y-32 w-full max-w-6xl"
         >
           {experiences.map((exp, idx) => (
             <motion.div
               key={exp.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: idx * 0.1 }}
               className="flex items-start gap-10 group relative"
             >
               {/* Vertical line indicator */}

@@ -15,7 +15,7 @@ export default function TestimonialsSection() {
         animate={{ opacity: 1 }}
         className="text-4xl md:text-5xl font-serif text-[#FFFDF8] text-center mb-20 text-shadow-soft"
       >
-        Voices of the Coven
+        Voices
       </motion.h2>
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 max-w-6xl w-full justify-center">

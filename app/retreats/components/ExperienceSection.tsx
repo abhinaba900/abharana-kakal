@@ -49,7 +49,6 @@ const experiences = [
 
 export default function ExperienceSection() {
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
 
   return (
     <section ref={containerRef} className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
@@ -62,9 +61,6 @@ export default function ExperienceSection() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
           className="text-center mb-24"
         >
           <h2 className="text-4xl md:text-7xl font-serif text-[#a55a3d] tracking-tight">The Experience</h2>
@@ -88,9 +84,6 @@ const ExperienceTile = memo(function ExperienceTile({ exp, index }: { exp: any; 
   return (
     <motion.div
       ref={tileRef}
-      initial={{ opacity: 0, y: 20, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 1.2, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
       style={{ willChange: "transform, opacity" }}
       className={`relative group overflow-hidden rounded-[40px] shadow-xl hover:shadow-[0_40px_100px_rgba(188,103,70,0.15)] transition-all duration-700 ${exp.size}`}
     >

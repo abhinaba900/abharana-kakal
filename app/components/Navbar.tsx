@@ -7,14 +7,45 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    const bgAudio = new Audio("/bg-audio.mp3");
+    bgAudio.loop = true;
+    setAudio(bgAudio);
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+
+    const handleFirstClick = () => {
+      if (bgAudio.paused) {
+        bgAudio.play().then(() => {
+          setIsPlaying(true);
+        }).catch((err) => console.log("Audio play blocked:", err));
+      }
+      window.removeEventListener("mousedown", handleFirstClick);
+    };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("mousedown", handleFirstClick);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousedown", handleFirstClick);
+      bgAudio.pause();
+    };
   }, []);
+
+  useEffect(() => {
+    if (audio) {
+      if (isPlaying) {
+        audio.play().catch((err) => console.log("Audio play blocked:", err));
+      } else {
+        audio.pause();
+      }
+    }
+  }, [isPlaying, audio]);
 
   const navLinks = [
     { name: "About", href: "/about" },

@@ -265,7 +265,7 @@ export default function BookingFlow() {
         {/* Success / Integration End */}
         {currentStep > STEPS.length && (
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             className="max-w-4xl mx-auto text-center space-y-12 py-24 px-4 bg-white/40 rounded-[80px] border border-[#f1e4da] shadow-2xl shadow-[#bc6746]/5"
           >

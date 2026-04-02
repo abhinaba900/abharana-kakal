@@ -30,10 +30,7 @@ export default function IntroSection() {
         {/* Left Side: Architectural Image */}
         <div className="relative w-full md:w-1/2 group">
           <motion.div
-            style={{ y: imageY }}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+            
             className="relative aspect-[3/4] md:aspect-[4/5] rounded-tr-[120px] md:rounded-tr-[240px] rounded-bl-[40px] md:rounded-bl-[80px] overflow-hidden shadow-[0_30px_90px_rgba(188,103,70,0.15)] z-20 border border-white/20"
           >
             <Image
@@ -52,10 +49,7 @@ export default function IntroSection() {
 
         {/* Right Side: Structured Editorial Content */}
         <motion.div
-          style={{ y: textY }}
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          
           className="relative z-30 w-full md:w-1/2 flex flex-col items-start"
         >
           <div className="flex items-center gap-4 mb-6 opacity-60">
@@ -101,9 +95,6 @@ export default function IntroSection() {
           </p>
 
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
             className="flex items-center gap-6 group cursor-pointer"
           >
             <div className="w-14 h-14 rounded-full border border-[#bc6746]/30 flex items-center justify-center text-[#bc6746] group-hover:bg-[#bc6746] group-hover:text-white transition-all duration-500">

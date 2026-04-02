@@ -33,10 +33,7 @@ export default function ApproachSection() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10 px-6 flex justify-center">
         <motion.div
-           style={{ y: textY }}
-           initial={{ opacity: 0, scale: 0.9 }}
-           animate={{ opacity: 1, scale: 1 }}
-           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+           
            className="soft-glass p-10 md:p-24 rounded-[60px] md:rounded-[100px] border border-white/20 shadow-2xl max-w-4xl text-center backdrop-blur-xl"
         >
           <span className="text-[#bc6746] font-mono text-xs uppercase tracking-[0.5em] mb-8 block">the philosophy of listening</span>
