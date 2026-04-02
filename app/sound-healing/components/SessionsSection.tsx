@@ -94,7 +94,7 @@ export default function SessionsSection() {
   }, []);
 
   return (
-    <section id="sh-sessions" className="relative py-32 px-6 z-10 w-full bg-[#fffdf8]">
+    <section id="sh-sessions" className="relative py-24 px-6 z-10 w-full bg-[#fffdf8]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

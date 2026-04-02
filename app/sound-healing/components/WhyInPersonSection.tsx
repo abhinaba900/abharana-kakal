@@ -31,7 +31,7 @@ export default function WhyInPersonSection() {
   const containerRef = useRef(null);
   
   return (
-    <section ref={containerRef} className="relative py-32 px-6 flex flex-col items-center bg-[#fffdf8] paper-grain overflow-hidden">
+    <section ref={containerRef} className="relative py-24 px-6 flex flex-col items-center bg-[#fffdf8] paper-grain overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-1/4 -left-20 w-[40rem] h-[40rem] bg-[#bc6746]/5 organic-blob blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-20 w-[40rem] h-[40rem] bg-[#f1e4da]/40 organic-blob-alt blur-3xl pointer-events-none" />

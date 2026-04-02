@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 
 export default function AboutFinalCTA() {
   return (
-    <section className="relative py-40 px-6 overflow-hidden flex flex-col items-center text-center bg-[#fffdf8] paper-grain">
+    <section className="relative py-24 px-6 overflow-hidden flex flex-col items-center text-center bg-[#fffdf8] paper-grain">
       {/* Subtle Background Overlay */}
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#bc6746]/5 to-transparent mix-blend-multiply opacity-40 pointer-events-none" />
 

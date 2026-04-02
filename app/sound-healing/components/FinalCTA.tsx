@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 
 export default function FinalCTA() {
   return (
-    <section className="relative py-40 px-6 overflow-hidden flex flex-col items-center text-center">
+    <section className="relative py-24 px-6 overflow-hidden flex flex-col items-center text-center">
       {/* Deep terracotta overlay — exact retreats pattern */}
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#a55a3d] via-[#bc6746] to-transparent mix-blend-multiply opacity-50 pointer-events-none" />
 

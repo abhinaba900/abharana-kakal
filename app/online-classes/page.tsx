@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import HeroSection from "./components/HeroSection";
 import BookingFlow from "./components/BookingFlow";
 import TrustSection from "./components/TrustSection";

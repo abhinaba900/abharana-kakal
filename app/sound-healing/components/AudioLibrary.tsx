@@ -97,7 +97,7 @@ export default function AudioLibrary() {
   return (
     <section
       id="sh-audio"
-      className="relative py-32 px-6 flex flex-col items-center overflow-hidden bg-[#fffdf8]"
+      className="relative py-24 px-6 flex flex-col items-center overflow-hidden bg-[#fffdf8]"
     >
       {/* Optimized High-Performance Background Gradients */}
       <div

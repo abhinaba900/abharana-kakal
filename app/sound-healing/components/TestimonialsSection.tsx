@@ -24,7 +24,7 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="relative py-32 px-6 flex flex-col items-center overflow-hidden">
+    <section className="relative py-24 px-6 flex flex-col items-center overflow-hidden">
       <motion.h2
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
