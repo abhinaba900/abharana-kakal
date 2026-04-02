@@ -162,19 +162,19 @@ export default function RetreatsPage() {
     }
   };
 
-  if (loading) return <div className="p-8 text-center text-slate-500">Opening portal to retreats...</div>;
+  if (loading) return <div className="p-8 text-center text-[#a55a3d]/70 font-light italic">Opening portal to retreats...</div>;
 
   return (
     <div className="space-y-8 pb-12">
       {/* Header */}
       <div className="flex items-center justify-between">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <h1 className="text-4xl font-bold tracking-tight text-white">Retreat Sanctuaries</h1>
-          <p className="mt-2 text-slate-400">Manage the portals to deep restoration.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-[#4a3b32]">Retreat Sanctuaries</h1>
+          <p className="mt-2 text-[#a55a3d]/70">Manage the portals to deep restoration.</p>
         </motion.div>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center space-x-2 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 font-bold text-white shadow-lg shadow-purple-500/20 transition-all hover:scale-105 active:scale-95"
+          className="flex items-center space-x-2 rounded-2xl bg-[#bc6746] px-6 py-3 font-bold text-white shadow-lg shadow-[#bc6746]/10 transition-all hover:scale-105 active:scale-95"
         >
           <Plus className="h-5 w-5" />
           <span>New Retreat</span>
@@ -226,17 +226,17 @@ export default function RetreatsPage() {
               {/* Content */}
               <div className="flex flex-1 flex-col p-6 space-y-4">
                 <div className="flex items-start justify-between">
-                  <h3 className="text-xl font-bold text-white uppercase tracking-wider line-clamp-1">{retreat.title}</h3>
-                  <div className="h-8 w-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                  <h3 className="text-xl font-bold text-[#4a3b32] uppercase tracking-wider line-clamp-1">{retreat.title}</h3>
+                  <div className="h-8 w-8 rounded-full bg-[#bc6746]/10 flex items-center justify-center text-[#bc6746]">
                     <MapPin className="h-4 w-4" />
                   </div>
                 </div>
-                <p className="flex-1 text-xs text-slate-400 line-clamp-4 leading-relaxed italic">{retreat.description}</p>
+                <p className="flex-1 text-xs text-[#a55a3d]/70 line-clamp-4 leading-relaxed italic">{retreat.description}</p>
                 
                 {/* Image Count indicators */}
-                <div className="flex items-center space-x-1 pt-2">
-                   <Layers className="h-3 w-3 text-slate-600 mr-1" />
-                   <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">{retreat.image_urls?.length || 0} Layers of imagery</span>
+                <div className="flex items-center space-x-1 pt-2 border-t border-[#f1e4da]">
+                   <Layers className="h-3 w-3 text-[#a55a3d]/50 mr-1" />
+                   <span className="text-[10px] text-[#a55a3d]/50 font-bold uppercase tracking-widest">{retreat.image_urls?.length || 0} Layers of imagery</span>
                 </div>
               </div>
             </GlassCard>
@@ -252,17 +252,17 @@ export default function RetreatsPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-3xl bg-slate-950 border border-white/10 shadow-2xl glass-modal shadow-indigo-500/20 flex flex-col"
+              className="w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-3xl bg-[#fffdf8] border border-[#f1e4da] shadow-2xl flex flex-col"
             >
-              <div className="h-2 bg-gradient-to-r from-emerald-500 to-indigo-600 w-full" />
+              <div className="h-2 bg-[#bc6746] w-full" />
               
               <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-white uppercase tracking-widest">
+                    <h2 className="text-2xl font-bold text-[#4a3b32] uppercase tracking-widest">
                       {editingRetreat ? 'Update Sanctuary' : 'Manifest New Retreat'}
                     </h2>
-                    <button type="button" onClick={() => setIsModalOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+                    <button type="button" onClick={() => setIsModalOpen(false)} className="text-[#a55a3d]/50 hover:text-[#bc6746] transition-colors">
                       <X className="h-6 w-6" />
                     </button>
                   </div>
@@ -271,13 +271,13 @@ export default function RetreatsPage() {
                     {/* Basic Info */}
                     <div className="space-y-6">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                        <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                           <Type className="h-3 w-3 mr-2" /> Sanctuary Title
                         </label>
                         <input 
                           value={formData.title}
                           onChange={e => setFormData({...formData, title: e.target.value})}
-                          className="w-full rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white focus:border-emerald-500/50 outline-none transition-all"
+                          className="w-full rounded-xl border border-[#f1e4da] bg-white p-4 text-sm text-[#4a3b32] focus:border-[#bc6746] outline-none transition-all shadow-sm"
                           placeholder="Sacred Silence Retreat..."
                           required
                         />
@@ -285,40 +285,40 @@ export default function RetreatsPage() {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                          <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                             <DollarSign className="h-3 w-3 mr-2" /> Energy Exchange
                           </label>
                           <input 
                             type="number"
                             value={formData.price}
                             onChange={e => setFormData({...formData, price: e.target.value})}
-                            className="w-full rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white focus:border-emerald-500/50 outline-none"
+                            className="w-full rounded-xl border border-[#f1e4da] bg-white p-4 text-sm text-[#4a3b32] focus:border-[#bc6746] outline-none shadow-sm"
                             placeholder="1200"
                             required
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                          <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                             <Calendar className="h-3 w-3 mr-2" /> Oracle Date
                           </label>
                           <input 
                             type="date"
                             value={formData.date}
                             onChange={e => setFormData({...formData, date: e.target.value})}
-                            className="w-full rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white focus:border-emerald-500/50 outline-none"
+                            className="w-full rounded-xl border border-[#f1e4da] bg-white p-4 text-sm text-[#4a3b32] focus:border-[#bc6746] outline-none shadow-sm"
                             required
                           />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                        <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                           Sanctuary Description
                         </label>
                         <textarea 
                           value={formData.description}
                           onChange={e => setFormData({...formData, description: e.target.value})}
-                          className="w-full h-48 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white focus:border-emerald-500/50 outline-none resize-none leading-relaxed"
+                          className="w-full h-48 rounded-xl border border-[#f1e4da] bg-white p-4 text-sm text-[#4a3b32] focus:border-[#bc6746] outline-none resize-none leading-relaxed shadow-sm"
                           placeholder="What journey awaits seekers in this portal?"
                         />
                       </div>
@@ -326,14 +326,14 @@ export default function RetreatsPage() {
 
                     {/* Image Management */}
                     <div className="space-y-6">
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                      <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                         <ImageIcon className="h-3 w-3 mr-2" /> Visual Layers (Gallery)
                       </label>
                       
                       {/* Current Images */}
                       <div className="grid grid-cols-3 gap-2">
                         {formData.image_urls.map((url, idx) => (
-                          <div key={idx} className="group relative aspect-square rounded-lg overflow-hidden border border-white/5 bg-slate-900">
+                          <div key={idx} className="group relative aspect-square rounded-lg overflow-hidden border border-[#f1e4da] bg-[#fffdf8]">
                             <img src={url} className="h-full w-full object-cover" />
                             <button 
                               type="button"
@@ -351,7 +351,7 @@ export default function RetreatsPage() {
                           </div>
                         )}
                         
-                        <div className="relative aspect-square rounded-lg border-2 border-dashed border-white/10 bg-white/5 flex flex-col items-center justify-center text-slate-600 hover:border-emerald-500/30 hover:bg-white/10 transition-all cursor-pointer">
+                        <div className="relative aspect-square rounded-lg border-2 border-dashed border-[#f1e4da] bg-[#fffdf8] flex flex-col items-center justify-center text-[#a55a3d]/30 hover:border-[#bc6746] hover:bg-[#bc6746]/5 transition-all cursor-pointer">
                            <Plus className="h-6 w-6 mb-1" />
                            <span className="text-[8px] font-bold uppercase tracking-widest">
                             {isUploading ? 'Uploading...' : 'Add Image'}
@@ -367,12 +367,12 @@ export default function RetreatsPage() {
                         </div>
                       </div>
 
-                      <div className="rounded-2xl bg-indigo-500/5 border border-indigo-500/10 p-6 space-y-3">
-                         <div className="flex items-center text-indigo-400">
+                      <div className="rounded-2xl bg-[#bc6746]/5 border border-[#bc6746]/10 p-6 space-y-3">
+                         <div className="flex items-center text-[#bc6746]">
                            <Layers className="w-4 h-4 mr-2" />
                            <span className="text-xs font-bold">Optimization Tip</span>
                          </div>
-                         <p className="text-[10px] text-slate-500 leading-relaxed italic">
+                         <p className="text-[10px] text-[#a55a3d]/70 leading-relaxed italic">
                            Each image is seamlessly manifested via the high-fidelity cloud storage. Recommend using landscape-oriented shots to maintain the sanctuary's aesthetic balance.
                          </p>
                       </div>
@@ -383,14 +383,14 @@ export default function RetreatsPage() {
                     <button 
                       type="button" 
                       onClick={() => setIsModalOpen(false)}
-                      className="px-8 py-3 rounded-xl border border-white/10 text-white font-bold transition-all hover:bg-white/5"
+                      className="px-8 py-3 rounded-xl border border-[#f1e4da] text-[#a55a3d]/70 font-bold transition-all hover:bg-[#bc6746]/5"
                     >
                       Cancel
                     </button>
                     <button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="flex items-center px-12 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-indigo-600 text-white font-bold shadow-xl shadow-emerald-500/20 transition-all hover:scale-[1.03] active:scale-95 disabled:opacity-50"
+                      className="flex items-center px-12 py-3 rounded-xl bg-[#bc6746] text-white font-bold shadow-xl shadow-[#bc6746]/20 transition-all hover:scale-[1.03] active:scale-95 disabled:opacity-50"
                     >
                       {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <CheckCircle className="h-5 w-5 mr-2" />}
                       {editingRetreat ? 'Harmonize Sanctuary' : 'Manifest Sanctuary'}

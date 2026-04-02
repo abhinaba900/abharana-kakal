@@ -57,6 +57,7 @@ export const authService = {
 
 export const enquiryService = {
   list: (status?: string) => api.get('/enquiries', { params: { status } }),
+  create: (data: any) => api.post('/enquiries', data),
   update: (id: string, data: any) => api.patch(`/enquiries/${id}`, data),
   delete: (id: string) => api.delete(`/enquiries/${id}`),
 };
@@ -114,10 +115,14 @@ export const yogaService = {
   offerings: {
     list: () => api.get('/yoga/offerings'),
     create: (data: any) => api.post('/yoga/offerings', data),
+    update: (id: string, data: any) => api.patch(`/yoga/offerings/${id}`, data),
+    delete: (id: string) => api.delete(`/yoga/offerings/${id}`),
   },
   sessions: {
     list: (offering_id?: string) => api.get('/yoga/sessions', { params: { offering_id } }),
     create: (data: any) => api.post('/yoga/sessions', data),
+    update: (id: string, data: any) => api.patch(`/yoga/sessions/${id}`, data),
+    delete: (id: string) => api.delete(`/yoga/sessions/${id}`),
   },
   bookings: {
     list: () => api.get('/yoga/bookings'),

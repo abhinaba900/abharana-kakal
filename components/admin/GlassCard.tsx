@@ -33,18 +33,18 @@ export const GlassCard: React.FC<GlassCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      whileHover={onClick ? { y: -5, transition: { duration: 0.2 } } : {}}
       className={cn(
-        "relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl",
-        "shadow-lg shadow-purple-500/5 transition-all duration-300",
-        "hover:border-white/20 hover:bg-white/[0.08] hover:shadow-purple-500/10",
+        "relative rounded-2xl border border-[#f1e4da] bg-white/60 backdrop-blur-xl",
+        "shadow-sm shadow-[#4a3b32]/5 transition-all duration-300",
+        "hover:border-[#bc6746]/30 hover:bg-white/80 hover:shadow-md",
         "group overflow-hidden",
         !noPadding && "p-6",
         className
       )}
     >
       {/* Decorative Glow */}
-      <div className="absolute -left-full top-0 h-full w-full bg-gradient-to-r from-transparent via-purple-500/10 to-transparent transition-all duration-1000 group-hover:left-full" />
+      <div className="absolute -left-full top-0 h-full w-full bg-gradient-to-r from-transparent via-[#bc6746]/5 to-transparent transition-all duration-1000 group-hover:left-full" />
       
       {children}
     </motion.div>

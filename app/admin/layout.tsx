@@ -23,8 +23,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         
         <ToastContainer
           position="bottom-right"
-          theme="dark"
-          toastStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}
+          theme="light"
+          toastStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid #f1e4da', color: '#4a3b32' }}
         />
       </CosmicBackground>
     </AdminAuthProvider>

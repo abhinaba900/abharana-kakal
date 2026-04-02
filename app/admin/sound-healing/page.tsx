@@ -230,29 +230,29 @@ export default function SoundHealingPage() {
     }
   };
 
-  if (loading) return <div className="p-8 text-center text-slate-500">Tuning frequencies...</div>;
+  if (loading) return <div className="p-8 text-center text-[#a55a3d]/50">Tuning frequencies...</div>;
 
   return (
     <div className="space-y-8 pb-12">
       {/* Header */}
       <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <h1 className="text-4xl font-bold tracking-tight text-white">Sound Healing</h1>
-          <p className="mt-2 text-slate-400">Curate the frequencies of transformation.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-[#4a3b32]">Sound Healing</h1>
+          <p className="mt-2 text-[#a55a3d]/70">Curate the frequencies of transformation.</p>
         </motion.div>
         
         <div className="flex items-center space-x-4">
           {/* Tab Switcher */}
-          <div className="flex p-1 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+          <div className="flex p-1 rounded-2xl bg-white/40 border border-[#f1e4da] backdrop-blur-md">
             <button
               onClick={() => setActiveTab('library')}
-              className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'library' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+              className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'library' ? 'bg-[#bc6746] text-white shadow-lg' : 'text-[#a55a3d]/50 hover:text-[#bc6746]'}`}
             >
               Sound Library
             </button>
             <button
               onClick={() => setActiveTab('upcoming')}
-              className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'upcoming' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+              className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'upcoming' ? 'bg-[#bc6746] text-white shadow-lg' : 'text-[#a55a3d]/50 hover:text-[#bc6746]'}`}
             >
               Upcoming Sessions
             </button>
@@ -260,7 +260,7 @@ export default function SoundHealingPage() {
 
           <button 
             onClick={() => handleOpenModal()}
-            className="flex items-center space-x-2 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 font-bold text-white shadow-lg shadow-purple-500/20 transition-all hover:scale-105 active:scale-95"
+            className="flex items-center space-x-2 rounded-2xl bg-[#bc6746] px-6 py-3 font-bold text-white shadow-lg shadow-[#bc6746]/10 transition-all hover:bg-[#a55a3d] hover:scale-105 active:scale-95"
           >
             <Plus className="h-5 w-5" />
             <span>New {activeTab === 'library' ? 'Library' : 'Session'}</span>
@@ -284,10 +284,10 @@ export default function SoundHealingPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-end">
                     <div className="flex space-x-2">
-                      <button onClick={() => handleOpenModal(session)} className="rounded-lg bg-white/10 p-2 text-white transition-colors hover:bg-purple-500/40">
+                      <button onClick={() => handleOpenModal(session)} className="rounded-lg bg-white/20 p-2 text-white transition-colors hover:bg-[#bc6746]">
                         <Edit2 className="h-4 w-4" />
                       </button>
-                      <button onClick={() => deleteSession(session.id)} className="rounded-lg bg-white/10 p-2 text-white transition-colors hover:bg-red-500/40">
+                      <button onClick={() => deleteSession(session.id)} className="rounded-lg bg-white/20 p-2 text-white transition-colors hover:bg-red-500">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -296,24 +296,24 @@ export default function SoundHealingPage() {
 
                 <div className="flex flex-1 flex-col p-6 space-y-4">
                   <div className="flex items-start justify-between">
-                    <h3 className="text-xl font-bold text-white uppercase tracking-wider line-clamp-1">{session.title}</h3>
-                    <div className="h-8 w-8 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400">
+                    <h3 className="text-xl font-bold text-[#4a3b32] uppercase tracking-wider line-clamp-1">{session.title}</h3>
+                    <div className="h-8 w-8 rounded-full bg-[#bc6746]/10 flex items-center justify-center text-[#bc6746]">
                       <Music className="h-4 w-4" />
                     </div>
                   </div>
-                  <p className="flex-1 text-xs text-slate-400 line-clamp-3 leading-relaxed italic">{session.description}</p>
+                  <p className="flex-1 text-xs text-[#a55a3d]/70 line-clamp-3 leading-relaxed italic">{session.description}</p>
                   
                   {session.audio_url && (
-                    <div className="flex items-center space-x-3 rounded-xl bg-white/5 border border-white/5 p-3">
-                      <div className="h-8 w-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                        <Play className="h-4 w-4 fill-indigo-400" />
+                    <div className="flex items-center space-x-3 rounded-xl bg-white/60 border border-[#f1e4da]/50 p-3">
+                      <div className="h-8 w-8 rounded-full bg-[#bc6746]/10 flex items-center justify-center text-[#bc6746]">
+                        <Play className="h-4 w-4 fill-[#bc6746]" />
                       </div>
                       <div className="flex-1">
-                        <div className="h-1 w-full bg-white/10 rounded-full">
-                          <div className="h-full w-1/3 bg-indigo-500 rounded-full" />
+                        <div className="h-1 w-full bg-[#f1e4da] rounded-full">
+                          <div className="h-full w-1/3 bg-[#bc6746] rounded-full" />
                         </div>
                       </div>
-                      <Volume2 className="h-4 w-4 text-slate-600" />
+                      <Volume2 className="h-4 w-4 text-[#a55a3d]/50" />
                     </div>
                   )}
                 </div>
@@ -336,32 +336,32 @@ export default function SoundHealingPage() {
                     </div>
 
                     <div className="absolute bottom-4 right-4 flex space-x-2">
-                      <button onClick={() => handleOpenModal(session)} className="rounded-xl bg-white/10 p-2 text-white transition-all hover:bg-purple-500/40 backdrop-blur-md">
+                      <button onClick={() => handleOpenModal(session)} className="rounded-xl bg-white/20 p-2 text-white transition-all hover:bg-[#bc6746] backdrop-blur-md">
                         <Edit2 className="h-4 w-4" />
                       </button>
-                      <button onClick={() => deleteSession(session.id)} className="rounded-xl bg-white/10 p-2 text-white transition-all hover:bg-red-500/40 backdrop-blur-md">
+                      <button onClick={() => deleteSession(session.id)} className="rounded-xl bg-white/20 p-2 text-white transition-all hover:bg-red-500 backdrop-blur-md">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
 
                   <div className="flex flex-1 flex-col p-6 space-y-3">
-                    <div className="flex items-center justify-between text-xs font-black tracking-widest text-[#a855f7] uppercase">
+                    <div className="flex items-center justify-between text-xs font-black tracking-widest text-[#bc6746] uppercase">
                       <span className="opacity-60">Synchronized Gathering</span>
                     </div>
                     
-                    <h3 className="text-xl font-bold text-white transition-colors group-hover:text-purple-300">
+                    <h3 className="text-xl font-bold text-[#4a3b32] transition-colors group-hover:text-[#bc6746]">
                       {session.title}
                     </h3>
                     
-                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed italic">
+                    <p className="text-xs text-[#a55a3d]/70 line-clamp-2 leading-relaxed italic">
                       "{session.description}"
                     </p>
                     
                     <div className="pt-4 mt-auto">
-                      <div className="flex items-center justify-between border-t border-white/5 pt-4">
-                        <span className="text-lg font-bold text-white tracking-widest uppercase text-[10px] opacity-40">Guided Session</span>
-                        <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center text-slate-500 group-hover:border-purple-500/50 group-hover:text-purple-400 transition-all">
+                      <div className="flex items-center justify-between border-t border-[#f1e4da] pt-4">
+                        <span className="text-lg font-bold text-[#4a3b32] tracking-widest uppercase text-[10px] opacity-40">Guided Session</span>
+                        <div className="h-8 w-8 rounded-full border border-[#f1e4da] flex items-center justify-center text-[#a55a3d]/50 group-hover:border-[#bc6746] group-hover:text-[#bc6746] transition-all">
                           <Plus className="h-4 w-4" />
                         </div>
                       </div>
@@ -382,15 +382,15 @@ export default function SoundHealingPage() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
-              className="w-full max-w-2xl overflow-hidden rounded-3xl bg-slate-950 border border-white/10 shadow-2xl glass-modal shadow-purple-500/20"
+              className="w-full max-w-2xl overflow-hidden rounded-3xl bg-white border border-[#f1e4da] shadow-2xl shadow-[#bc6746]/10"
             >
-              <div className="h-2 bg-gradient-to-r from-purple-500 to-indigo-600 w-full" />
+              <div className="h-2 bg-[#bc6746] w-full" />
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-white uppercase tracking-widest">
+                  <h2 className="text-2xl font-bold text-[#4a3b32] uppercase tracking-widest">
                     {editingSession ? 'Edit Vibration' : 'Create New Frequency'}
                   </h2>
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="text-[#a55a3d]/50 hover:text-[#bc6746] transition-colors">
                     <X className="h-6 w-6" />
                   </button>
                 </div>
@@ -399,13 +399,13 @@ export default function SoundHealingPage() {
                   {/* Left Col */}
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                      <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                         <Type className="h-3 w-3 mr-2" /> Title
                       </label>
                       <input 
                         value={formData.title}
                         onChange={e => setFormData({...formData, title: e.target.value})}
-                        className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
+                        className="w-full rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-3 text-sm text-[#4a3b32] focus:border-[#bc6746]/50 outline-none"
                         placeholder="Celestial Resonance..."
                         required
                       />
@@ -413,20 +413,20 @@ export default function SoundHealingPage() {
 
                     {activeTab === 'upcoming' && (
                       <>
-                        <div className="p-2 text-[10px] text-slate-500 italic opacity-60">
+                        <div className="p-2 text-[10px] text-[#a55a3d]/40 italic">
                            Upcoming gatherings are currently spotlighted by title and imagery only.
                         </div>
                       </>
                     )}
 
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                      <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                         Description
                       </label>
                       <textarea 
                         value={formData.description}
                         onChange={e => setFormData({...formData, description: e.target.value})}
-                        className="w-full h-32 rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none resize-none"
+                        className="w-full h-32 rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-3 text-sm text-[#4a3b32] focus:border-[#bc6746]/50 outline-none resize-none"
                         placeholder="Describe the journey..."
                       />
                     </div>
@@ -434,39 +434,39 @@ export default function SoundHealingPage() {
                     {activeTab === 'library' && (
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest text-[#bc6746]">Intent</label>
+                          <label className="text-xs font-bold text-[#bc6746] uppercase tracking-widest">Intent</label>
                           <input 
                             value={formData.intent}
                             onChange={e => setFormData({...formData, intent: e.target.value})}
-                            className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
+                            className="w-full rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-3 text-sm text-[#4a3b32] focus:border-[#bc6746]/50 outline-none"
                             placeholder="Deep Rest"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest text-[#bc6746]">Frequency</label>
+                          <label className="text-xs font-bold text-[#bc6746] uppercase tracking-widest">Frequency</label>
                           <input 
                             value={formData.frequency}
                             onChange={e => setFormData({...formData, frequency: e.target.value})}
-                            className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
+                            className="w-full rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-3 text-sm text-[#4a3b32] focus:border-[#bc6746]/50 outline-none"
                             placeholder="528Hz"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest text-[#bc6746]">Duration</label>
+                          <label className="text-xs font-bold text-[#bc6746] uppercase tracking-widest">Duration</label>
                           <input 
                             value={formData.duration}
                             onChange={e => setFormData({...formData, duration: e.target.value})}
-                            className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-white focus:border-purple-500/50 outline-none"
+                            className="w-full rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-3 text-sm text-[#4a3b32] focus:border-[#bc6746]/50 outline-none"
                             placeholder="20:00"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest text-[#bc6746]">UI Color</label>
+                          <label className="text-xs font-bold text-[#bc6746] uppercase tracking-widest">UI Color</label>
                           <input 
                             type="color"
                             value={formData.color}
                             onChange={e => setFormData({...formData, color: e.target.value})}
-                            className="w-full h-11 rounded-xl border border-white/10 bg-white/5 p-1 outline-none cursor-pointer"
+                            className="w-full h-11 rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-1 outline-none cursor-pointer"
                           />
                         </div>
                       </div>
@@ -476,10 +476,10 @@ export default function SoundHealingPage() {
                   {/* Right Col - Media */}
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                      <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                         <ImageIcon className="h-3 w-3 mr-2" /> Thumbnail Image
                       </label>
-                      <div className="group relative h-40 w-full rounded-2xl border-2 border-dashed border-white/10 bg-white/5 transition-all hover:border-purple-500/30 overflow-hidden">
+                      <div className="group relative h-40 w-full rounded-2xl border-2 border-dashed border-[#f1e4da] bg-[#fcf9f2]/50 transition-all hover:border-[#bc6746]/30 overflow-hidden">
                         {formData.image_url ? (
                           <div className="relative h-full w-full">
                             <img 
@@ -487,17 +487,17 @@ export default function SoundHealingPage() {
                               className="h-full w-full object-cover" 
                             />
                             {isUploadingImage && (
-                              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
-                                <Loader2 className="h-8 w-8 text-white animate-spin mb-2" />
-                                <span className="text-[10px] text-white font-bold tracking-widest uppercase">Uploading Vision...</span>
+                              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm">
+                                <Loader2 className="h-8 w-8 text-[#bc6746] animate-spin mb-2" />
+                                <span className="text-[10px] text-[#bc6746] font-bold tracking-widest uppercase">Uploading Vision...</span>
                               </div>
                             )}
                           </div>
                         ) : (
-                          <div className="flex h-full flex-col items-center justify-center text-slate-600">
+                          <div className="flex h-full flex-col items-center justify-center text-[#a55a3d]/30">
                             {isUploadingImage ? (
                                <>
-                                <Loader2 className="h-8 w-8 mb-2 animate-spin text-purple-500" />
+                                <Loader2 className="h-8 w-8 mb-2 animate-spin text-[#bc6746]" />
                                 <span className="text-[10px]">Processing...</span>
                                </>
                             ) : (
@@ -521,22 +521,22 @@ export default function SoundHealingPage() {
                     {activeTab === 'library' && (
                       <>
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                          <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                             <FileAudio className="h-3 w-3 mr-2" /> High-Fidelity Audio
                           </label>
-                          <div className="relative rounded-xl border border-white/10 bg-white/5 p-4 transition-all hover:border-indigo-500/30">
+                          <div className="relative rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-4 transition-all hover:border-[#bc6746]/30">
                             <div className="flex items-center space-x-3">
                               {isUploadingAudio ? (
-                                <Loader2 className="h-8 w-8 text-indigo-400 animate-spin" />
+                                <Loader2 className="h-8 w-8 text-[#bc6746] animate-spin" />
                               ) : (
-                                <Music className={`h-8 w-8 ${formData.audio_url ? 'text-indigo-400' : 'text-slate-700'}`} />
+                                <Music className={`h-8 w-8 ${formData.audio_url ? 'text-[#bc6746]' : 'text-[#a55a3d]/30'}`} />
                               )}
                               <div className="flex-1 overflow-hidden">
-                                <p className="text-[10px] text-slate-400 truncate">
+                                <p className="text-[10px] text-[#a55a3d]/70 truncate">
                                   {isUploadingAudio ? 'Uploading masterpiece...' : (formData.audio_url ? 'Active Audio Bonded' : 'Click to upload masterpiece')}
                                 </p>
                                 {formData.audio_url && !isUploadingAudio && (
-                                  <div className="mt-1 flex items-center text-[8px] text-green-500 font-bold uppercase tracking-widest">
+                                  <div className="mt-1 flex items-center text-[8px] text-green-600 font-bold uppercase tracking-widest">
                                     <CheckCircle className="h-2 w-2 mr-1" /> Ready in Storage
                                   </div>
                                 )}
@@ -553,13 +553,13 @@ export default function SoundHealingPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                          <label className="text-xs font-bold text-[#a55a3d]/50 uppercase tracking-widest flex items-center">
                             Metadata (JSON Integration)
                           </label>
                           <textarea 
                             value={formData.metadata}
                             onChange={e => setFormData({...formData, metadata: e.target.value})}
-                            className="w-full h-24 rounded-xl border border-white/10 bg-white/5 p-3 text-[10px] font-mono text-slate-400 focus:border-purple-500/50 outline-none resize-none"
+                            className="w-full h-24 rounded-xl border border-[#f1e4da] bg-[#fcf9f2]/50 p-3 text-[10px] font-mono text-[#a55a3d]/70 focus:border-[#bc6746]/50 outline-none resize-none"
                             placeholder='{ "focus": "cellular-level" }'
                           />
                         </div>
@@ -572,14 +572,14 @@ export default function SoundHealingPage() {
                   <button 
                     type="button" 
                     onClick={() => setIsModalOpen(false)}
-                    className="px-8 py-3 rounded-xl border border-white/10 text-white font-bold transition-all hover:bg-white/5"
+                    className="px-8 py-3 rounded-xl border border-[#f1e4da] text-[#4a3b32] font-bold transition-all hover:bg-[#fcf9f2]"
                   >
                     Cancel
                   </button>
                   <button 
                     type="submit" 
                     disabled={isSubmitting || isUploadingAudio || isUploadingImage}
-                    className="flex items-center px-12 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold shadow-xl shadow-purple-500/20 transition-all hover:scale-[1.03] active:scale-95 disabled:opacity-50 disabled:grayscale"
+                    className="flex items-center px-12 py-3 rounded-xl bg-[#bc6746] text-white font-bold shadow-xl shadow-[#bc6746]/10 transition-all hover:bg-[#a55a3d] hover:scale-[1.03] active:scale-95 disabled:opacity-50 disabled:grayscale"
                   >
                     {isSubmitting ? (
                       <Loader2 className="h-5 w-5 animate-spin mr-2" />

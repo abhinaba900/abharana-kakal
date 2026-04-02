@@ -164,7 +164,7 @@ export default function AudioLibrary() {
         </motion.div>
 
         {/* Asymmetrical/Grid remains the same layout for consistency */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 md:gap-y-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 md:gap-y-0">
           {loading ? (
             <div className="col-span-full text-center py-20 text-[#bc6746] font-light italic">
               Tuning frequencies into existence...

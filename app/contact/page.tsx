@@ -1,5 +1,4 @@
 import Image from "next/image";
-import ContactHero from "./components/ContactHero";
 import ContactForm from "./components/ContactForm";
 import type { Metadata } from "next";
 
@@ -26,7 +25,6 @@ export default function ContactPage() {
       </div>
 
       {/* Page Sections */}
-      <ContactHero />
       <ContactForm />
 
       {/* Bottom Subtle Gradient Overlay */}

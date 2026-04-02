@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 
-export default function AudioButton() {
+export default function AudioButton({ scrolled }: { scrolled?: boolean }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -58,14 +58,15 @@ export default function AudioButton() {
       <button
         onClick={togglePlay}
         aria-label={isPlaying ? "Pause background music" : "Play background music"}
-        className="group relative flex items-center justify-center w-[36px] h-[36px] md:w-[46px] md:h-[46px] bg-[#bc6746] text-[#FFFDF8] rounded-full
-                   shadow-[0_4px_15px_rgba(0,0,0,0.3)] border border-white/10
-                   transition-transform duration-250 ease-in-out
-                   hover:-translate-y-[2px] hover:shadow-[0_6px_20px_rgba(188,103,70,0.4)]
-                   active:saturate-75 active:translate-y-0
-                   overflow-hidden z-[100] shrink-0"
+        className={`group relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border transition-all duration-500 transform hover:-translate-y-1 shrink-0 ${
+          scrolled 
+            ? "bg-[#bc6746] text-white border-[#bc6746]/10" 
+            : "bg-white/10 text-white border-white/20 backdrop-blur-md"
+        }`}
       >
-        <div className="absolute inset-0 bg-[#a55a3d] -z-10 -translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:translate-x-0" />
+        <div className={`absolute inset-0 rounded-full transition-transform duration-500 ease-out origin-left -translate-x-full group-hover:translate-x-0 -z-10 ${
+          scrolled ? "bg-[#a55a3d]" : "bg-white"
+        }`} />
         
         {isPlaying ? (
           <svg

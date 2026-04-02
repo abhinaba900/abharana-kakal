@@ -4,31 +4,36 @@ import { motion } from "motion/react";
 
 export default function FinalCTA() {
   return (
-    <section className="py-32 px-4 text-center bg-[#4a3b32] text-[#FFFDF8] relative overflow-hidden">
+    <section className="py-40 px-4 text-center bg-[#fffdf8] relative overflow-hidden">
+      <div className="absolute inset-0 bg-[#f1e4da]/10 mix-blend-multiply pointer-events-none" />
+      
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 1.2 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
         className="relative z-10 max-w-4xl mx-auto"
       >
-        <h2 className="text-4xl md:text-6xl font-serif uppercase tracking-widest leading-tight mb-8">
-          Begin your practice <br className="hidden md:block"/> gently today
+        <span className="text-[10px] uppercase tracking-[0.6em] text-[#a55a3d] font-black mb-8 block">
+          Your journey begins here
+        </span>
+        <h2 className="text-5xl md:text-8xl font-serif text-[#4a3b32] uppercase tracking-tighter leading-[0.9] mb-12 italic">
+          Begin your <br className="hidden md:block"/> practice <br className="hidden md:block"/> gently today
         </h2>
-        <p className="text-lg md:text-xl text-[#f1e4da]/70 font-light mb-12 max-w-2xl mx-auto">
-          Reconnect with your inner stillness and flow from wherever you find yourself.
+        <p className="text-lg md:text-xl text-[#4a3b32]/60 font-light mb-16 max-w-2xl mx-auto tracking-wide italic">
+          Reconnect with your inner stillness and flow from <br className="hidden md:block"/> wherever you find yourself.
         </p>
         <button 
            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-           className="px-12 py-5 rounded-full border border-white/30 hover:bg-white hover:text-[#4a3b32] uppercase tracking-[0.3em] text-xs font-bold transition-all"
+           className="px-16 py-6 rounded-full bg-[#bc6746] text-white uppercase tracking-[0.4em] text-[10px] font-black transition-all hover:bg-[#a55a3d] shadow-2xl shadow-[#bc6746]/30"
         >
-           Return to Top
+           Return to Sanctuary
         </button>
       </motion.div>
       
-      {/* Background Decorative Element */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white/5 rounded-full z-0 pointer-events-none"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/5 rounded-full z-0 pointer-events-none"></div>
+      {/* Decorative Brand Accent */}
+      <div className="absolute -bottom-20 -right-20 w-[600px] h-[600px] bg-[#bc6746]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute -top-20 -left-20 w-[400px] h-[400px] bg-[#bc6746]/5 rounded-full blur-[100px] pointer-events-none" />
     </section>
   );
 }

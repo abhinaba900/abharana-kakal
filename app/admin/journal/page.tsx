@@ -146,27 +146,27 @@ export default function JournalPage() {
     }
   };
 
-  if (loading) return <div className="p-8 text-center text-slate-500">Unfolding the sacred scrolls...</div>;
+  if (loading) return <div className="p-8 text-center text-[#a55a3d]/70 font-light italic">Unfolding the sacred scrolls...</div>;
 
   return (
     <div className="space-y-8 pb-12">
       {/* Header */}
       <div className="flex items-center justify-between">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <h1 className="text-4xl font-bold tracking-tight text-white">The Sacred Journal</h1>
-          <p className="mt-2 text-slate-400">Share your wisdom and restorative insights.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-[#4a3b32]">The Sacred Journal</h1>
+          <p className="mt-2 text-[#a55a3d]/70">Share your wisdom and restorative insights.</p>
         </motion.div>
         
-        <div className="flex rounded-2xl bg-white/5 p-1 border border-white/5 backdrop-blur-xl">
+        <div className="flex rounded-2xl bg-[#bc6746]/5 p-1 border border-[#f1e4da] backdrop-blur-xl">
            <button 
              onClick={() => setActiveTab('posts')}
-             className={`px-6 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'posts' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+             className={`px-6 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'posts' ? 'bg-[#bc6746] text-white shadow-lg' : 'text-[#a55a3d]/50 hover:text-[#bc6746]'}`}
            >
              POSTS
            </button>
            <button 
              onClick={() => setActiveTab('categories')}
-             className={`px-6 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'categories' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+             className={`px-6 py-2 rounded-xl text-xs font-bold transition-all ${activeTab === 'categories' ? 'bg-[#bc6746] text-white shadow-lg' : 'text-[#a55a3d]/50 hover:text-[#bc6746]'}`}
            >
              CATEGORIES
            </button>
@@ -212,17 +212,17 @@ export default function JournalPage() {
                     </div>
                   </div>
                   <div className="p-6 flex-1 flex flex-col space-y-3">
-                    <h3 className="text-lg font-bold text-white uppercase tracking-wider line-clamp-2 leading-tight group-hover:text-purple-400 transition-colors">
+                    <h3 className="text-lg font-bold text-[#4a3b32] uppercase tracking-wider line-clamp-2 leading-tight group-hover:text-[#bc6746] transition-colors">
                       {post.title}
                     </h3>
-                    <p className="flex-1 text-[11px] text-slate-500 line-clamp-4 italic leading-relaxed">
+                    <p className="flex-1 text-[11px] text-[#a55a3d]/70 line-clamp-4 italic leading-relaxed">
                       {post.content.substring(0, 200)}...
                     </p>
-                    <div className="pt-4 flex items-center justify-between border-t border-white/5">
-                       <span className="text-[10px] text-slate-600 font-mono tracking-tighter">
+                    <div className="pt-4 flex items-center justify-between border-t border-[#f1e4da]">
+                       <span className="text-[10px] text-[#a55a3d]/40 font-mono tracking-tighter">
                          {new Date(post.created_at).toLocaleDateString()}
                        </span>
-                       <FileText className="w-3 h-3 text-white/10" />
+                       <FileText className="w-3 h-3 text-[#a55a3d]/10" />
                     </div>
                   </div>
                 </GlassCard>
@@ -238,29 +238,29 @@ export default function JournalPage() {
             className="max-w-4xl mx-auto"
           >
             <GlassCard>
-               <h3 className="text-xl font-bold text-white mb-6 uppercase tracking-widest">Category Manifestation</h3>
+               <h3 className="text-xl font-bold text-[#4a3b32] mb-6 uppercase tracking-widest">Category Manifestation</h3>
                <form onSubmit={addCategory} className="flex space-x-4 mb-8">
                   <input 
                     value={newCategoryName}
                     onChange={e => setNewCategoryName(e.target.value)}
-                    className="flex-1 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white focus:border-purple-500/50 outline-none"
+                    className="flex-1 rounded-2xl border border-[#f1e4da] bg-white p-4 text-sm text-[#4a3b32] focus:border-[#bc6746] outline-none shadow-sm"
                     placeholder="E.g., Quantum Healing, Nature, Wellness..."
                   />
-                  <button type="submit" className="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold transition-all hover:scale-105 active:scale-95">
+                  <button type="submit" className="px-8 py-4 rounded-2xl bg-[#bc6746] text-white font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[#bc6746]/10">
                     MANIFEST
                   </button>
                </form>
 
                <div className="space-y-3">
-                  <label className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.2em] mb-2 block">Current Foundations</label>
+                  <label className="text-[10px] font-bold text-[#a55a3d]/50 uppercase tracking-[0.2em] mb-2 block">Current Foundations</label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                      {categories.map(cat => (
-                       <div key={cat.id} className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5 group hover:border-purple-500/30 transition-all">
+                       <div key={cat.id} className="flex items-center justify-between p-4 rounded-xl bg-white border border-[#f1e4da] group hover:border-[#bc6746]/30 transition-all shadow-sm">
                           <div className="flex items-center space-x-3">
-                            <Tag className="w-4 h-4 text-purple-600" />
-                            <span className="text-sm text-slate-300 font-bold uppercase tracking-wider">{cat.name}</span>
+                            <Tag className="w-4 h-4 text-[#bc6746]" />
+                            <span className="text-sm text-[#4a3b32]/80 font-bold uppercase tracking-wider">{cat.name}</span>
                           </div>
-                          <button className="text-slate-700 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"><X className="w-4 h-4" /></button>
+                          <button className="text-[#a55a3d]/30 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"><X className="w-4 h-4" /></button>
                        </div>
                      ))}
                   </div>
@@ -278,36 +278,36 @@ export default function JournalPage() {
                initial={{ opacity: 0, scale: 0.9 }}
                animate={{ opacity: 1, scale: 1 }}
                exit={{ opacity: 0, scale: 0.9 }}
-               className="w-full max-w-5xl rounded-3xl overflow-hidden bg-slate-950 border border-white/10 shadow-2xl glass-modal flex flex-col max-h-[90vh]"
+               className="w-full max-w-5xl rounded-3xl overflow-hidden bg-[#fffdf8] border border-[#f1e4da] shadow-2xl flex flex-col max-h-[90vh]"
             >
-              <div className="h-2 bg-gradient-to-r from-purple-500 to-indigo-600 w-full" />
+              <div className="h-2 bg-[#bc6746] w-full" />
               <form onSubmit={handlePostSubmit} className="p-8 flex-1 overflow-y-auto custom-scrollbar space-y-8">
                  <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-white uppercase tracking-widest">
+                    <h2 className="text-2xl font-bold text-[#4a3b32] uppercase tracking-widest">
                        {editingPost ? 'Edit Resonance' : 'Write Eternal Inspiration'}
                     </h2>
-                    <button type="button" onClick={() => setIsPostModalOpen(false)} className="p-2 rounded-xl bg-white/5 text-slate-500 hover:text-white transition-all"><X className="w-6 h-6" /></button>
+                    <button type="button" onClick={() => setIsPostModalOpen(false)} className="p-2 rounded-xl bg-[#bc6746]/5 text-[#a55a3d]/50 hover:text-[#bc6746] transition-all"><X className="w-6 h-6" /></button>
                  </div>
 
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="md:col-span-2 space-y-6">
                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Post Title</label>
+                          <label className="text-[10px] font-bold text-[#a55a3d]/50 uppercase tracking-widest">Post Title</label>
                           <input 
                              value={postFormData.title}
                              onChange={e => setPostFormData({...postFormData, title: e.target.value})}
-                             className="w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-xl font-bold text-white focus:border-purple-500/50 outline-none"
+                             className="w-full rounded-2xl border border-[#f1e4da] bg-white p-4 text-xl font-bold text-[#4a3b32] focus:border-[#bc6746] outline-none shadow-sm"
                              placeholder="The Awakening Journey..."
                              required
                           />
                        </div>
                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Cosmic Wisdom (Content)</label>
+                          <label className="text-[10px] font-bold text-[#a55a3d]/50 uppercase tracking-widest">Cosmic Wisdom (Content)</label>
                           <textarea 
                              value={postFormData.content}
                              onChange={e => setPostFormData({...postFormData, content: e.target.value})}
-                             className="w-full h-[320px] rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-300 focus:border-purple-500/50 outline-none resize-none leading-relaxed italic"
+                             className="w-full h-[320px] rounded-2xl border border-[#f1e4da] bg-white p-6 text-sm text-[#4a3b32]/80 focus:border-[#bc6746] outline-none resize-none leading-relaxed italic shadow-sm"
                              placeholder="Flow your thoughts into existence..."
                              required
                           />
@@ -317,26 +317,26 @@ export default function JournalPage() {
                     {/* Meta Sidebar */}
                     <div className="space-y-6">
                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest italic">Foundation (Category)</label>
+                          <label className="text-[10px] font-bold text-[#a55a3d]/50 uppercase tracking-widest italic">Foundation (Category)</label>
                           <select 
                             value={postFormData.category_id}
                             onChange={e => setPostFormData({...postFormData, category_id: e.target.value})}
-                            className="w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white focus:border-purple-500/50 outline-none appearance-none"
+                            className="w-full rounded-2xl border border-[#f1e4da] bg-white p-4 text-sm text-[#4a3b32] focus:border-[#bc6746] outline-none appearance-none shadow-sm"
                           >
-                             {categories.map(cat => <option key={cat.id} value={cat.id} className="bg-slate-900">{cat.name}</option>)}
+                             {categories.map(cat => <option key={cat.id} value={cat.id} className="bg-white">{cat.name}</option>)}
                           </select>
                        </div>
 
                        <div className="space-y-2">
-                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Energy Snapshot (Thumbnail)</label>
-                          <div className="relative h-64 w-full rounded-3xl overflow-hidden border-2 border-dashed border-white/10 bg-white/5 transition-all hover:border-purple-500/30 flex items-center justify-center group cursor-pointer">
+                          <label className="text-[10px] font-bold text-[#a55a3d]/50 uppercase tracking-widest">Energy Snapshot (Thumbnail)</label>
+                          <div className="relative h-64 w-full rounded-3xl overflow-hidden border-2 border-dashed border-[#f1e4da] bg-white transition-all hover:border-[#bc6746]/30 flex items-center justify-center group cursor-pointer shadow-sm">
                              {(postImageFile || postFormData.image_url) ? (
                                <img 
                                  src={postImageFile ? URL.createObjectURL(postImageFile) : postFormData.image_url} 
                                  className="h-full w-full object-cover" 
                                />
                              ) : (
-                               <div className="text-center space-y-2 text-slate-600">
+                               <div className="text-center space-y-2 text-[#a55a3d]/30">
                                  <Plus className="h-10 w-10 mx-auto" />
                                  <p className="text-[10px] font-bold uppercase tracking-widest">Invoke Image</p>
                                </div>
@@ -348,7 +348,7 @@ export default function JournalPage() {
                                className="absolute inset-0 opacity-0 cursor-pointer"
                              />
                           </div>
-                          <p className="text-[10px] text-slate-700 italic mt-2 text-center">Optimized for high-vibrational displays.</p>
+                          <p className="text-[10px] text-[#a55a3d]/30 italic mt-2 text-center">Optimized for high-vibrational displays.</p>
                        </div>
                     </div>
                  </div>
@@ -357,14 +357,14 @@ export default function JournalPage() {
                     <button 
                       type="button" 
                       onClick={() => setIsPostModalOpen(false)}
-                      className="px-8 py-3 rounded-2xl text-slate-500 hover:text-white transition-all font-bold uppercase tracking-widest text-xs"
+                      className="px-8 py-3 rounded-2xl text-[#a55a3d]/50 hover:text-[#4a3b32] transition-all font-bold uppercase tracking-widest text-xs"
                     >
                       Wait (Cancel)
                     </button>
                     <button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="px-12 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold shadow-xl shadow-purple-500/20 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center"
+                      className="px-12 py-4 rounded-2xl bg-[#bc6746] text-white font-bold shadow-xl shadow-[#bc6746]/20 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center"
                     >
                       {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <BookOpen className="h-5 w-5 mr-2" />}
                       {editingPost ? 'RESTORE HARMONY' : 'MANIFEST WISDOM'}

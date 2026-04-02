@@ -74,17 +74,17 @@ export default function SettingsPage() {
     }
   };
 
-  if (loading) return <div className="p-8 text-center text-slate-500">Synchronizing portal settings...</div>;
+  if (loading) return <div className="p-8 text-center text-[#a55a3d]/70 font-light italic">Synchronizing portal settings...</div>;
 
   return (
     <div className="max-w-6xl mx-auto space-y-12 pb-20">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-4xl font-bold tracking-tight text-white flex items-center">
-          <Settings className="mr-4 h-8 w-8 text-purple-500" />
+        <h1 className="text-4xl font-bold tracking-tight text-[#4a3b32] flex items-center">
+          <Settings className="mr-4 h-8 w-8 text-[#bc6746]" />
           Portal Configurations
         </h1>
-        <p className="mt-2 text-slate-400 ml-12">Manage your administrative energy and session frequencies.</p>
+        <p className="mt-2 text-[#a55a3d]/70 ml-12">Manage your administrative energy and session frequencies.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -92,32 +92,32 @@ export default function SettingsPage() {
         <div className="lg:col-span-1 space-y-8">
            <GlassCard delay={0.1}>
               <div className="flex flex-col items-center text-center space-y-4">
-                 <div className="h-20 w-20 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 p-0.5 shadow-xl shadow-purple-500/20">
-                    <div className="h-full w-full rounded-full bg-slate-950 flex items-center justify-center text-white">
+                 <div className="h-20 w-20 rounded-full bg-gradient-to-tr from-[#bc6746] to-[#a55a3d] p-0.5 shadow-xl shadow-[#bc6746]/10">
+                    <div className="h-full w-full rounded-full bg-white flex items-center justify-center text-[#4a3b32]">
                        <User className="h-10 w-10" />
                     </div>
                  </div>
                  <div>
-                    <h3 className="text-lg font-bold text-white uppercase tracking-wider">{user?.email}</h3>
-                    <p className="text-[10px] text-purple-400 font-bold uppercase tracking-[0.2em] mt-1">Master Administrator</p>
+                    <h3 className="text-lg font-bold text-[#4a3b32] uppercase tracking-wider">{user?.email}</h3>
+                    <p className="text-[10px] text-[#bc6746] font-bold uppercase tracking-[0.2em] mt-1">Master Administrator</p>
                  </div>
-                 <div className="flex items-center space-x-2 text-[10px] text-slate-500 italic bg-white/5 px-4 py-1 rounded-full border border-white/5">
-                    <Shield className="h-3 w-3 text-green-500" />
+                 <div className="flex items-center space-x-2 text-[10px] text-[#a55a3d]/70 italic bg-[#bc6746]/5 px-4 py-1 rounded-full border border-[#f1e4da]">
+                    <Shield className="h-3 w-3 text-green-600" />
                     <span>Vulnerability: 0%</span>
                  </div>
               </div>
            </GlassCard>
 
-           <GlassCard delay={0.2} className="border-indigo-500/20">
-              <h3 className="text-sm font-bold text-white mb-6 uppercase tracking-widest flex items-center">
+           <GlassCard delay={0.2} className="border-[#bc6746]/20">
+              <h3 className="text-sm font-bold text-[#4a3b32] mb-6 uppercase tracking-widest flex items-center">
                  <Lock className="w-4 h-4 mr-2" />
                  Energy Shield (Security)
               </h3>
               <div className="space-y-4">
-                 <p className="text-xs text-slate-500 italic leading-relaxed">
+                 <p className="text-xs text-[#a55a3d]/70 italic leading-relaxed">
                    Your administrative access is bound by high-fidelity JWT encryption and database session tracking.
                  </p>
-                 <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-slate-400 hover:text-white hover:bg-white/10 transition-all uppercase tracking-widest">
+                 <button className="w-full py-3 rounded-xl bg-[#bc6746]/5 border border-[#f1e4da] text-xs font-bold text-[#a55a3d]/50 hover:text-[#bc6746] hover:bg-[#bc6746]/10 transition-all uppercase tracking-widest">
                     Update Password (Manual)
                  </button>
               </div>
@@ -127,13 +127,13 @@ export default function SettingsPage() {
         {/* Right Col: Session Management */}
         <div className="lg:col-span-2 space-y-8">
            <GlassCard delay={0.3} noPadding className="h-full">
-              <div className="p-8 border-b border-white/5 flex items-center justify-between">
+              <div className="p-8 border-b border-[#f1e4da] flex items-center justify-between">
                  <div>
-                    <h3 className="text-xl font-bold text-white uppercase tracking-widest flex items-center">
-                       <Smartphone className="w-5 h-5 mr-3 text-indigo-400" />
+                    <h3 className="text-xl font-bold text-[#4a3b32] uppercase tracking-widest flex items-center">
+                       <Smartphone className="w-5 h-5 mr-3 text-[#bc6746]" />
                        Active Dimensions (Sessions)
                     </h3>
-                    <p className="text-xs text-slate-500 mt-1 italic">Manage your active presence across devices (Max 5).</p>
+                    <p className="text-xs text-[#a55a3d]/50 mt-1 italic">Manage your active presence across devices (Max 5).</p>
                  </div>
                  <button 
                    onClick={revokeAllSessions}
@@ -144,7 +144,7 @@ export default function SettingsPage() {
                  </button>
               </div>
 
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-[#f1e4da]">
                  <AnimatePresence mode="popLayout">
                     {sessions.map((session, i) => (
                        <motion.div 
@@ -152,24 +152,24 @@ export default function SettingsPage() {
                          initial={{ opacity: 0, x: 20 }}
                          animate={{ opacity: 1, x: 0 }}
                          exit={{ opacity: 0, x: -20 }}
-                         className="p-6 flex items-center justify-between group hover:bg-white/[0.02] transition-colors"
+                         className="p-6 flex items-center justify-between group hover:bg-[#bc6746]/5 transition-colors"
                        >
                           <div className="flex items-center space-x-6">
-                             <div className="h-12 w-12 rounded-2xl bg-white/5 flex items-center justify-center text-slate-500 group-hover:text-indigo-400 transition-colors">
+                             <div className="h-12 w-12 rounded-2xl bg-[#bc6746]/5 flex items-center justify-center text-[#a55a3d]/50 group-hover:text-[#bc6746] transition-colors">
                                 <Globe className="h-6 w-6" />
                              </div>
                              <div className="space-y-1">
                                 <div className="flex items-center space-x-2">
-                                   <h4 className="text-sm font-bold text-slate-200">Session in the Void</h4>
+                                   <h4 className="text-sm font-bold text-[#4a3b32]">Session in the Void</h4>
                                    {/* Check if current token? Not easy without knowing current, but can guestimate */}
-                                   <span className="text-[8px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full border border-green-500/20 font-bold uppercase">Active</span>
+                                   <span className="text-[8px] bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full border border-green-500/20 font-bold uppercase">Active</span>
                                 </div>
                                 <div className="flex items-center space-x-4">
-                                   <span className="text-xs text-slate-500 flex items-center">
+                                   <span className="text-xs text-[#a55a3d]/70 flex items-center">
                                       <Clock className="w-3 h-3 mr-1" />
                                       Manifested: {new Date(session.created_at).toLocaleString()}
                                    </span>
-                                   <span className="text-xs text-slate-700 italic">
+                                   <span className="text-xs text-[#a55a3d]/30 italic">
                                       Relic: {session.device_id || 'Browser Presence'}
                                    </span>
                                 </div>
@@ -187,12 +187,12 @@ export default function SettingsPage() {
                  </AnimatePresence>
               </div>
               
-              <div className="p-8 bg-black/40 rounded-b-3xl">
-                 <div className="flex items-start space-x-4 bg-orange-500/10 border border-orange-500/20 p-4 rounded-2xl">
-                    <AlertTriangle className="h-5 w-5 text-orange-500 mt-1" />
+              <div className="p-8 bg-[#bc6746]/5 rounded-b-3xl">
+                 <div className="flex items-start space-x-4 bg-amber-500/5 border border-amber-500/10 p-4 rounded-2xl">
+                    <AlertTriangle className="h-5 w-5 text-amber-600 mt-1" />
                     <div className="space-y-1">
-                       <h4 className="text-xs font-bold text-orange-400 uppercase tracking-widest">Energy Retention Policy</h4>
-                       <p className="text-[10px] text-slate-400 leading-relaxed italic">
+                       <h4 className="text-xs font-bold text-amber-600 uppercase tracking-widest">Energy Retention Policy</h4>
+                       <p className="text-[10px] text-[#a55a3d]/50 leading-relaxed italic">
                          Your presence is limited to 5 concurrent dimensions. Manifesting a 6th will automatically dissolve your oldest session in the archives.
                        </p>
                     </div>
@@ -205,7 +205,7 @@ export default function SettingsPage() {
       <div className="flex justify-center pt-12">
          <button 
            onClick={logout}
-           className="flex items-center space-x-3 px-12 py-4 rounded-2xl bg-white/5 border border-white/10 text-slate-400 font-bold hover:text-red-500 hover:border-red-500/20 hover:bg-red-500/10 transition-all uppercase tracking-[0.2em] shadow-xl group active:scale-95 shadow-purple-500/5"
+           className="flex items-center space-x-3 px-12 py-4 rounded-2xl bg-white border border-[#f1e4da] text-[#a55a3d]/70 font-bold hover:text-red-600 hover:border-red-500/20 hover:bg-red-500/5 transition-all uppercase tracking-[0.2em] shadow-xl group active:scale-95 shadow-[#bc6746]/5"
          >
             <LogOut className="h-5 w-5 transition-transform group-hover:translate-x-2" />
             <span>Terminate Current Dimension (Logout)</span>

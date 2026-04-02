@@ -2,11 +2,11 @@
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
-const Button = () => {
+const Button = ({ scrolled }: { scrolled?: boolean }) => {
   const router = useRouter();
 
   return (
-    <StyledWrapper onClick={() => router.push("/book")}>
+    <StyledWrapper scrolled={scrolled} onClick={() => router.push("/book")}>
       <button
         className="button"
         onClick={(e) => {
@@ -37,16 +37,17 @@ const Button = () => {
   );
 };
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<{ scrolled?: boolean }>`
   button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 46px;
-    padding: 0 0.8em 0 1.5em;
+    height: 48px;
+    padding: 0 0.8em 0 1.6em;
     gap: 1.5em; /* dynamically gives width to button without hacking widths */
-    background-color: #bc6746; /* Organic earthy accent */
+    background-color: ${(props) => (props.scrolled ? "#bc6746" : "rgba(255, 255, 255, 0.1)")};
     color: #fffdf8;
+    backdrop-filter: ${(props) => (props.scrolled ? "none" : "blur(10px)")};
     cursor: pointer;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); /* Softer drop shadow for modern organic theme */
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -57,7 +58,8 @@ const StyledWrapper = styled.div`
     transition:
       box-shadow 250ms,
       transform 250ms,
-      filter 50ms;
+      filter 50ms,
+      background-color 500ms;
   }
   button:hover {
     transform: translateY(-2px);

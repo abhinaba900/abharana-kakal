@@ -23,23 +23,24 @@ export default function TrustSection() {
   ];
 
   return (
-    <section className="py-24 px-4 bg-[#f1e4da]/30">
+    <section className="py-32 px-4 bg-white/20 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#bc6746]/10 to-transparent" />
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
           {features.map((f, i) => (
             <motion.div 
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
-              className="text-center space-y-4"
+              transition={{ delay: i * 0.2, duration: 0.8 }}
+              className="text-center space-y-6 group"
             >
-              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mx-auto text-[#bc6746] shadow-sm">
+              <div className="w-20 h-20 rounded-3xl bg-white flex items-center justify-center mx-auto text-[#bc6746] shadow-xl shadow-[#bc6746]/5 group-hover:scale-105 group-hover:shadow-[#bc6746]/10 transition-all duration-500">
                 {f.icon}
               </div>
-              <h3 className="text-xl font-serif text-[#4a3b32] uppercase tracking-wider">{f.title}</h3>
-              <p className="text-sm text-[#6b584c] font-light leading-relaxed">
+              <h3 className="text-sm font-black uppercase tracking-[0.4em] text-[#4a3b32]">{f.title}</h3>
+              <p className="text-sm text-[#a55a3d]/70 font-light italic leading-relaxed px-4">
                 {f.desc}
               </p>
             </motion.div>
