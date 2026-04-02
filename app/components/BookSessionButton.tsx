@@ -42,7 +42,8 @@ const StyledWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.6em 0.8em 0.6em 1.5em;
+    height: 46px;
+    padding: 0 0.8em 0 1.5em;
     gap: 1.5em; /* dynamically gives width to button without hacking widths */
     background-color: #bc6746; /* Organic earthy accent */
     color: #fffdf8;
@@ -162,7 +163,8 @@ const StyledWrapper = styled.div`
   /* Mobile Responsiveness */
   @media (max-width: 768px) {
     button {
-      padding: 0.3em 0.5em 0.3em 0.7em;
+      height: 36px;
+      padding: 0 0.5em 0 0.7em;
       gap: 0.8em;
     }
     .bgContainer {

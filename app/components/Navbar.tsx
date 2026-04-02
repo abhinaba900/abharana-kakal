@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BookSessionButton from "./BookSessionButton";
+import AudioButton from "./AudioButton";
 
 export default function Navbar() {
   return (
@@ -11,7 +12,34 @@ export default function Navbar() {
           className="h-16 md:h-32 w-auto object-contain "
         />
       </Link>
+
+      {/* Desktop Navigation Menu */}
+      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-10 items-center uppercase tracking-[0.1em] text-[13px] font-medium pointer-events-auto">
+        {[
+          { name: "About", href: "/about" },
+          { name: "Sound Healing", href: "/sound-healing" },
+          { name: "Retreats", href: "/retreats" },
+          { name: "Journal", href: "/journal" },
+          { name: "Contact", href: "/contact" },
+        ].map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="group relative flex items-center justify-center px-5 h-[36px] md:h-[46px] bg-[#bc6746] text-[#FFFDF8] rounded-full
+                       shadow-[0_4px_15px_rgba(0,0,0,0.3)] border border-white/10
+                       transition-transform duration-250 ease-in-out
+                       hover:-translate-y-[2px] hover:shadow-[0_6px_20px_rgba(188,103,70,0.4)]
+                       active:saturate-75 active:translate-y-0
+                       overflow-hidden z-[100]"
+          >
+            <div className="absolute inset-0 bg-[#a55a3d] -z-10 -translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:translate-x-0" />
+            <span className="relative z-10 transition-colors duration-300 group-hover:text-white">{item.name}</span>
+          </Link>
+        ))}
+      </div>
+
       <div className="flex gap-3 md:gap-4 items-center text-sm text-gray-300 pointer-events-auto">
+        <AudioButton />
         <BookSessionButton />
         <Link 
           href="https://www.instagram.com/abharana_kakal/"
