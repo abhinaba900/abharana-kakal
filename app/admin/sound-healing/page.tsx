@@ -17,10 +17,12 @@ import {
   Image as ImageIcon,
   X,
   Loader2,
-  CloudLightning
+  CloudLightning,
+  Pause
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { AdminAudioPlayer } from '@/components/admin/AdminAudioPlayer';
 
 interface SoundSession {
   id: string;
@@ -304,16 +306,8 @@ export default function SoundHealingPage() {
                   <p className="flex-1 text-xs text-[#a55a3d]/70 line-clamp-3 leading-relaxed italic">{session.description}</p>
                   
                   {session.audio_url && (
-                    <div className="flex items-center space-x-3 rounded-xl bg-white/60 border border-[#f1e4da]/50 p-3">
-                      <div className="h-8 w-8 rounded-full bg-[#bc6746]/10 flex items-center justify-center text-[#bc6746]">
-                        <Play className="h-4 w-4 fill-[#bc6746]" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="h-1 w-full bg-[#f1e4da] rounded-full">
-                          <div className="h-full w-1/3 bg-[#bc6746] rounded-full" />
-                        </div>
-                      </div>
-                      <Volume2 className="h-4 w-4 text-[#a55a3d]/50" />
+                    <div className="w-full">
+                      <AdminAudioPlayer src={session.audio_url} />
                     </div>
                   )}
                 </div>
