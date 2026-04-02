@@ -1,35 +1,47 @@
 "use client";
-import { motion } from "motion/react";
+import { motion, useInView } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 
 export default function HeroSection() {
+  const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mounted, setMounted] = useState(false);
+  const isInView = useInView(containerRef, { margin: "0px" });
 
   useEffect(() => {
     setMounted(true);
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     let width = (canvas.width = canvas.offsetWidth);
     let height = (canvas.height = canvas.offsetHeight);
-    const ripples: { x: number; y: number; r: number; alpha: number }[] = [];
+    let ripples: { x: number; y: number; r: number; alpha: number }[] = [];
 
-    const addRipple = () =>
+    const addRipple = () => {
+      if (!isInView) return;
       ripples.push({ x: Math.random() * width, y: Math.random() * height, r: 0, alpha: 0.18 });
+    };
 
     const interval = setInterval(addRipple, 2000);
     let animId: number;
 
     const animate = () => {
+      if (!isInView) {
+        animId = requestAnimationFrame(animate);
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
       for (let i = ripples.length - 1; i >= 0; i--) {
         const rp = ripples[i];
         rp.r += 1.4;
         rp.alpha -= 0.0007;
-        if (rp.alpha <= 0) { ripples.splice(i, 1); continue; }
+        if (rp.alpha <= 0) {
+          ripples.splice(i, 1);
+          continue;
+        }
         ctx.beginPath();
         ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
         ctx.strokeStyle = `rgba(255,253,248,${rp.alpha})`;
@@ -45,11 +57,16 @@ export default function HeroSection() {
       height = canvas.height = canvas.offsetHeight;
     };
     window.addEventListener("resize", onResize);
-    return () => { clearInterval(interval); cancelAnimationFrame(animId); window.removeEventListener("resize", onResize); };
-  }, []);
+    
+    return () => {
+      clearInterval(interval);
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [isInView]);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
+    <section ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
       {/* Canvas ripple layer */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-[1]" />
 
@@ -109,3 +126,4 @@ export default function HeroSection() {
     </section>
   );
 }
+

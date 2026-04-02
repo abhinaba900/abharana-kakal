@@ -27,8 +27,7 @@ export default function ContactForm() {
         {/* Column 1: The Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           className="w-full lg:w-[38%] flex flex-col items-start"
         >
@@ -135,8 +134,7 @@ export default function ContactForm() {
           <motion.div
             style={{ y: imgY }}
             initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             className="relative w-full h-[800px] rounded-[100px] overflow-hidden shadow-2xl border border-white/40"
           >
@@ -196,8 +194,7 @@ export default function ContactForm() {
             <motion.div
               key={item.id}
               initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.3 + idx * 0.1 }}
               onClick={() => item.link && window.open(item.link, "_blank")}
               className={`flex flex-col items-start gap-6 group ${item.link ? "cursor-pointer" : ""} soft-glass p-8 rounded-[40px] border border-white/20 bg-white/20 hover:bg-white/40 transition-all duration-700`}

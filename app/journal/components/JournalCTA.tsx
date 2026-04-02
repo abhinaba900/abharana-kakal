@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function JournalCTA() {
   return (
-    <section className="relative py-36 px-6 overflow-hidden flex flex-col items-center text-center">
+    <section className="relative py-24 px-6 overflow-hidden flex flex-col items-center text-center">
       {/* Terracotta gradient overlay */}
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#a55a3d] via-[#bc6746] to-transparent mix-blend-multiply opacity-45 pointer-events-none" />
 
@@ -17,8 +17,7 @@ export default function JournalCTA() {
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.0 }}
         className="relative z-10 max-w-xl"
       >

@@ -47,9 +47,8 @@ export default function WhatIOffer() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
+           initial={{ opacity: 0, y: 10 }}
+           animate={{ opacity: 1, y: 0 }}
            transition={{ duration: 1.2 }}
            className="text-center mb-32"
         >
@@ -65,8 +64,7 @@ export default function WhatIOffer() {
             <motion.div
               key={offer.id}
               initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: idx * 0.15 }}
               className="relative group cursor-default"
             >

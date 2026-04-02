@@ -22,13 +22,12 @@ export default function JourneySection() {
           <motion.div 
             style={{ y: imgY }}
             initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             className="relative aspect-[3/4] md:aspect-[4/5] rounded-tr-[120px] md:rounded-tr-[240px] rounded-bl-[40px] md:rounded-bl-[80px] overflow-hidden shadow-[0_40px_100px_rgba(188,103,70,0.1)] z-10 border border-white/20"
           >
             <Image 
-              src="/about-journey-mood.png" 
+              src="/about.webp" 
               alt="Heritage Journals" 
               fill 
               className="object-cover transition-transform duration-[4s] group-hover:scale-105"
@@ -51,8 +50,7 @@ export default function JourneySection() {
           <div className="soft-glass p-8 md:p-16 rounded-[40px] md:rounded-[60px] shadow-2xl space-y-10 border border-white/40">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1 }}
               className="flex items-center gap-4 mb-4"
             >
@@ -62,8 +60,7 @@ export default function JourneySection() {
 
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
               className="text-2xl md:text-3xl font-light text-[#4a3b32] leading-relaxed"
             >
@@ -72,8 +69,7 @@ export default function JourneySection() {
             
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
               className="text-lg md:text-xl font-light text-[#4a3b32]/80 leading-relaxed"
             >
@@ -82,8 +78,7 @@ export default function JourneySection() {
 
             <motion.div 
               initial={{ width: 0 }}
-              whileInView={{ width: "100%" }}
-              viewport={{ once: true }}
+              animate={{ width: "100%" }}
               className="h-px bg-gradient-to-r from-[#bc6746]/30 to-transparent" 
             />
             

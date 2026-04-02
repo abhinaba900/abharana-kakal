@@ -1,7 +1,7 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, memo } from "react";
 
 const reasons = [
   {
@@ -38,9 +38,8 @@ export default function WhyInPersonSection() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-24"
         >
@@ -54,7 +53,7 @@ export default function WhyInPersonSection() {
 
         <div className="flex flex-col gap-40 md:gap-64">
           {reasons.map((r, idx) => (
-            <Chapter key={idx} reason={r} index={idx} />
+            <Chapter key={r.id} reason={r} index={idx} />
           ))}
         </div>
       </div>
@@ -62,7 +61,7 @@ export default function WhyInPersonSection() {
   );
 }
 
-function Chapter({ reason, index }: { reason: any; index: number }) {
+const Chapter = memo(function Chapter({ reason, index }: { reason: any; index: number }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -79,38 +78,32 @@ function Chapter({ reason, index }: { reason: any; index: number }) {
       className={`relative flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 md:gap-12`}
     >
       {/* Decorative Index Number */}
-      <motion.span 
+      <span 
         style={{ opacity: 0.05 }}
         className={`absolute -top-16 ${isEven ? '-left-12' : '-right-12'} text-[12rem] md:text-[22rem] font-serif text-[#a55a3d] leading-none pointer-events-none select-none z-0`}
       >
         {reason.id}
-      </motion.span>
+      </span>
 
       {/* Image Container */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.98 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      <div 
+        style={{ willChange: "transform" }}
         className="relative w-full md:w-3/5 aspect-[4/3] md:aspect-[16/10] rounded-[50px] overflow-hidden shadow-2xl z-10"
       >
          <Image 
           src={reason.image} 
           alt={reason.label} 
           fill 
+          sizes="(max-width: 768px) 100vw, 60vw"
           className="object-cover transition-transform duration-[3s] hover:scale-105"
           priority={index === 0}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#4a3b32]/10 to-transparent" />
-      </motion.div>
+      </div>
 
       {/* Text Content - The "Bubble" */}
       <motion.div 
-        style={{ y }}
-        initial={{ opacity: 0, x: isEven ? 40 : -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{ y, willChange: "transform" }}
         className={`relative z-20 w-[90%] md:w-2/5 p-10 md:p-16 soft-glass rounded-[80px_30px_90px_40px] flex flex-col justify-center items-start ${isEven ? 'md:-ml-16' : 'md:-mr-16'} -mt-20 md:mt-0`}
       >
         <span className="text-[#bc6746] font-handwriting text-2xl mb-4 opacity-80">
@@ -128,6 +121,7 @@ function Chapter({ reason, index }: { reason: any; index: number }) {
       </motion.div>
     </div>
   );
-}
+});
+
 
 

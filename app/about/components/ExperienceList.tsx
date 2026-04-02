@@ -27,9 +27,8 @@ export default function ExperienceList() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center">
         <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
+           initial={{ opacity: 0, y: 10 }}
+           animate={{ opacity: 1, y: 0 }}
            transition={{ duration: 1.2 }}
            className="text-center mb-32"
         >
@@ -48,8 +47,7 @@ export default function ExperienceList() {
             <motion.div
               key={exp.id}
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: idx * 0.1 }}
               className="flex items-start gap-10 group relative"
             >

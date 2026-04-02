@@ -20,7 +20,7 @@ export default function LocationsSection() {
   const textY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
 
   return (
-    <section ref={containerRef} className="relative py-24 md:py-64 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
+    <section ref={containerRef} className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
       {/* Decorative Background Accents */}
       <div className="absolute top-0 right-0 w-[60%] h-full bg-[#f1e4da]/10 organic-blob blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none z-0" />
 
@@ -29,8 +29,7 @@ export default function LocationsSection() {
         <motion.div 
           style={{ y: textY }}
           initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="w-full md:w-2/5 flex flex-col items-start"
         >
@@ -74,8 +73,7 @@ export default function LocationsSection() {
         <motion.div
           style={{ y: mapY }}
           initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="w-full md:w-3/5 aspect-square md:aspect-[4/5] relative"
         >

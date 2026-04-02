@@ -4,13 +4,12 @@ import { motion } from "framer-motion";
 
 export default function FinalCTA() {
   return (
-    <section className="py-40 px-4 text-center bg-[#fffdf8] relative overflow-hidden">
+    <section className="py-24 px-4 text-center bg-[#fffdf8] relative overflow-hidden">
       <div className="absolute inset-0 bg-[#f1e4da]/10 mix-blend-multiply pointer-events-none" />
       
       <motion.div
         initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="relative z-10 max-w-4xl mx-auto"
       >

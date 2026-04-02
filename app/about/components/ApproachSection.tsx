@@ -35,8 +35,7 @@ export default function ApproachSection() {
         <motion.div
            style={{ y: textY }}
            initial={{ opacity: 0, scale: 0.9 }}
-           whileInView={{ opacity: 1, scale: 1 }}
-           viewport={{ once: true }}
+           animate={{ opacity: 1, scale: 1 }}
            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
            className="soft-glass p-10 md:p-24 rounded-[60px] md:rounded-[100px] border border-white/20 shadow-2xl max-w-4xl text-center backdrop-blur-xl"
         >

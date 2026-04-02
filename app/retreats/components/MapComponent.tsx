@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -17,16 +17,12 @@ const DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Custom Pulsing Icon
-const createPulsingIcon = (color: string) => L.divIcon({
-  html: `<div class="relative flex items-center justify-center">
-          <div class="absolute w-8 h-8 bg-[${color}] rounded-full animate-ping opacity-20"></div>
-          <div class="absolute w-4 h-4 bg-[${color}] rounded-full shadow-lg"></div>
-         </div>`,
-  className: "custom-pulsing-icon",
-  iconSize: [20, 20],
-  iconAnchor: [10, 10]
-});
+// Custom Pulsing Icon - Static assignment for performance
+const PULSING_ICON_HTML = (color: string) => `
+  <div class="relative flex items-center justify-center">
+    <div class="absolute w-8 h-8 bg-[${color}] rounded-full animate-ping opacity-20"></div>
+    <div class="absolute w-4 h-4 bg-[${color}] rounded-full shadow-lg"></div>
+  </div>`;
 
 const LOCATIONS = [
   { id: 1, name: "Urban Zen Studio", pos: [12.9716, 77.5946], desc: "Peaceful oasis near Cubbon Park", type: "Studio" },
@@ -35,7 +31,7 @@ const LOCATIONS = [
   { id: 4, name: "Terracotta Sanctuary", pos: [12.9719, 77.6412], desc: "Boutique space in Indiranagar", type: "Boutique" }
 ];
 
-export default function MapComponent() {
+const MapComponent = memo(function MapComponent() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -65,7 +61,12 @@ export default function MapComponent() {
           <Marker 
             key={loc.id} 
             position={loc.pos as any}
-            icon={createPulsingIcon("#bc6746")}
+            icon={L.divIcon({
+              html: PULSING_ICON_HTML("#bc6746"),
+              className: "custom-pulsing-icon",
+              iconSize: [20, 20],
+              iconAnchor: [10, 10]
+            })}
           >
             <Popup className="sacred-popup">
               <div className="p-2 min-w-[180px]">
@@ -102,4 +103,7 @@ export default function MapComponent() {
       `}</style>
     </div>
   );
-}
+});
+
+export default MapComponent;
+

@@ -49,7 +49,7 @@ export default function BlogGrid() {
   const hasMore = visibleCount < filtered.length;
 
   return (
-    <section className="relative pb-32 px-6">
+    <section className="relative pb-24 px-6">
       <div className="max-w-5xl mx-auto">
         {/* ── Category Filters ───────────────────────── */}
         <motion.div

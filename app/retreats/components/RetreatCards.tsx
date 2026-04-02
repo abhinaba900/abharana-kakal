@@ -37,15 +37,14 @@ export default function RetreatCards() {
   const containerRef = useRef(null);
 
   return (
-    <section ref={containerRef} className="relative py-32 md:py-48 px-6 z-10 w-full overflow-hidden">
+    <section ref={containerRef} className="relative py-24 md:py-24 px-6 z-10 w-full overflow-hidden">
       {/* Background Subtle Gradient */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-gradient-to-br from-[#bc6746]/10 via-transparent to-[#a55a3d]/5 blur-3xl pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
+           initial={{ opacity: 0, y: 10 }}
+           animate={{ opacity: 1, y: 0 }}
            transition={{ duration: 1, ease: "easeOut" }}
            className="text-center mb-32"
         >
@@ -71,10 +70,9 @@ function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1.2, delay: index * 0.2, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       className={`relative group ${retreat.offset} flex flex-col h-[650px] md:h-[750px] rounded-[50px] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[0_40px_100px_rgba(188,103,70,0.25)]`}
     >
       {/* Image Layer */}
@@ -100,8 +98,8 @@ function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
         <div>
            <motion.p 
              initial={{ opacity: 0, x: -10 }}
-             whileInView={{ opacity: 0.8, x: 0 }}
-             transition={{ delay: 0.5 + index * 0.1 }}
+             animate={{ opacity: 0.8, x: 0 }}
+             transition={{ delay: 0.3 + index * 0.1 }}
              className="font-handwriting text-3xl text-[#f1e4da] mb-2"
            >
              {retreat.location}

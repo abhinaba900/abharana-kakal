@@ -27,16 +27,14 @@ export default function TestimonialsSection() {
     <section className="relative py-24 px-6 flex flex-col items-center overflow-hidden">
       <motion.h2
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1 }}
         className="text-4xl md:text-5xl font-serif text-[#FFFDF8] text-center mb-6 text-shadow-soft"
       >
         Voices from the Room
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1 }}
         transition={{ delay: 0.15 }}
         className="font-handwriting text-3xl text-[#f1e4da] text-center mb-20 opacity-80"
       >
@@ -48,10 +46,9 @@ export default function TestimonialsSection() {
           <motion.div
             key={t.id}
             id={t.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.2 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
             className={`relative bg-[#fffdf8] p-8 md:p-10 shadow-xl w-full max-w-sm flex flex-col justify-between ${t.rotation} paper-grain border border-black/5`}
           >
             {/* Tape detail — same as retreats */}

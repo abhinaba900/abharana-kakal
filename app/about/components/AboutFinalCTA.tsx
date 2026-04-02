@@ -9,8 +9,7 @@ export default function AboutFinalCTA() {
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 max-w-2xl"
       >

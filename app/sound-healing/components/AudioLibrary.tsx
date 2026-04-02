@@ -120,11 +120,10 @@ export default function AudioLibrary() {
           <motion.div
             key={i}
             initial={{ opacity: 0 }}
-            whileInView={{
+            animate={{
               y: [0, -60, 0],
               opacity: [0, 0.15, 0],
             }}
-            viewport={{ once: false, margin: "-50px" }}
             transition={{
               duration: 8 + i * 2,
               repeat: Infinity,
@@ -144,8 +143,7 @@ export default function AudioLibrary() {
       <div className="max-w-6xl mx-auto w-full relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           className="text-center mb-24"
         >
           <span className="inline-block text-[#bc6746] font-mono text-xs uppercase tracking-widest mb-4">
@@ -182,8 +180,7 @@ export default function AudioLibrary() {
               <motion.div
                 key={track.id}
                 initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: idx * 0.1 }}
                 className={`relative group ${idx % 2 === 1 ? "md:mt-16" : ""}`}
               >
@@ -325,8 +322,7 @@ export default function AudioLibrary() {
         {/* Listen Anywhere CTA */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           className="mt-32 text-center"
         >
           <p className="text-[#4a3b32]/50 italic mb-4">

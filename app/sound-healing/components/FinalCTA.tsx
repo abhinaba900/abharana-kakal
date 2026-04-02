@@ -15,9 +15,8 @@ export default function FinalCTA() {
       />
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         className="relative z-10 max-w-2xl"
       >
         <p className="font-handwriting text-3xl text-[#f1e4da] mb-6 opacity-80">

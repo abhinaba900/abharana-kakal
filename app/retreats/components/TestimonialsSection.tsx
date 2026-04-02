@@ -9,11 +9,10 @@ export default function TestimonialsSection() {
   ];
 
   return (
-    <section className="relative py-32 px-6 flex flex-col items-center">
+    <section className="relative py-24 px-6 flex flex-col items-center">
       <motion.h2 
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
+        animate={{ opacity: 1 }}
         className="text-4xl md:text-5xl font-serif text-[#FFFDF8] text-center mb-20 text-shadow-soft"
       >
         Voices of the Coven
@@ -23,10 +22,9 @@ export default function TestimonialsSection() {
         {testimonials.map((t, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.2 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
             className={`bg-[#fffdf8] p-8 md:p-10 shadow-xl w-full max-w-sm flex flex-col justify-between ${t.rotation} paper-grain border border-black/5`}
           >
             {/* Tape detail at the top */}

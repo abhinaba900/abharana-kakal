@@ -7,8 +7,8 @@ export default function Footer() {
   const pathname = usePathname();
   const currentYear = new Date().getFullYear();
 
-  // Hide footer on homepage or admin panel
-  if (pathname === "/" || pathname?.startsWith("/admin")) return null;
+  // Hide footer on admin panel
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <footer className="w-full bg-[#f1e4da] relative z-3 px-6 py-16 md:py-24 border-t border-black/5 mt-auto">

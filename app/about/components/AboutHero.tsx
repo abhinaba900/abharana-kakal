@@ -1,10 +1,12 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 
 export default function AboutHero() {
   const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { amount: 0.1 });
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
@@ -27,6 +29,7 @@ export default function AboutHero() {
           src="/about-hero-bg.png" 
           alt="Misty Sanctuary" 
           fill 
+          sizes="100vw"
           className="object-cover"
           priority
         />
@@ -38,7 +41,7 @@ export default function AboutHero() {
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-32">
         {/* Left Side: Floating Editorial Heading */}
         <motion.div 
-          style={{ opacity }}
+          style={{ opacity, willChange: "opacity, transform" }}
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
@@ -59,7 +62,7 @@ export default function AboutHero() {
         {/* Right Side: Portrait with Architectural Mask */}
         <div className="w-full md:w-1/2 relative group">
           <motion.div 
-            style={{ y, scale }}
+            style={{ y, scale, willChange: "transform" }}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
@@ -69,6 +72,7 @@ export default function AboutHero() {
               src="/about-portrait.webp" 
               alt="Portrait of Presence" 
               fill 
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover scale-105 transition-transform duration-[6s] group-hover:scale-100"
               priority
             />
@@ -76,12 +80,14 @@ export default function AboutHero() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#bc6746]/10 to-transparent mix-blend-soft-light" />
           </motion.div>
           
-          {/* Breathing aura element */}
-          <motion.div 
-            animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -bottom-20 -right-20 w-[30rem] h-[30rem] bg-[#bc6746]/10 rounded-full blur-[120px] z-10" 
-          />
+          {/* Breathing aura element - Pauses when off-screen */}
+          {isInView && (
+            <motion.div 
+              animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-20 -right-20 w-[30rem] h-[30rem] bg-[#bc6746]/10 rounded-full blur-[120px] z-10" 
+            />
+          )}
         </div>
       </div>
 
@@ -98,4 +104,5 @@ export default function AboutHero() {
     </section>
   );
 }
+
 

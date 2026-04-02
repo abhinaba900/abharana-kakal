@@ -1,7 +1,7 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import { HandHeart, Waves, Sparkles, Flower2, CloudRain } from "lucide-react";
 
 const experiences = [
@@ -49,22 +49,21 @@ const experiences = [
 
 export default function ExperienceSection() {
   const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
 
   return (
-    <section ref={containerRef} className="relative py-32 md:py-52 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
-      {/* Background Decorative Watermark */}
-      <motion.div 
-        style={{ opacity: 0.03 }}
-        className="absolute top-1/2 left-0 -translate-y-1/2 text-[10rem] md:text-[20rem] font-serif text-[#a55a3d] leading-none pointer-events-none select-none z-0 rotate-[-90deg] translate-x-[-30%]"
+    <section ref={containerRef} className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
+      {/* Background Decorative Watermark - Optimized with static position */}
+      <div 
+        className="absolute top-1/2 left-0 -translate-y-1/2 text-[10rem] md:text-[20rem] font-serif text-[#a55a3d] leading-none pointer-events-none select-none z-0 rotate-[-90deg] translate-x-[-30%] opacity-[0.03]"
       >
         JOURNEY
-      </motion.div>
+      </div>
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           className="text-center mb-24"
         >
@@ -83,16 +82,16 @@ export default function ExperienceSection() {
   );
 }
 
-function ExperienceTile({ exp, index }: { exp: any; index: number }) {
+const ExperienceTile = memo(function ExperienceTile({ exp, index }: { exp: any; index: number }) {
   const tileRef = useRef(null);
   
   return (
     <motion.div
       ref={tileRef}
-      initial={{ opacity: 0, y: 40, scale: 0.98 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 1.2, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+      style={{ willChange: "transform, opacity" }}
       className={`relative group overflow-hidden rounded-[40px] shadow-xl hover:shadow-[0_40px_100px_rgba(188,103,70,0.15)] transition-all duration-700 ${exp.size}`}
     >
       {/* Image Layer */}
@@ -101,6 +100,7 @@ function ExperienceTile({ exp, index }: { exp: any; index: number }) {
           src={exp.img} 
           alt={exp.title} 
           fill 
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover" 
         />
         <div className="absolute inset-0 bg-[#4a3b32]/10 mix-blend-multiply opacity-60 backdrop-blur-[1px] group-hover:backdrop-blur-0 transition-all duration-700"></div>
@@ -110,13 +110,11 @@ function ExperienceTile({ exp, index }: { exp: any; index: number }) {
       {/* Content Overlay */}
       <div className="relative z-10 flex flex-col h-full justify-between p-8 md:p-10 text-[#FFFDF8]">
         {/* Top Segment: Icon */}
-        <motion.div 
-          initial={{ opacity: 0, rotate: -20 }}
-          whileInView={{ opacity: 0.8, rotate: 0 }}
-          className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-md"
+        <div 
+          className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-md opacity-80"
         >
           {exp.icon}
-        </motion.div>
+        </div>
 
         {/* Bottom Segment: Text */}
         <div className="group-hover:translate-x-2 transition-transform duration-500">
@@ -133,5 +131,6 @@ function ExperienceTile({ exp, index }: { exp: any; index: number }) {
       <div className="absolute inset-0 border border-white/10 rounded-[40px] pointer-events-none z-20" />
     </motion.div>
   );
-}
+});
+
 

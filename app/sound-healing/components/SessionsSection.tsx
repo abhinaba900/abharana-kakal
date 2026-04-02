@@ -9,10 +9,9 @@ function SessionCard({ session, idx }: { session: any; idx: number }) {
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1, delay: idx * 0.15, ease: [0.215, 0.61, 0.355, 1] }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: idx * 0.1, ease: [0.215, 0.61, 0.355, 1] }}
       className={`relative group ${idx === 1 ? "md:mt-12" : ""}`}
     >
       <motion.div
@@ -97,9 +96,8 @@ export default function SessionsSection() {
     <section id="sh-sessions" className="relative py-24 px-6 z-10 w-full bg-[#fffdf8]">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           className="text-center mb-24"
         >
           <span className="text-[#bc6746] font-mono text-xs uppercase tracking-[.3em] mb-4 block">the circle of gathering</span>
@@ -126,8 +124,7 @@ export default function SessionsSection() {
         <div className="flex justify-center mt-20">
            <motion.div 
              initial={{ width: 0 }}
-             whileInView={{ width: "200px" }}
-             viewport={{ once: true }}
+             animate={{ width: "200px" }}
              className="h-[1px] bg-gradient-to-r from-transparent via-[#bc6746]/30 to-transparent"
            />
         </div>

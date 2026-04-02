@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import HeroSection from "./components/HeroSection";
 import BookingFlow from "./components/BookingFlow";
 import TrustSection from "./components/TrustSection";
 import FinalCTA from "./components/FinalCTA";
@@ -36,10 +34,9 @@ export default function OnlineClassesPage() {
         />
       </div>
 
-      <HeroSection />
       
       {/* The main booking interface */}
-      <section id="book" className="py-32 px-4 relative z-10">
+      <section id="book" className="py-24 px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
           <BookingFlow />
         </div>

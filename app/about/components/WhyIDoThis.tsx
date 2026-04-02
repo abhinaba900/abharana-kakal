@@ -22,13 +22,12 @@ export default function WhyIDoThis() {
           <motion.div 
             style={{ y: imgY }}
             initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             className="relative aspect-[4/5] rounded-t-[120px] rounded-br-[40px] rounded-bl-[120px] overflow-hidden shadow-2xl z-10 border border-white/20"
           >
             <Image 
-              src="/sh-intro-vessels.png" 
+              src="/about2.webp" 
               alt="Sacred Space" 
               fill 
               className="object-cover transition-transform duration-[6s] group-hover:scale-110"
@@ -47,8 +46,7 @@ export default function WhyIDoThis() {
           <div className="space-y-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               className="flex items-center gap-6"
             >
                <div className="w-12 h-px bg-[#bc6746]" />
@@ -57,8 +55,7 @@ export default function WhyIDoThis() {
 
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="text-4xl md:text-7xl font-serif text-[#a55a3d] leading-none tracking-tighter"
             >
@@ -69,8 +66,7 @@ export default function WhyIDoThis() {
             <div className="max-w-xl space-y-10 group">
               <motion.p 
                 initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.5, delay: 0.4 }}
                 className="text-2xl md:text-4xl font-light text-[#4a3b32] leading-relaxed italic border-l-4 border-[#bc6746]/10 pl-8 group-hover:border-[#bc6746]/30 transition-all duration-700"
               >
@@ -79,8 +75,7 @@ export default function WhyIDoThis() {
               
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.6 }}
                 className="text-xl md:text-2xl font-light text-[#4a3b32]/70 leading-relaxed"
               >

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Antigravity from "./components/Antaigravity";
 import CircularText from "./components/CircularText";
+import Footer from "./components/Footer";
 
 const chakras = [
   { name: "Crown", color: "#ffffff", desc: "Consciousness • Bliss • Unity" },

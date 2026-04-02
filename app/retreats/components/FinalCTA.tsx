@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 
 export default function FinalCTA() {
   return (
-    <section className="relative py-40 px-6 overflow-hidden flex flex-col items-center text-center">
+    <section className="relative py-24 px-6 overflow-hidden flex flex-col items-center text-center">
       {/* Deep Terracotta Wrap */}
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#a55a3d] via-[#bc6746] to-transparent mix-blend-multiply opacity-50 pointer-events-none" />
 
@@ -15,9 +15,8 @@ export default function FinalCTA() {
       />
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
         className="relative z-10 max-w-2xl"
       >
         <h2 className="text-5xl md:text-7xl font-serif text-[#FFFDF8] uppercase tracking-widest text-shadow-soft mb-8">

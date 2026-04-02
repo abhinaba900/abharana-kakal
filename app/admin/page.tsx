@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { GlassCard } from '@/components/admin/GlassCard';
 import { dashboardService, enquiryService } from '@/lib/api/client';
 import { 
@@ -30,6 +30,53 @@ const MOCK_CHART_DATA = [
   { name: 'Sat', value: 75 },
   { name: 'Sun', value: 110 },
 ];
+
+// Memoized Chart component to isolate re-renders
+const ActivityChart = memo(function ActivityChart({ data }: { data: any[] }) {
+  return (
+    <div className="h-80 w-full p-4">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#bc6746" stopOpacity={0.3}/>
+              <stop offset="95%" stopColor="#bc6746" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1e4da" />
+          <XAxis 
+            dataKey="name" 
+            stroke="#a55a3d" 
+            fontSize={10} 
+            tickLine={false} 
+            axisLine={false} 
+            dy={10}
+          />
+          <YAxis hide />
+          <Tooltip 
+            contentStyle={{ 
+              backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+              borderRadius: '12px', 
+              border: '1px solid #f1e4da',
+              backdropFilter: 'blur(10px)',
+              color: '#4a3b32'
+            }} 
+            itemStyle={{ color: '#bc6746' }}
+          />
+          <Area 
+            type="monotone" 
+            dataKey="value" 
+            stroke="#bc6746" 
+            strokeWidth={3}
+            fillOpacity={1} 
+            fill="url(#colorValue)" 
+            animationDuration={1000}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+});
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<any>(null);
@@ -145,47 +192,7 @@ export default function DashboardPage() {
               <h3 className="text-lg font-bold text-[#4a3b32]">Activity Pulse</h3>
               <p className="text-xs text-[#a55a3d]/50 mt-1">Growth of interactions over the last 7 days</p>
             </div>
-            <div className="h-80 w-full p-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={MOCK_CHART_DATA}>
-                  <defs>
-                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#bc6746" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#bc6746" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1e4da" />
-                  <XAxis 
-                    dataKey="name" 
-                    stroke="#a55a3d" 
-                    fontSize={10} 
-                    tickLine={false} 
-                    axisLine={false} 
-                    dy={10}
-                  />
-                  <YAxis hide />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                      borderRadius: '12px', 
-                      border: '1px solid #f1e4da',
-                      backdropFilter: 'blur(10px)',
-                      color: '#4a3b32'
-                    }} 
-                    itemStyle={{ color: '#bc6746' }}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="#bc6746" 
-                    strokeWidth={3}
-                    fillOpacity={1} 
-                    fill="url(#colorValue)" 
-                    animationDuration={2000}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+            <ActivityChart data={MOCK_CHART_DATA} />
           </GlassCard>
         </div>
 
@@ -222,3 +229,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

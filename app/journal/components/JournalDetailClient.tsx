@@ -131,8 +131,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
           {/* Intro paragraph */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9 }}
           >
             {/* Decorative divider */}
@@ -158,8 +157,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: i * 0.05 }}
               className="mb-12"
             >
@@ -176,8 +174,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
           {post.content.pullQuote && (
             <motion.blockquote
               initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-60px" }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.9 }}
               className="relative my-16 px-10 py-10 rounded-2xl overflow-hidden"
             >
@@ -204,8 +201,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
           {/* Closing paragraph */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="mb-16"
           >
@@ -217,8 +213,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
           {/* End divider */}
           <motion.div
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             className="flex items-center gap-6 mb-10"
           >
@@ -232,8 +227,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
           {/* Action buttons */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center gap-4"
           >
@@ -274,8 +268,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
                 <motion.article
                   key={related.slug}
                   initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: i * 0.1 }}
                   className="group"
                 >
@@ -342,8 +335,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
           {/* View all link */}
           <motion.div
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="flex justify-center mt-14"
           >
