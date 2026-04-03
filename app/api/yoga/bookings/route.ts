@@ -29,27 +29,98 @@ async function getHandler() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { session_id, user_name, user_email, booking_type, package_size, total_amount, payment_id } = body;
+    const { 
+        session_id, 
+        user_name, 
+        user_email, 
+        user_phone, 
+        booking_type, 
+        package_size, 
+        total_amount, 
+        base_amount,
+        gst_amount,
+        payment_reference, 
+        payment_screenshot_url 
+    } = body;
 
-    // 1. Create the booking record
+    // 1. Fetch the session details to check capacity and date
+    const { data: session, error: sessionErr } = await supabaseAdmin
+      .from('yoga_sessions')
+      .select('*, yoga_offerings(*)')
+      .eq('id', session_id)
+      .single();
+
+    if (sessionErr || !session) {
+      return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+    }
+
+    // 2. Strict Availability Validations
+    const now = new Date();
+    const sessionStart = new Date(`${session.session_date}T${session.start_time}`);
+    const sessionEnd = new Date(sessionStart.getTime() + (session.duration_minutes || 60) * 60000);
+    const cooldownStart = new Date(sessionStart.getTime() - (session.cooldown_minutes || 30) * 60000);
+
+    if (session.is_blocked || session.status === 'cancelled') {
+      return NextResponse.json({ error: 'This time slot is no longer available.' }, { status: 400 });
+    }
+
+    // Completion Check
+    if (now > sessionEnd || session.status === 'completed') {
+        return NextResponse.json({ error: 'This session has already ended.' }, { status: 400 });
+    }
+
+    // Capacity Check
+    if (session.booked_count >= session.capacity) {
+      return NextResponse.json({ error: 'This session is already full.' }, { status: 400 });
+    }
+
+    // Cooldown/Booking Window Check
+    if (now > cooldownStart) {
+        return NextResponse.json({ 
+            error: `Bookings for this session closed at ${cooldownStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}.` 
+        }, { status: 400 });
+    }
+
+    // 3. Check if the date is blocked (availability exception)
+    const { data: blockedDate } = await supabaseAdmin
+      .from('yoga_availability_exceptions')
+      .select('id')
+      .eq('exception_date', session.session_date)
+      .eq('is_blocked', true)
+      .single();
+
+    if (blockedDate) {
+      return NextResponse.json({ error: 'This date is currently unavailable for bookings.' }, { status: 400 });
+    }
+
+    // 4. Create the booking record
     const { data: booking, error: bookingErr } = await supabaseAdmin
       .from('yoga_bookings')
-      .insert({ session_id, user_name, user_email, booking_type, package_size, total_amount, payment_id, status: 'confirmed', payment_status: 'paid' })
+      .insert({ 
+        session_id, 
+        user_name, 
+        user_email, 
+        user_phone, 
+        booking_type, 
+        package_size, 
+        total_amount, 
+        base_amount,
+        gst_amount,
+        payment_reference, 
+        payment_screenshot_url,
+        booking_status: 'pending', 
+        payment_status: 'submitted' 
+      })
       .select()
       .single();
 
     if (bookingErr) throw bookingErr;
 
-    // 2. Increment the booked_count for the session
-    if (session_id) {
-       const { error: updateErr } = await supabaseAdmin.rpc('increment_session_booking', { session_id });
-       // Note: To use RPC, you'd need the corresponding SQL function.
-       // Alternatively, just a standard update:
-       const { data: session } = await supabaseAdmin.from('yoga_sessions').select('booked_count').eq('id', session_id).single();
-       if (session) {
-         await supabaseAdmin.from('yoga_sessions').update({ booked_count: (session.booked_count || 0) + 1 }).eq('id', session_id);
-       }
-    }
+    // 5. Atomic increment of booked_count
+    await supabaseAdmin
+      .from('yoga_sessions')
+      .update({ booked_count: (session.booked_count || 0) + 1 })
+      .eq('id', session_id);
 
     return NextResponse.json({ success: true, data: booking });
   } catch (err: any) {

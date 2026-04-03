@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
 
 interface Enquiry {
   id: string;
@@ -34,6 +35,11 @@ export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    id: string;
+    isLoading: boolean;
+  }>({ isOpen: false, id: '', isLoading: false });
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -78,7 +84,12 @@ const [isUpdating, setIsUpdating] = useState(false);
   };
 
   const deleteEnquiry = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this enquiry?')) return;
+    setConfirmModal({ isOpen: true, id, isLoading: false });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { id } = confirmModal;
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
       await enquiryService.delete(id);
       setEnquiries(prev => prev.filter(e => e.id !== id));
@@ -86,6 +97,8 @@ const [isUpdating, setIsUpdating] = useState(false);
       toast.info('Enquiry deleted');
     } catch (err) {
       toast.error('Deletion failed');
+    } finally {
+      setConfirmModal({ isOpen: false, id: '', isLoading: false });
     }
   };
 
@@ -286,6 +299,17 @@ const [isUpdating, setIsUpdating] = useState(false);
           </div>
         )}
       </AnimatePresence>
+
+      <ConfirmModal 
+        isOpen={confirmModal.isOpen}
+        title="Delete Enquiry"
+        message="Are you sure you want to permanently delete this enquiry? This action cannot be reversed."
+        confirmText="Delete"
+        variant="danger"
+        isLoading={confirmModal.isLoading}
+        onConfirm={handleConfirmDelete}
+        onClose={() => setConfirmModal({ isOpen: false, id: '', isLoading: false })}
+      />
     </div>
   );
 }

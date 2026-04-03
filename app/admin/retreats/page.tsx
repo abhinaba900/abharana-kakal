@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
 
 interface Retreat {
   id: string;
@@ -47,6 +48,11 @@ export default function RetreatsPage() {
   });
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    id: string;
+    isLoading: boolean;
+  }>({ isOpen: false, id: '', isLoading: false });
 
   useEffect(() => {
     fetchRetreats();
@@ -115,13 +121,20 @@ export default function RetreatsPage() {
   };
 
   const deleteRetreat = async (id: string) => {
-    if (!window.confirm('Dissolve this sanctuary?')) return;
+    setConfirmModal({ isOpen: true, id, isLoading: false });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { id } = confirmModal;
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
       await retreatService.delete(id);
       setRetreats(prev => prev.filter(r => r.id !== id));
       toast.info('Sanctuary dissolved');
     } catch (err) {
       toast.error('Deletion failed');
+    } finally {
+      setConfirmModal({ isOpen: false, id: '', isLoading: false });
     }
   };
 
@@ -402,6 +415,17 @@ export default function RetreatsPage() {
           </div>
         )}
       </AnimatePresence>
+
+      <ConfirmModal 
+        isOpen={confirmModal.isOpen}
+        title="Dissolve Sanctuary"
+        message="Are you sure you want to permanently dissolve this retreat sanctuary? This action is irreversible."
+        confirmText="Dissolve"
+        variant="danger"
+        isLoading={confirmModal.isLoading}
+        onConfirm={handleConfirmDelete}
+        onClose={() => setConfirmModal({ isOpen: false, id: '', isLoading: false })}
+      />
     </div>
   );
 }

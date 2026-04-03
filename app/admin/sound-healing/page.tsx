@@ -23,6 +23,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { AdminAudioPlayer } from '@/components/admin/AdminAudioPlayer';
+import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
 
 interface SoundSession {
   id: string;
@@ -70,6 +71,11 @@ export default function SoundHealingPage() {
   const [isUploadingAudio, setIsUploadingAudio] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    id: string;
+    isLoading: boolean;
+  }>({ isOpen: false, id: '', isLoading: false });
 
   useEffect(() => {
     fetchAll();
@@ -218,7 +224,12 @@ export default function SoundHealingPage() {
   };
 
   const deleteSession = async (id: string) => {
-    if (!window.confirm('Delete this record?')) return;
+    setConfirmModal({ isOpen: true, id, isLoading: false });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { id } = confirmModal;
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
       if (activeTab === 'library') {
         await soundService.delete(id);
@@ -229,6 +240,8 @@ export default function SoundHealingPage() {
       toast.info('Session removed');
     } catch (err) {
       toast.error('Deletion failed');
+    } finally {
+      setConfirmModal({ isOpen: false, id: '', isLoading: false });
     }
   };
 
@@ -590,6 +603,17 @@ export default function SoundHealingPage() {
           </div>
         )}
       </AnimatePresence>
+
+      <ConfirmModal 
+        isOpen={confirmModal.isOpen}
+        title="Dissolve Frequency"
+        message="Are you sure you want to permanently dissolve this vibration from the archives?"
+        confirmText="Dissolve"
+        variant="danger"
+        isLoading={confirmModal.isLoading}
+        onConfirm={handleConfirmDelete}
+        onClose={() => setConfirmModal({ isOpen: false, id: '', isLoading: false })}
+      />
     </div>
   );
 }

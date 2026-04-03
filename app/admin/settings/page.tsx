@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
 
 interface Session {
   id: string;
@@ -33,6 +34,14 @@ export default function SettingsPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRevokingAll, setIsRevokingAll] = useState(false);
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    isLoading: boolean;
+    variant?: 'danger' | 'info';
+  }>({ isOpen: false, title: '', message: '', onConfirm: () => {}, isLoading: false });
 
   useEffect(() => {
     fetchSessions();
@@ -50,28 +59,49 @@ export default function SettingsPage() {
   };
 
   const revokeSession = async (id: string) => {
-    if (!window.confirm('Sever this connection?')) return;
-    try {
-      await authService.sessions.revoke(id);
-      setSessions(prev => prev.filter(s => s.id !== id));
-      toast.info('Connection severed');
-    } catch (err) {
-      toast.error('Severance failed');
-    }
+    setConfirmModal({
+      isOpen: true,
+      title: 'Sever Connection',
+      message: 'Are you sure you want to sever this connection? The device will be forced to re-authenticate.',
+      variant: 'danger',
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmModal(prev => ({ ...prev, isLoading: true }));
+        try {
+          await authService.sessions.revoke(id);
+          setSessions(prev => prev.filter(s => s.id !== id));
+          toast.info('Connection severed');
+        } catch (err) {
+          toast.error('Severance failed');
+        } finally {
+          setConfirmModal(prev => ({ ...prev, isOpen: false, isLoading: false }));
+        }
+      }
+    });
   };
 
   const revokeAllSessions = async () => {
-    if (!window.confirm('Sever ALL active dimensions (except current if handled by backend)?')) return;
-    setIsRevokingAll(true);
-    try {
-      await authService.sessions.revoke();
-      toast.success('All other dimensions closed');
-      fetchSessions();
-    } catch (err) {
-      toast.error('Failed to close dimensions');
-    } finally {
-      setIsRevokingAll(false);
-    }
+    setConfirmModal({
+      isOpen: true,
+      title: 'Dissolve All Dimensions',
+      message: 'Are you sure you want to sever ALL active connections except your current one? All other devices will be logged out.',
+      variant: 'danger',
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmModal(prev => ({ ...prev, isLoading: true }));
+        setIsRevokingAll(true);
+        try {
+          await authService.sessions.revoke();
+          toast.success('All other dimensions closed');
+          fetchSessions();
+        } catch (err) {
+          toast.error('Failed to close dimensions');
+        } finally {
+          setIsRevokingAll(false);
+          setConfirmModal(prev => ({ ...prev, isOpen: false, isLoading: false }));
+        }
+      }
+    });
   };
 
   if (loading) return <div className="p-8 text-center text-[#a55a3d]/70 font-light italic">Synchronizing portal settings...</div>;
@@ -101,7 +131,7 @@ export default function SettingsPage() {
                     <h3 className="text-lg font-bold text-[#4a3b32] uppercase tracking-wider">{user?.email}</h3>
                     <p className="text-[10px] text-[#bc6746] font-bold uppercase tracking-[0.2em] mt-1">Master Administrator</p>
                  </div>
-                 <div className="flex items-center space-x-2 text-[10px] text-[#a55a3d]/70 italic bg-[#bc6746]/5 px-4 py-1 rounded-full border border-[#f1e4da]">
+                 <div className="flex items-center space-x-2 text-sm text-[#a55a3d]/70 italic bg-[#bc6746]/5 px-4 py-1 rounded-full border border-[#f1e4da]">
                     <Shield className="h-3 w-3 text-green-600" />
                     <span>Vulnerability: 0%</span>
                  </div>
@@ -114,7 +144,7 @@ export default function SettingsPage() {
                  Energy Shield (Security)
               </h3>
               <div className="space-y-4">
-                 <p className="text-xs text-[#a55a3d]/70 italic leading-relaxed">
+                 <p className="text-md text-[#a55a3d]/70 italic leading-relaxed">
                    Your administrative access is bound by high-fidelity JWT encryption and database session tracking.
                  </p>
                  <button className="w-full py-3 rounded-xl bg-[#bc6746]/5 border border-[#f1e4da] text-xs font-bold text-[#a55a3d]/50 hover:text-[#bc6746] hover:bg-[#bc6746]/10 transition-all uppercase tracking-widest">
@@ -133,7 +163,7 @@ export default function SettingsPage() {
                        <Smartphone className="w-5 h-5 mr-3 text-[#bc6746]" />
                        Active Dimensions (Sessions)
                     </h3>
-                    <p className="text-xs text-[#a55a3d]/50 mt-1 italic">Manage your active presence across devices (Max 5).</p>
+                    <p className="text-sm text-[#a55a3d]/50 mt-1 italic">Manage your active presence across devices (Max 5).</p>
                  </div>
                  <button 
                    onClick={revokeAllSessions}
@@ -211,6 +241,16 @@ export default function SettingsPage() {
             <span>Terminate Current Dimension (Logout)</span>
          </button>
       </div>
+
+      <ConfirmModal 
+        isOpen={confirmModal.isOpen}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        variant={confirmModal.variant}
+        isLoading={confirmModal.isLoading}
+        onConfirm={confirmModal.onConfirm}
+        onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }

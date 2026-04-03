@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
 
 interface BlogPost {
   id: string;
@@ -54,6 +55,11 @@ export default function JournalPage() {
   });
   const [postImageFile, setPostImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    id: string;
+    isLoading: boolean;
+  }>({ isOpen: false, id: '', isLoading: false });
 
   // Category Form State
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -123,13 +129,20 @@ export default function JournalPage() {
   };
 
   const deletePost = async (id: string) => {
-    if (!window.confirm('Delete this journal entry?')) return;
+    setConfirmModal({ isOpen: true, id, isLoading: false });
+  };
+
+  const handleConfirmDelete = async () => {
+    const { id } = confirmModal;
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
       await blogService.posts.delete(id);
       setPosts(prev => prev.filter(p => p.id !== id));
       toast.info('Entry dissolved');
     } catch (err) {
       toast.error('Deletion failed');
+    } finally {
+      setConfirmModal({ isOpen: false, id: '', isLoading: false });
     }
   };
 
@@ -375,6 +388,17 @@ export default function JournalPage() {
           </div>
         )}
       </AnimatePresence>
+
+      <ConfirmModal 
+        isOpen={confirmModal.isOpen}
+        title="Dissolve Entry"
+        message="Are you sure you want to permanently dissolve this sacred insight from the archives?"
+        confirmText="Dissolve"
+        variant="danger"
+        isLoading={confirmModal.isLoading}
+        onConfirm={handleConfirmDelete}
+        onClose={() => setConfirmModal({ isOpen: false, id: '', isLoading: false })}
+      />
     </div>
   );
 }

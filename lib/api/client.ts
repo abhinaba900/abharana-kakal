@@ -124,8 +124,19 @@ export const yogaService = {
     update: (id: string, data: any) => api.patch(`/yoga/sessions/${id}`, data),
     delete: (id: string) => api.delete(`/yoga/sessions/${id}`),
   },
+  availability: {
+    list: () => api.get('/yoga/availability-exceptions'),
+    create: (data: any) => api.post('/yoga/availability-exceptions', data),
+    delete: (date: string) => api.delete(`/yoga/availability-exceptions/${date}`),
+  },
   bookings: {
     list: () => api.get('/yoga/bookings'),
     create: (data: any) => api.post('/yoga/bookings', data),
+    update: (id: string, data: any) => api.patch(`/yoga/bookings/${id}`, data),
+    delete: (id: string) => api.delete(`/yoga/bookings/${id}`),
+  },
+  paymentSettings: {
+    get: () => api.get('/yoga/payment-settings'),
+    update: (data: any) => api.patch('/yoga/payment-settings', data),
   }
 };

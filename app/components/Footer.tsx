@@ -14,7 +14,12 @@ export default function Footer() {
     <footer className="w-full bg-[#f1e4da] relative z-3 px-6 py-16 md:py-24 border-t border-black/5 mt-auto">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         {/* SECTION 1 — CLOSING LINE */}
-        <div className="text-center mb-16 md:mb-20">
+        <div className="text-center mb-16 md:mb-20 flex flex-col items-center">
+          <img 
+            src="/Abharana Kakal - brown - monogram only.svg" 
+            alt="Abharana Kakal Monogram" 
+            className="w-48 h-48 md:w-36 md:h-36 mb-8 opacity-100 object-contain"
+          />
           <p className="font-handwriting text-3xl md:text-5xl text-[#bc6746] leading-relaxed opacity-90 transition-opacity hover:opacity-100">
             Move gently. Breathe deeply.
             <br />
