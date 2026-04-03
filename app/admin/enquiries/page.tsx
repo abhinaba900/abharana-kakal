@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { GlassCard } from '@/components/admin/GlassCard';
 import { enquiryService } from '@/lib/api/client';
@@ -31,7 +31,7 @@ interface Enquiry {
   created_at: string;
 }
 
-export default function EnquiriesPage() {
+function EnquiriesContent() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
@@ -311,5 +311,18 @@ const [isUpdating, setIsUpdating] = useState(false);
         onClose={() => setConfirmModal({ isOpen: false, id: '', isLoading: false })}
       />
     </div>
+  );
+}
+
+export default function EnquiriesPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-[60vh] flex-col items-center justify-center text-[#bc6746]">
+        <Loader2 className="animate-spin h-8 w-8 mb-4" /> 
+        <p className="text-xs font-black uppercase tracking-widest opacity-60">Loading sanctuary data...</p>
+      </div>
+    }>
+      <EnquiriesContent />
+    </Suspense>
   );
 }
