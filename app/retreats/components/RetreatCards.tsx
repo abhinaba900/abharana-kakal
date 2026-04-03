@@ -1,40 +1,41 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import Image from "next/image";
-import { useRef } from "react";
-
-const RETREATS = [
-  {
-    id: "01",
-    name: "Awakening the Goddess",
-    location: "Ubud, Bali",
-    dates: "Oct 12 - 18, 2026",
-    desc: "A journey through water, breath, and ancient feminine wisdom.",
-    img: "/rt-bali.png",
-    offset: "md:translate-y-0"
-  },
-  {
-    id: "02",
-    name: "Sacred Silence",
-    location: "Rishikesh, India",
-    dates: "Nov 5 - 12, 2026",
-    desc: "Find your truth in the heart of the Himalayas.",
-    img: "/rt-rishikesh.png",
-    offset: "md:translate-y-24"
-  },
-  {
-    id: "03",
-    name: "Oceanic Reset",
-    location: "Weligama, Sri Lanka",
-    dates: "Dec 3 - 9, 2026",
-    desc: "Purify mind and body with the rhythm of the waves.",
-    img: "/rt-srilanka.png",
-    offset: "md:translate-y-12"
-  }
-];
+import { useRef, useState, useEffect } from "react";
+import BookingPortal from "@/app/components/BookingPortal";
 
 export default function RetreatCards() {
   const containerRef = useRef(null);
+  const [retreats, setRetreats] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedRetreat, setSelectedRetreat] = useState<any>(null);
+  const [isPortalOpen, setIsPortalOpen] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/retreats");
+        const json = await res.json();
+        if (json.success) setRetreats(json.data);
+      } catch (err) {
+        console.error("Failed to load retreats", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  const handleBookNow = (retreat: any) => {
+    setSelectedRetreat({
+        id: retreat.id,
+        title: retreat.title,
+        price: retreat.price,
+        date: retreat.date,
+        location: retreat.location
+    });
+    setIsPortalOpen(true);
+  };
 
   return (
     <section ref={containerRef} className="relative py-24 md:py-24 px-6 z-10 w-full overflow-hidden">
@@ -54,17 +55,28 @@ export default function RetreatCards() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 pb-32">
-          {RETREATS.map((retreat, idx) => (
-            <RetreatCard key={retreat.id} retreat={retreat} index={idx} />
-          ))}
-        </div>
+        {loading ? (
+            <div className="text-center py-20 text-[#bc6746] italic font-light">Tuning into rhythms...</div>
+        ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 pb-32">
+            {retreats.map((retreat, idx) => (
+                <RetreatCard key={retreat.id} retreat={retreat} index={idx} onBook={() => handleBookNow(retreat)} />
+            ))}
+            </div>
+        )}
       </div>
+
+      <BookingPortal 
+        isOpen={isPortalOpen}
+        onClose={() => setIsPortalOpen(false)}
+        type="retreat"
+        itemData={selectedRetreat}
+      />
     </section>
   );
 }
 
-function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
+function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; onBook: () => void }) {
   const cardRef = useRef(null);
   
   return (
@@ -73,13 +85,13 @@ function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
       initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.0, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative group ${retreat.offset} flex flex-col h-[650px] md:h-[750px] rounded-[50px] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[0_40px_100px_rgba(188,103,70,0.25)]`}
+      className={`relative group flex flex-col h-[650px] md:h-[750px] rounded-[50px] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[0_40px_100px_rgba(188,103,70,0.25)]`}
     >
       {/* Image Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden">
          <Image 
-          src={retreat.img} 
-          alt={retreat.name} 
+          src={retreat.image_urls?.[0] || "/RT-bali.png"} 
+          alt={retreat.title} 
           fill 
           className="object-cover scale-110 group-hover:scale-100 transition-transform duration-[4s] ease-out" 
         />
@@ -89,7 +101,7 @@ function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
 
       {/* Decorative Index Number */}
       <span className="absolute top-8 right-10 text-[10rem] font-serif text-[#FFFDF8]/5 leading-none pointer-events-none select-none z-10 transition-opacity duration-700 group-hover:opacity-10">
-        {retreat.id}
+        0{index + 1}
       </span>
       
       {/* Content Wrapper */}
@@ -102,32 +114,40 @@ function RetreatCard({ retreat, index }: { retreat: any; index: number }) {
              transition={{ duration: 1.0, delay: 0.3 + index * 0.1 }}
              className="font-handwriting text-3xl text-[#f1e4da] mb-2"
            >
-             {retreat.location}
+             {retreat.location || "Sanctuary Venue"}
            </motion.p>
            <h3 className="text-4xl md:text-5xl font-serif leading-[1.1] mb-2 tracking-tight group-hover:tracking-normal transition-all duration-700">
-             {retreat.name}
+             {retreat.title}
            </h3>
-           <p className="text-sm tracking-[0.3em] uppercase opacity-70 mb-4">{retreat.dates}</p>
+           <p className="text-sm tracking-[0.3em] uppercase opacity-70 mb-4">{new Date(retreat.date).toLocaleDateString()}</p>
         </div>
 
         {/* Footer Segment */}
         <div className="flex flex-col gap-8">
            <div className="w-16 h-px bg-[#bc6746]/50 transition-all duration-700 group-hover:w-full" />
            
-           <p className="font-light text-lg md:text-xl italic text-[#f1e4da]/90 leading-relaxed max-w-[280px]">
-             &quot;{retreat.desc}&quot;
+           <p className="font-light text-lg md:text-xl italic text-[#f1e4da]/90 leading-relaxed max-w-[280px] line-clamp-3">
+             &quot;{retreat.description}&quot;
            </p>
 
-           <motion.button 
-             whileHover={{ scale: 1.05 }}
-             whileTap={{ scale: 0.98 }}
-             className="soft-glass self-start uppercase tracking-widest text-xs font-semibold py-4 px-10 rounded-full border border-white/20 hover:bg-[#bc6746] hover:border-[#bc6746] transition-all duration-500 shadow-xl"
-           >
-             Explore Retreat
-           </motion.button>
+           <div className="flex items-center justify-between mt-4">
+                <div className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-widest opacity-40">Immersion Fee</span>
+                    <span className="text-2xl font-serif text-[#bc6746]">₹{retreat.price}</span>
+                </div>
+                <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={onBook}
+                    className="soft-glass self-end uppercase tracking-widest text-[10px] font-black py-4 px-10 rounded-full border border-white/20 hover:bg-[#bc6746] hover:border-[#bc6746] transition-all duration-500 shadow-xl"
+                >
+                    Book Now
+                </motion.button>
+           </div>
         </div>
       </div>
     </motion.div>
   );
 }
+
 

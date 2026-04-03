@@ -20,7 +20,6 @@ import {
   X,
   CreditCard,
   Image as ImageIcon,
-  ExternalLink,
   ThumbsUp,
   ThumbsDown,
   RefreshCw
@@ -83,19 +82,11 @@ interface Booking {
 export default function OnlineSessionsAdmin() {
   const [offerings, setOfferings] = useState<Offering[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'availability' | 'review' | 'bookings' | 'offerings' | 'payment'>('availability');
-  
-  // Payment Settings State
-  const [paymentSettings, setPaymentSettings] = useState({
-      upi_id: '',
-      payee_name: '',
-      instructions: '',
-      qr_image_url: '',
-      gst_percent: 18
-  });
+  const [activeTab, setActiveTab] = useState<'availability' | 'offerings' | 'payment'>('availability');
   
   // Selected Data for Availability Manager
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  
   const [isOfferingModalOpen, setIsOfferingModalOpen] = useState(false);
   const [editingOffering, setEditingOffering] = useState<Offering | null>(null);
   const [actioningId, setActioningId] = useState<string | null>(null);
@@ -119,6 +110,15 @@ export default function OnlineSessionsAdmin() {
     meeting_link: ''
   });
 
+  const [paymentForm, setPaymentForm] = useState({
+    upi_id: '',
+    payee_name: '',
+    qr_image_url: '',
+    instructions: '',
+    gst_percent: 18,
+    is_active: true
+  });
+
   // Modal System State
   const [modalState, setModalState] = useState<{
     confirm?: { isOpen: boolean; title: string; message: string; onConfirm: () => void; isDanger?: boolean; isLoading?: boolean };
@@ -135,7 +135,6 @@ export default function OnlineSessionsAdmin() {
   // Realtime Integration for the entire dashboard
   const { 
     sessions, setSessions, 
-    bookings, setBookings, 
     exceptions, setExceptions 
   } = useYogaRealtime([], [], []);
 
@@ -146,18 +145,19 @@ export default function OnlineSessionsAdmin() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [sessionsRes, bookingsRes, offeringsRes, paymentRes] = await Promise.all([
+      const [sessionsRes, offeringsRes, paymentRes] = await Promise.all([
         yogaService.sessions.list(),
-        yogaService.bookings.list(),
         yogaService.offerings.list(),
         yogaService.paymentSettings.get()
       ]);
       
       setSessions(sessionsRes.data.data.sessions || []);
       setExceptions(sessionsRes.data.data.exceptions || []);
-      setBookings(bookingsRes.data.data);
       setOfferings(offeringsRes.data.data);
-      if (paymentRes.data.data) setPaymentSettings(paymentRes.data.data);
+      
+      if (paymentRes.data.success && paymentRes.data.data) {
+        setPaymentForm(paymentRes.data.data);
+      }
       
       if (offeringsRes.data.data.length > 0) {
         setSlotForm(prev => ({ ...prev, offering_id: offeringsRes.data.data[0].id }));
@@ -169,38 +169,7 @@ export default function OnlineSessionsAdmin() {
     }
   };
 
-  const handleVerifyPayment = async (bookingId: string, action: 'verify' | 'reject') => {
-    setModalState(prev => ({
-        ...prev,
-        confirm: {
-            isOpen: true,
-            title: action === 'verify' ? 'Confirm Payment' : 'Reject Booking',
-            message: action === 'verify' 
-                ? 'Are you sure you want to verify this payment? A confirmation email will be sent to the visitor immediately.'
-                : 'Are you sure you want to reject this booking? The visitor will be notified of the failure.',
-            isDanger: action === 'reject',
-            isLoading: false,
-            onConfirm: async () => {
-                setModalState(s => ({ ...s, confirm: { ...s.confirm!, isLoading: true } }));
-                setActioningId(bookingId);
-                try {
-                    const payload = action === 'verify' 
-                        ? { payment_status: 'paid', booking_status: 'confirmed' }
-                        : { payment_status: 'failed', booking_status: 'rejected' };
 
-                    await yogaService.bookings.update(bookingId, payload);
-                    toast.success(action === 'verify' ? 'Booking confirmed & email sent' : 'Booking rejected');
-                    fetchData();
-                } catch (err) {
-                    toast.error('Failed to update booking status');
-                } finally {
-                    setActioningId(null);
-                    setModalState(s => ({ ...s, confirm: { ...s.confirm!, isOpen: false, isLoading: false } }));
-                }
-            }
-        }
-    }));
-  };
 
   const handleCreateOffering = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -354,9 +323,37 @@ export default function OnlineSessionsAdmin() {
     return exceptions.some(e => e.exception_date === dateStr && e.is_blocked);
   }, [selectedDate, exceptions]);
 
-  const pendingPayments = useMemo(() => {
-    return bookings.filter(b => b.payment_status === 'submitted');
-  }, [bookings]);
+
+
+  const handleUpdatePaymentSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setActioningId('payment_update');
+    try {
+      await yogaService.paymentSettings.update(paymentForm);
+      toast.success('Payment settings synchronized');
+      fetchData();
+    } catch (err) {
+      toast.error('Failed to update payment settings');
+    } finally {
+      setActioningId(null);
+    }
+  };
+
+  const handleQRUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setActioningId('qr_upload');
+    try {
+      const res = await mediaService.upload(file, 'payments');
+      setPaymentForm(prev => ({ ...prev, qr_image_url: res.data.url }));
+      toast.success('QR Code uploaded');
+    } catch (err) {
+      toast.error('Failed to upload QR code');
+    } finally {
+      setActioningId(null);
+    }
+  };
 
   if (loading && offerings.length === 0) return (
     <div className="flex h-[60vh] flex-col items-center justify-center text-[#bc6746]">
@@ -385,7 +382,7 @@ export default function OnlineSessionsAdmin() {
         </div>
         
         <div className="flex p-1 bg-white/40 backdrop-blur-md rounded-2xl border border-[#f1e4da] shadow-sm overflow-hidden overflow-x-auto max-w-full">
-           {['availability', 'review', 'bookings', 'offerings', 'payment'].map((tab) => (
+           {['availability', 'offerings', 'payment'].map((tab) => (
              <button 
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
@@ -395,17 +392,150 @@ export default function OnlineSessionsAdmin() {
                 )}
              >
                 {tab}
-                {tab === 'review' && pendingPayments.length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[8px] flex items-center justify-center rounded-full animate-bounce shadow-md">
-                        {pendingPayments.length}
-                    </span>
-                )}
              </button>
            ))}
         </div>
       </div>
 
       <AnimatePresence mode="wait">
+        {/* Tab: Payment Settings */}
+        {activeTab === 'payment' && (
+          <motion.div 
+            key="payment"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+          >
+             <div className="lg:col-span-4">
+                <GlassCard className="p-0 overflow-hidden border-[#bc6746]/10">
+                   <div className="bg-[#bc6746]/5 p-6 border-b border-[#f1e4da]">
+                      <h4 className="text-[10px] font-black uppercase tracking-widest text-[#bc6746]">Visual Identification</h4>
+                   </div>
+                   <div className="p-8">
+                      {paymentForm.qr_image_url ? (
+                        <div className="relative aspect-square group overflow-hidden rounded-[32px] ring-1 ring-[#bc6746]/10">
+                            <img 
+                                src={paymentForm.qr_image_url} 
+                                alt="QR Code" 
+                                className="w-full h-full object-cover"
+                            />
+                            <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white cursor-pointer select-none">
+                                <RefreshCw className="w-6 h-6 mb-2" />
+                                <span className="text-[8px] font-black uppercase tracking-widest">Swap Code</span>
+                                <input type="file" className="hidden" accept="image/*" onChange={handleQRUpload} />
+                            </label>
+                        </div>
+                      ) : (
+                        <label className="flex aspect-square flex-col items-center justify-center rounded-[32px] bg-[#bc6746]/5 border border-dashed border-[#bc6746]/20 cursor-pointer hover:bg-[#bc6746]/10 transition-colors">
+                            <Plus className="w-8 h-8 text-[#bc6746]/40 mb-2" />
+                            <p className="text-[9px] text-[#bc6746]/60 font-black uppercase tracking-widest">Upload QR Code</p>
+                            <input type="file" className="hidden" accept="image/*" onChange={handleQRUpload} />
+                        </label>
+                      )}
+                      
+                      <p className="mt-6 text-[10px] text-center italic text-[#a55a3d]/40 leading-relaxed">
+                        This QR code will be presented to users during the manual checkout flow for Online Sessions.
+                      </p>
+                   </div>
+                </GlassCard>
+             </div>
+
+             <div className="lg:col-span-8">
+                <GlassCard className="p-10 border-[#bc6746]/10">
+                   <form onSubmit={handleUpdatePaymentSettings} className="space-y-8">
+                      <div className="flex items-center justify-between pb-6 border-b border-[#f1e4da]">
+                         <h3 className="text-2xl font-serif text-[#4a3b32] italic uppercase">Financial Controls</h3>
+                         <CreditCard className="w-6 h-6 text-[#bc6746]/30" />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div className="space-y-2">
+                             <label className="text-[10px] font-black uppercase tracking-widest text-[#a55a3d]/50 ml-2">UPI Identifier</label>
+                             <input 
+                                type="text"
+                                value={paymentForm.upi_id}
+                                onChange={e => setPaymentForm({ ...paymentForm, upi_id: e.target.value })}
+                                placeholder="name@upi"
+                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-2xl px-6 py-4 text-sm text-[#4a3b32] focus:ring-1 ring-[#bc6746] outline-none font-serif"
+                             />
+                         </div>
+                         <div className="space-y-2">
+                             <label className="text-[10px] font-black uppercase tracking-widest text-[#a55a3d]/50 ml-2">Account Holder Name</label>
+                             <input 
+                                type="text"
+                                value={paymentForm.payee_name}
+                                onChange={e => setPaymentForm({ ...paymentForm, payee_name: e.target.value })}
+                                placeholder="Abharana Sanctuary"
+                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-2xl px-6 py-4 text-sm text-[#4a3b32] focus:ring-1 ring-[#bc6746] outline-none font-serif"
+                             />
+                         </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                         <div className="md:col-span-8 space-y-2">
+                             <label className="text-[10px] font-black uppercase tracking-widest text-[#a55a3d]/50 ml-2">Payment Instructions</label>
+                             <textarea 
+                                value={paymentForm.instructions}
+                                onChange={e => setPaymentForm({ ...paymentForm, instructions: e.target.value })}
+                                placeholder="Scan QR and upload snippet of the transaction..."
+                                rows={1}
+                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-2xl px-6 py-4 text-sm text-[#4a3b32] focus:ring-1 ring-[#bc6746] outline-none font-serif italic"
+                             />
+                         </div>
+                         <div className="md:col-span-4 space-y-2">
+                             <label className="text-[10px] font-black uppercase tracking-widest text-[#a55a3d]/50 ml-2">GST Percentage (%)</label>
+                             <input 
+                                type="number"
+                                value={paymentForm.gst_percent}
+                                onChange={e => setPaymentForm({ ...paymentForm, gst_percent: Number(e.target.value) })}
+                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-2xl px-6 py-4 text-sm text-[#4a3b32] focus:ring-1 ring-[#bc6746] outline-none font-serif"
+                             />
+                         </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-6 rounded-3xl bg-[#bc6746]/5 border border-[#bc6746]/10">
+                         <div className="flex items-center space-x-4">
+                            <div className={cn(
+                                "p-3 rounded-xl shadow-lg",
+                                paymentForm.is_active ? "bg-green-500 text-white" : "bg-gray-400 text-white"
+                            )}>
+                               <ShieldCheck className="w-5 h-5" />
+                            </div>
+                            <div>
+                               <p className="text-xs font-black uppercase tracking-widest text-[#4a3b32]">Payment Acceptance</p>
+                               <p className="text-[10px] text-[#bc6746]/60 italic font-serif">Toggle visibility for manual payment flow</p>
+                            </div>
+                         </div>
+                         <button 
+                            type="button"
+                            onClick={() => setPaymentForm({ ...paymentForm, is_active: !paymentForm.is_active })}
+                            className={cn(
+                                "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out px-0 py-0",
+                                paymentForm.is_active ? 'bg-[#bc6746]' : 'bg-gray-200'
+                            )}
+                         >
+                            <span className={cn(
+                                "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                paymentForm.is_active ? 'translate-x-5' : 'translate-x-0'
+                            )} />
+                         </button>
+                      </div>
+
+                      <button 
+                         type="submit"
+                         disabled={actioningId === 'payment_update'}
+                         className="w-full py-5 bg-[#bc6746] text-white rounded-3xl text-[10px] font-black uppercase tracking-[0.4em] shadow-xl shadow-[#bc6746]/20 transition-all hover:bg-[#a55a3d] active:scale-95 flex items-center justify-center gap-3"
+                      >
+                         {actioningId === 'payment_update' ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                         Synchronize Payment Settings
+                      </button>
+                   </form>
+                </GlassCard>
+             </div>
+          </motion.div>
+        )}
+
         {/* Tab 1: Availability Manager */}
         {activeTab === 'availability' && (
           <motion.div 
@@ -708,152 +838,6 @@ export default function OnlineSessionsAdmin() {
           </motion.div>
         )}
 
-        {/* Tab 2: Payment Review (New) */}
-        {activeTab === 'review' && (
-          <motion.div 
-            key="review"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            className="space-y-8"
-          >
-             {pendingPayments.length === 0 ? (
-                 <div className="flex flex-col items-center justify-center py-32 space-y-6 opacity-30 grayscale">
-                    <ShieldCheck className="w-24 h-24 text-[#bc6746]/40" />
-                    <p className="text-sm font-black uppercase tracking-[0.5em] text-[#bc6746]">No Pending Verifications</p>
-                 </div>
-             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {pendingPayments.map(booking => (
-                        <GlassCard key={booking.id} className="group relative overflow-hidden p-8 border-[#bc6746]/10 flex flex-col gap-8">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rotate-45 translate-x-16 -translate-y-16" />
-                            
-                            <div className="flex justify-between items-start">
-                                <div className="space-y-1">
-                                    <h3 className="text-xl font-serif text-[#4a3b32] leading-none uppercase italic">{booking.user_name}</h3>
-                                    <p className="text-[10px] text-[#a55a3d]/60 font-black uppercase tracking-widest">{booking.user_email}</p>
-                                    {booking.user_phone && <p className="text-[9px] text-[#bc6746]/60 font-bold">{booking.user_phone}</p>}
-                                </div>
-                                <div className="text-right">
-                                    <div className="px-3 py-1 rounded-full bg-amber-100 text-amber-600 text-[8px] font-black uppercase tracking-widest mb-1 shadow-sm">In Review</div>
-                                    <p className="text-xs font-black text-[#bc6746]">₹{booking.total_amount}</p>
-                                </div>
-                            </div>
-
-                            <div className="bg-[#fffdf8] rounded-3xl p-6 border border-[#f1e4da] space-y-6">
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-1">
-                                        <p className="text-[9px] font-black text-[#bc6746] uppercase tracking-widest italic">Reference ID</p>
-                                        <p className="text-sm font-serif font-black text-[#4a3b32]">{booking.payment_reference || 'N/A'}</p>
-                                    </div>
-                                    {booking.payment_screenshot_url && (
-                                        <a href={booking.payment_screenshot_url} target="_blank" className="p-3 bg-white border border-[#f1e4da] rounded-2xl shadow-sm hover:scale-105 transition-all text-[#bc6746]">
-                                            <ImageIcon className="w-5 h-5" />
-                                        </a>
-                                    )}
-                                </div>
-                                <div className="pt-4 border-t border-[#f1e4da] space-y-1">
-                                    <p className="text-[9px] font-black text-[#a55a3d]/40 uppercase tracking-widest italic">Class Destination</p>
-                                    <p className="text-xs font-bold text-[#4a3b32]">{booking.yoga_sessions?.yoga_offerings?.title}</p>
-                                    <p className="text-[10px] text-[#bc6746] italic font-medium">{new Date(booking.yoga_sessions?.session_date).toLocaleDateString()} @ {formatTime12h(booking.yoga_sessions?.start_time)}</p>
-                                </div>
-                            </div>
-
-                            <div className="flex gap-4 mt-auto">
-                                <button 
-                                  onClick={() => handleVerifyPayment(booking.id, 'reject')}
-                                  disabled={actioningId === booking.id}
-                                  className="flex-1 py-4 rounded-2xl border border-red-100 text-red-500 text-[10px] font-black uppercase tracking-widest hover:bg-red-50 transition-all flex items-center justify-center gap-3"
-                                >
-                                   {actioningId === booking.id ? <RefreshCw className="w-4 h-4 animate-spin"/> : <ThumbsDown className="w-4 h-4" />} Reject
-                                </button>
-                                <button 
-                                  onClick={() => handleVerifyPayment(booking.id, 'verify')}
-                                  disabled={actioningId === booking.id}
-                                  className="flex-3 py-4 flex-[2] rounded-2xl bg-green-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xl shadow-green-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
-                                >
-                                   {actioningId === booking.id ? <RefreshCw className="w-4 h-4 animate-spin"/> : <ThumbsUp className="w-4 h-4" />} Verify & Confirm
-                                </button>
-                            </div>
-                        </GlassCard>
-                    ))}
-                </div>
-             )}
-          </motion.div>
-        )}
-
-        {/* Tab 3: All Bookings History */}
-        {activeTab === 'bookings' && (
-          <motion.div 
-            key="bookings"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <GlassCard noPadding className="overflow-hidden border-[#bc6746]/10 shadow-2xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="border-b border-[#f1e4da] text-[#a55a3d]/50 text-[9px] uppercase tracking-[0.3em] font-black bg-[#bc6746]/5">
-                      <th className="px-8 py-6">Client Info</th>
-                      <th className="px-8 py-6">Session Context</th>
-                      <th className="px-8 py-6">Status Details</th>
-                      <th className="px-8 py-6 text-right font-black">Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#f1e4da]">
-                    {bookings.map((booking) => (
-                      <tr key={booking.id} className="hover:bg-[#fdfcf6]/50 transition-colors group">
-                        <td className="px-8 py-6">
-                           <div className="flex items-center space-x-4">
-                               <div className="w-10 h-10 rounded-2xl bg-white border border-[#f1e4da] flex items-center justify-center text-[10px] font-black text-[#bc6746] shadow-sm italic">
-                                   {booking.user_name.charAt(0)}
-                               </div>
-                               <div>
-                                   <p className="text-sm font-black text-[#4a3b32] uppercase tracking-tight">{booking.user_name}</p>
-                                   <p className="text-[10px] text-[#a55a3d]/50 italic">{booking.user_email}</p>
-                               </div>
-                           </div>
-                        </td>
-                        <td className="px-8 py-6">
-                            <div className="flex items-center space-x-2 mb-1">
-                                <CalendarIcon className="w-3.5 h-3.5 text-[#bc6746]/40" />
-                                <span className="text-xs font-serif font-black text-[#4a3b32]/80">
-                                    {new Date(booking.yoga_sessions?.session_date).toLocaleDateString('en-GB')}
-                                </span>
-                                <span className="text-xs text-[#bc6746]/20">@</span>
-                                <span className="text-xs font-serif font-black text-[#4a3b32]/80">{formatTime12h(booking.yoga_sessions?.start_time)}</span>
-                            </div>
-                           <p className="text-[9px] text-[#bc6746]/60 uppercase tracking-[0.2em] font-black">{booking.yoga_sessions?.yoga_offerings?.title}</p>
-                        </td>
-                        <td className="px-8 py-6">
-                           <div className="flex items-center space-x-4">
-                                <div className={cn(
-                                    "flex items-center text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-sm",
-                                    booking.payment_status === 'paid' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
-                                )}>
-                                    {booking.payment_status === 'paid' ? 'Paid' : 'Pending'}
-                                </div>
-                                <div className={cn(
-                                    "flex items-center text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-sm",
-                                    booking.booking_status === 'confirmed' ? 'bg-[#bc6746] text-white shadow-xl shadow-[#bc6746]/20' : 'bg-gray-100 text-gray-400'
-                                )}>
-                                    {booking.booking_status}
-                                </div>
-                           </div>
-                        </td>
-                        <td className="px-8 py-6 text-right">
-                           <p className="text-lg font-serif font-black text-[#bc6746] italic">₹{booking.total_amount}</p>
-                           <p className="text-[10px] text-[#a55a3d]/40 font-black uppercase tracking-tighter italic">Transaction Finalized</p>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </GlassCard>
-          </motion.div>
-        )}
 
         {/* Tab 4: Offerings Configuration */}
         {activeTab === 'offerings' && (
@@ -936,129 +920,7 @@ export default function OnlineSessionsAdmin() {
               ))}
           </motion.div>
         )}
-        {/* Tab 5: Payment Configuration */}
-        {activeTab === 'payment' && (
-          <motion.div 
-            key="payment"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            className="max-w-4xl mx-auto"
-          >
-            <GlassCard className="p-12 border-[#bc6746]/10 space-y-12">
-                <div className="flex justify-between items-center pb-6 border-b border-[#f1e4da]">
-                    <div>
-                        <h2 className="text-3xl font-serif text-[#4a3b32] uppercase italic tracking-tighter leading-none">Checkout Configuration</h2>
-                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/40 mt-2">Manage your collection portal</p>
-                    </div>
-                    <div className="p-4 bg-[#bc6746]/5 text-[#bc6746] rounded-2xl">
-                        <CreditCard className="w-6 h-6" />
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                    {/* Left: QR Upload */}
-                    <div className="space-y-6">
-                        <label className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/50 ml-2 italic">QR CODE PREVIEW</label>
-                        <div className="relative group h-80 bg-[#fffdf8] rounded-[40px] border-2 border-dashed border-[#f1e4da] flex flex-col items-center justify-center space-y-4 overflow-hidden hover:border-[#bc6746]/30 transition-all">
-                            {paymentSettings.qr_image_url ? (
-                                <>
-                                    <img src={paymentSettings.qr_image_url} alt="Payment QR" className="w-64 h-64 object-contain" />
-                                    <button 
-                                      onClick={() => setPaymentSettings({...paymentSettings, qr_image_url: ''})}
-                                      className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-red-500"
-                                    >
-                                      Remove QR
-                                    </button>
-                                </>
-                            ) : (
-                                <>
-                                    <ImageIcon className="w-12 h-12 text-[#bc6746]/20" />
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-[#a55a3d]/40">Click to Upload QR</p>
-                                    <input 
-                                        type="file" 
-                                        accept="image/*"
-                                        onChange={async (e) => {
-                                            const file = e.target.files?.[0];
-                                            if (!file) return;
-                                            try {
-                                                toast.info("Uploading QR...");
-                                                const res = await mediaService.upload(file, 'payment');
-                                                if (res.data.success) {
-                                                    setPaymentSettings({...paymentSettings, qr_image_url: res.data.url});
-                                                    toast.success("QR Code updated locally. Save to finalize.");
-                                                }
-                                            } catch (err) {
-                                                toast.error("Failed to upload image");
-                                            }
-                                        }}
-                                        className="absolute inset-0 opacity-0 cursor-pointer"
-                                    />
-                                </>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Right: Text Configuration */}
-                    <div className="space-y-8">
-                        <div className="space-y-2">
-                             <label className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/50 ml-2">UPI ID (VPA)</label>
-                             <input 
-                                type="text"
-                                value={paymentSettings.upi_id}
-                                onChange={e => setPaymentSettings({...paymentSettings, upi_id: e.target.value})}
-                                placeholder="e.g. sanctuary@upi"
-                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-2xl px-6 py-4 text-sm font-bold text-[#4a3b32] outline-none focus:border-[#bc6746]"
-                             />
-                        </div>
-                        <div className="space-y-2">
-                             <label className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/50 ml-2">Payee / Account Name</label>
-                             <input 
-                                type="text"
-                                value={paymentSettings.payee_name}
-                                onChange={e => setPaymentSettings({...paymentSettings, payee_name: e.target.value})}
-                                placeholder="e.g. Abharana Kakal Sanctuary"
-                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-2xl px-6 py-4 text-sm font-bold text-[#4a3b32] outline-none focus:border-[#bc6746]"
-                             />
-                        </div>
-                        <div className="space-y-2">
-                             <label className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/50 ml-2">GST Percentage (%)</label>
-                             <input 
-                                type="number"
-                                value={paymentSettings.gst_percent}
-                                onChange={e => setPaymentSettings({...paymentSettings, gst_percent: Number(e.target.value)})}
-                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-2xl px-6 py-4 text-sm font-bold text-[#4a3b32] outline-none focus:border-[#bc6746]"
-                             />
-                        </div>
-                        <div className="space-y-2">
-                             <label className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/50 ml-2">Payment Instructions (Optional)</label>
-                             <textarea 
-                                rows={2}
-                                value={paymentSettings.instructions}
-                                onChange={e => setPaymentSettings({...paymentSettings, instructions: e.target.value})}
-                                placeholder="Instructions shown on payment screen..."
-                                className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-3xl p-6 text-xs italic font-medium text-[#4a3b32] outline-none focus:border-[#bc6746]"
-                             />
-                        </div>
-                        
-                        <button 
-                            onClick={async () => {
-                                try {
-                                    await yogaService.paymentSettings.update(paymentSettings);
-                                    toast.success('Sanctuary checkout settings updated');
-                                } catch (err) {
-                                    toast.error('Failed to update settings');
-                                }
-                            }}
-                            className="w-full py-6 bg-[#bc6746] text-white rounded-3xl text-[11px] font-black uppercase tracking-[0.5em] shadow-[0_20px_40px_rgba(188,103,70,0.3)] hover:scale-[1.02] active:scale-95 transition-all"
-                        >
-                            COMMIT CHANGES
-                        </button>
-                    </div>
-                </div>
-            </GlassCard>
-          </motion.div>
-        )}
       </AnimatePresence>
 
       {/* Offering Modal - Enhanced */}

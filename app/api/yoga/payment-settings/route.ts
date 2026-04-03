@@ -5,19 +5,23 @@ import { withAuth } from '@/lib/with-auth';
 /**
  * GET /api/yoga/payment-settings
  * Public: Get active payment settings (for client checkout).
+ * Admin: Get any payment settings (for dashboard).
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const { data, error } = await supabaseAdmin
-      .from('yoga_payment_settings')
-      .select('*')
-      .eq('is_active', true)
-      .limit(1)
-      .single();
+    const authHeader = req.headers.get('Authorization');
+    let query = supabaseAdmin.from('yoga_payment_settings').select('*').limit(1);
+
+    // If not admin, only get active settings
+    if (!authHeader) {
+      query = query.eq('is_active', true);
+    }
+
+    const { data, error } = await query.maybeSingle();
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({ success: true, data: data || null });
   } catch (err: any) {
     console.error('Payment settings fetch error:', err);
     return NextResponse.json({ error: 'Failed to fetch payment settings' }, { status: 500 });

@@ -4,18 +4,10 @@ import Image from "next/image";
 import { useRef } from "react";
 
 export default function IntroSection() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const imageY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -30]);
+  
 
   return (
     <section
-      ref={containerRef}
       className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain"
     >
       {/* Subtle Background Watermark */}
@@ -76,9 +68,6 @@ export default function IntroSection() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <motion.path
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 2, delay: 0.8, ease: "easeInOut" }}
                 d="M5 10Q50 2 100 12T195 8"
                 stroke="currentColor"
                 strokeWidth="2.5"

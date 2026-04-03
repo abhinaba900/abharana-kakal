@@ -4,6 +4,7 @@ import { Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useState, useRef } from "react";
 import { toast } from "react-toastify";
+import { validateEmail, validatePhone } from "@/lib/utils";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,10 @@ export default function ContactForm() {
     phone: "",
     interest: "Yoga",
     message: ""
+  });
+  const [errors, setErrors] = useState({
+    email: false,
+    phone: false
   });
   const [loading, setLoading] = useState(false);
 
@@ -25,9 +30,25 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isEmailValid = validateEmail(formData.email);
+    const isPhoneValid = !formData.phone || validatePhone(formData.phone); // Phone optional in schema? No, but let's check.
+
     if (!formData.name || !formData.email || !formData.message) {
       toast.error("Please fill in all required fields.");
       return;
+    }
+
+    if (!isEmailValid) {
+        setErrors(prev => ({ ...prev, email: true }));
+        toast.error("Please enter a valid email address.");
+        return;
+    }
+
+    if (formData.phone && !isPhoneValid) {
+        setErrors(prev => ({ ...prev, phone: true }));
+        toast.error("Please enter a valid phone number.");
+        return;
     }
 
     setLoading(true);
@@ -108,29 +129,41 @@ export default function ContactForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#bc6746]/60 pl-4">
-                    Email
+                  <label className={`text-[10px] uppercase tracking-[0.3em] font-bold pl-4 ${errors.email ? 'text-red-500' : 'text-[#bc6746]/60'}`}>
+                    Email {errors.email && "- Invalid Format"}
                   </label>
                   <input
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (errors.email) setErrors({ ...errors, email: false });
+                    }}
+                    onBlur={() => setErrors(prev => ({ ...prev, email: !validateEmail(formData.email) }))}
                     placeholder="hello@domain.com"
-                    className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light"
+                    className={`w-full px-8 py-4 rounded-full bg-white/50 border ${errors.email ? 'border-red-500 focus:border-red-600' : 'border-[#f1e4da] focus:border-[#bc6746]'} text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none hover:border-[#bc6746]/40 transition-all text-base font-light`}
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#bc6746]/60 pl-4">
-                    Phone
+                  <label className={`text-[10px] uppercase tracking-[0.3em] font-bold pl-4 ${errors.phone ? 'text-red-500' : 'text-[#bc6746]/60'}`}>
+                    Phone {errors.phone && "- Invalid"}
                   </label>
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        if (errors.phone) setErrors({ ...errors, phone: false });
+                    }}
+                    onBlur={() => {
+                        if (formData.phone) {
+                            setErrors(prev => ({ ...prev, phone: !validatePhone(formData.phone) }));
+                        }
+                    }}
                     placeholder="+91 00000 00000"
-                    className="w-full px-8 py-4 rounded-full bg-white/50 border border-[#f1e4da] text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none focus:border-[#bc6746] hover:border-[#bc6746]/40 transition-all text-base font-light"
+                    className={`w-full px-8 py-4 rounded-full bg-white/50 border ${errors.phone ? 'border-red-500 focus:border-red-600' : 'border-[#f1e4da] focus:border-[#bc6746]'} text-[#4a3b32] placeholder-[#4a3b32]/30 focus:outline-none hover:border-[#bc6746]/40 transition-all text-base font-light`}
                   />
                 </div>
               </div>

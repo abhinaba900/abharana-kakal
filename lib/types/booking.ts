@@ -7,10 +7,6 @@ export interface Offering {
   package_5_price: number;
   package_10_price: number;
   package_15_price: number;
-  upi_id?: string;
-  payee_name?: string;
-  qr_image_url?: string;
-  instructions?: string;
 }
 
 export interface Session {
@@ -36,3 +32,5 @@ export interface UserData {
   phone: string;
   message: string;
 }
+
+export type BookingType = 'yoga' | 'retreat' | 'upcoming';

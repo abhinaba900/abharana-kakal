@@ -6,12 +6,14 @@ import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, 
+  ClipboardList,
   MessageSquare, 
   Music, 
   Palmtree, 
   BookOpen, 
   Settings, 
-  LogOut 
+  LogOut,
+  CalendarDays
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -22,9 +24,11 @@ function cn(...inputs: any[]) {
 
 const MENU_ITEMS = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin' },
+  { icon: ClipboardList, label: 'Bookings', href: '/admin/bookings' },
   { icon: MessageSquare, label: 'Enquiries', href: '/admin/enquiries' },
-  { icon: Music, label: 'Sound Healing', href: '/admin/sound-healing' },
   { icon: BookOpen, label: 'Online Yoga', href: '/admin/online-sessions' },
+  { icon: Music, label: 'Sound Healing', href: '/admin/sound-healing' },
+  { icon: CalendarDays, label: 'Upcoming Sessions', href: '/admin/upcoming-sessions' },
   { icon: Palmtree, label: 'Retreats', href: '/admin/retreats' },
   { icon: BookOpen, label: 'Journal', href: '/admin/journal' },
   { icon: Settings, label: 'Settings', href: '/admin/settings' },

@@ -176,4 +176,25 @@
   text-transform: uppercase !important;
 }
 
-/* Book Session Button */
+/* Custom Scrollbar for Premium UI */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(188, 103, 70, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(188, 103, 70, 0.4);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(188, 103, 70, 0.2) transparent;
+}

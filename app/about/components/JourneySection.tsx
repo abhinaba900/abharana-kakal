@@ -4,17 +4,10 @@ import Image from "next/image";
 import { useRef } from "react";
 
 export default function JourneySection() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const textY = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const imgY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+  
 
   return (
-    <section ref={containerRef} className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
+    <section  className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
       <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row items-center gap-16 md:gap-32">
         
         {/* Left Side: Heritage Visual Anchor */}

@@ -111,6 +111,20 @@ export const mediaService = {
   purge: (url: string) => api.delete('/media/purge', { data: { url } }),
 };
 
+export const bookingService = {
+  list: (params?: { type?: string; status?: string }) => api.get('/bookings', { params }),
+  update: (id: string, data: any) => api.patch(`/bookings/${id}`, data),
+  delete: (id: string) => api.delete(`/bookings/${id}`),
+  create: (data: any) => api.post('/bookings', data), // Unified creation entry
+};
+
+export const adminService = {
+  paymentSettings: {
+    get: () => api.get('/admin/payment-settings'),
+    update: (data: any) => api.patch('/admin/payment-settings', data),
+  }
+};
+
 export const yogaService = {
   offerings: {
     list: () => api.get('/yoga/offerings'),
@@ -131,9 +145,9 @@ export const yogaService = {
   },
   bookings: {
     list: () => api.get('/yoga/bookings'),
-    create: (data: any) => api.post('/yoga/bookings', data),
-    update: (id: string, data: any) => api.patch(`/yoga/bookings/${id}`, data),
-    delete: (id: string) => api.delete(`/yoga/bookings/${id}`),
+    create: (data: any) => api.post('/bookings', data), // Unified endpoint
+    update: (id: string, data: any) => api.patch(`/bookings/${id}`, data),
+    delete: (id: string) => api.delete(`/bookings/${id}`),
   },
   paymentSettings: {
     get: () => api.get('/yoga/payment-settings'),

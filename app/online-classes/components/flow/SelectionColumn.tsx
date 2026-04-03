@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Offering, Session, UserData } from "./types";
 import { Calendar } from "@/components/ui/Calendar";
-import { cn, formatDateLocal, formatTime12h } from "@/lib/utils";
+import { cn, formatDateLocal, formatTime12h, validateEmail, validatePhone } from "@/lib/utils";
 
 interface SelectionColumnProps {
   offerings: Offering[];
@@ -23,6 +23,8 @@ interface SelectionColumnProps {
   selectedDate: Date | null;
   selectedSession: Session | null;
   userData: UserData;
+  errors?: { name: boolean, email: boolean, phone: boolean };
+  setErrors?: (errors: { name: boolean, email: boolean, phone: boolean }) => void;
   onSelectOffering: (offering: Offering) => void;
   onSelectDate: (date: Date) => void;
   onSelectSession: (session: Session) => void;
@@ -37,6 +39,8 @@ export default function SelectionColumn({
   selectedDate,
   selectedSession,
   userData,
+  errors = { name: false, email: false, phone: false },
+  setErrors,
   onSelectOffering,
   onSelectDate,
   onSelectSession,
@@ -105,30 +109,62 @@ export default function SelectionColumn({
                         type="text" 
                         placeholder="Full Name"
                         value={userData.name}
-                        onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-                        className="w-full bg-transparent border-b border-[#f1e4da] py-2.5 outline-none focus:border-[#bc6746] transition-all text-base font-serif text-[#4a3b32] placeholder-[#a55a3d]/20"
+                        onChange={(e) => {
+                            setUserData({ ...userData, name: e.target.value });
+                            if (setErrors && errors.name) setErrors({ ...errors, name: false });
+                        }}
+                        className={cn(
+                            "w-full bg-transparent border-b py-2.5 outline-none transition-all text-base font-serif text-[#4a3b32] placeholder-[#a55a3d]/20",
+                            errors.name ? "border-red-500 text-red-500" : "border-[#f1e4da] focus:border-[#bc6746]"
+                        )}
                     />
-                    <Users className="absolute right-0 bottom-2.5 w-4 h-4 text-[#a55a3d]/20 group-focus-within:text-[#bc6746] transition-colors" />
+                    <Users className={cn("absolute right-0 bottom-2.5 w-4 h-4 transition-colors", errors.name ? "text-red-500" : "text-[#a55a3d]/20 group-focus-within:text-[#bc6746]")} />
+                    {errors.name && <span className="absolute left-0 -bottom-4 text-[7px] font-black uppercase text-red-500 tracking-widest">Name is Required</span>}
                 </div>
                 <div className="relative group">
                     <input 
                         type="email" 
                         placeholder="Email Address"
                         value={userData.email}
-                        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-                        className="w-full bg-transparent border-b border-[#f1e4da] py-2.5 outline-none focus:border-[#bc6746] transition-all text-base font-serif text-[#4a3b32] placeholder-[#a55a3d]/20"
+                        onChange={(e) => {
+                            setUserData({ ...userData, email: e.target.value });
+                            if (setErrors && errors.email) setErrors({ ...errors, email: false });
+                        }}
+                        onBlur={() => {
+                            if (setErrors && userData.email) {
+                                setErrors({ ...errors, email: !validateEmail(userData.email) });
+                            }
+                        }}
+                        className={cn(
+                            "w-full bg-transparent border-b py-2.5 outline-none transition-all text-base font-serif text-[#4a3b32] placeholder-[#a55a3d]/20",
+                            errors.email ? "border-red-500 text-red-500" : "border-[#f1e4da] focus:border-[#bc6746]"
+                        )}
                     />
-                    <Mail className="absolute right-0 bottom-2.5 w-4 h-4 text-[#a55a3d]/20 group-focus-within:text-[#bc6746] transition-colors" />
+                    <Mail className={cn("absolute right-0 bottom-2.5 w-4 h-4 transition-colors", errors.email ? "text-red-500" : "text-[#a55a3d]/20 group-focus-within:text-[#bc6746]")} />
+                    {errors.email && <span className="absolute left-0 -bottom-5 text-[8px] font-black uppercase text-red-500 tracking-widest bg-white/80 px-2 py-0.5 rounded-md shadow-sm">Enter a valid email (e.g. user@domain.com)</span>}
                 </div>
                 <div className="relative group">
                     <input 
                         type="tel" 
                         placeholder="Phone Number"
                         value={userData.phone}
-                        onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
-                        className="w-full bg-transparent border-b border-[#f1e4da] py-2.5 outline-none focus:border-[#bc6746] transition-all text-base font-serif text-[#4a3b32] placeholder-[#a55a3d]/20"
+                        onChange={(e) => {
+                            // Strip non-numeric/plus for raw value if preferred, but let's keep it flexible
+                            setUserData({ ...userData, phone: e.target.value });
+                            if (setErrors && errors.phone) setErrors({ ...errors, phone: false });
+                        }}
+                        onBlur={() => {
+                            if (setErrors && userData.phone) {
+                                setErrors({ ...errors, phone: !validatePhone(userData.phone) });
+                            }
+                        }}
+                        className={cn(
+                            "w-full bg-transparent border-b py-2.5 outline-none transition-all text-base font-serif text-[#4a3b32] placeholder-[#a55a3d]/20",
+                            errors.phone ? "border-red-500 text-red-500 placeholder-red-300" : "border-[#f1e4da] focus:border-[#bc6746]"
+                        )}
                     />
-                    <Phone className="absolute right-0 bottom-2.5 w-4 h-4 text-[#a55a3d]/20 group-focus-within:text-[#bc6746] transition-colors" />
+                    <Phone className={cn("absolute right-0 bottom-2.5 w-4 h-4 transition-colors", errors.phone ? "text-red-500" : "text-[#a55a3d]/20 group-focus-within:text-[#bc6746]")} />
+                    {errors.phone && <span className="absolute left-0 -bottom-5 text-[8px] font-black uppercase text-red-500 tracking-widest bg-white/80 px-2 py-0.5 rounded-md shadow-sm">Required: 10-12 digit mobile number</span>}
                 </div>
                 <div className="space-y-2 pt-2">
                     <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#a55a3d]/40">Special Note</label>

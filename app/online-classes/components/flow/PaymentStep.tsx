@@ -44,6 +44,18 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
   const [loadingSettings, setLoadingSettings] = useState(true);
 
   React.useEffect(() => {
+    // If the offering already has individual payment info, use it.
+    if ((offering as any).upi_id || (offering as any).qr_image_url) {
+        setSettings({
+            upi_id: (offering as any).upi_id,
+            payee_name: (offering as any).payee_name,
+            qr_image_url: (offering as any).qr_image_url,
+            instructions: (offering as any).instructions
+        });
+        setLoadingSettings(false);
+        return;
+    }
+
     const fetchSettings = async () => {
         try {
             const res = await axios.get('/api/yoga/payment-settings');
@@ -57,7 +69,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
         }
     };
     fetchSettings();
-  }, []);
+  }, [offering]);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,7 +83,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
       formData.append('file', file);
       formData.append('folder', 'payment-proofs');
 
-      const res = await axios.post('/api/yoga/bookings/upload', formData, {
+      const res = await axios.post('/api/bookings/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
@@ -129,12 +141,20 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
                 <div className="mt-8 space-y-3 w-full border-t border-[#f1e4da] pt-6">
                     <div className="flex justify-between items-center text-[10px]">
                         <span className="text-[#a55a3d]/50 font-bold uppercase tracking-widest">Beneficiary</span>
-                        <span className="text-[#4a3b32] font-black uppercase tracking-tighter italic">Abharana Kakal Sanctuary</span>
+                        <span className="text-[#4a3b32] font-black uppercase tracking-tighter italic">{settings?.payee_name || "Abharana Kakal Sanctuary"}</span>
                     </div>
                     <div className="flex justify-between items-center text-[10px]">
                         <span className="text-[#a55a3d]/50 font-bold uppercase tracking-widest">UPI Portal</span>
-                        <span className="text-[#4a3b32] font-black lowercase tracking-tighter italic">abharana@upi</span>
+                        <span className="text-[#4a3b32] font-black lowercase tracking-tighter italic">{settings?.upi_id || "abharana@upi"}</span>
                     </div>
+                    
+                    {settings?.instructions && (
+                        <div className="pt-4 border-t border-[#f1e4da]/50">
+                            <p className="text-[8px] font-black uppercase tracking-widest text-[#bc6746] mb-1">Instructions</p>
+                            <p className="text-[10px] text-[#4a3b32] italic leading-relaxed">{settings.instructions}</p>
+                        </div>
+                    )}
+
                     <div className="flex justify-between items-end pt-4 border-t border-[#f1e4da]">
                         <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#bc6746]">Total Amount</span>
                         <span className="text-3xl font-serif font-black text-[#bc6746] tracking-tighter italic leading-none">₹{totalAmount}</span>

@@ -72,18 +72,20 @@ export default function BookingFlow() {
       const total_amount = base_amount + gst_amount;
 
       const payload = {
-        session_id: selectedSession?.id,
+        reference_id: selectedSession?.id,
         user_name: userData.name,
         user_email: userData.email,
         user_phone: userData.phone,
-        booking_type: "single",
+        booking_type: "yoga",
         total_amount,
-        base_amount,
+        amount: base_amount,
         gst_amount,
         payment_reference: verifiedPaymentData.reference,
         payment_screenshot_url: verifiedPaymentData.screenshotUrl,
-        payment_status: 'submitted',
-        booking_status: 'pending'
+        metadata: {
+            offering_title: selectedOffering?.title,
+            session_date: selectedSession?.session_date
+        }
       };
 
       const res = await yogaService.bookings.create(payload);

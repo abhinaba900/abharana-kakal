@@ -28,3 +28,19 @@ export function formatTime12h(timeStr: string): string {
   const mStr = String(minute).padStart(2, '0');
   return `${h12}:${mStr} ${ampm}`;
 }
+
+/**
+ * Validates an email address format.
+ */
+export const validateEmail = (email: string) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+/**
+ * Validates a phone number (Supports optional + and 10-12 digits).
+ */
+export const validatePhone = (phone: string) => {
+  // Strip spaces and check for 10-12 digits
+  const cleanPhone = phone.replace(/\s/g, '');
+  return /^\+?[0-9]{10,12}$/.test(cleanPhone);
+};

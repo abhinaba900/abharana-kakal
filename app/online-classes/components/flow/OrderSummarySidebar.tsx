@@ -11,7 +11,8 @@ import {
   Clock,
   ArrowRight,
   Receipt,
-  Info
+  Info,
+  AlertCircle
 } from "lucide-react";
 import { Offering, Session, UserData } from "./types";
 import { cn } from "@/lib/utils";
@@ -126,9 +127,16 @@ export default function OrderSummarySidebar({
             )}
         </button>
 
-        <div className="flex items-center justify-center gap-3 opacity-40">
-            <ShieldCheck className="w-4 h-4 text-[#bc6746]" />
-            <p className="text-[9px] font-black uppercase tracking-widest text-[#a55a3d]">Secure Booking Verified</p>
+        <div className="flex flex-col items-center justify-center gap-3">
+            {!canProceed && !isSubmitting && (
+                <p className="text-[8px] font-black uppercase tracking-[0.2em] text-[#bc6746] opacity-60 mb-1 flex items-center gap-1 animate-pulse">
+                   <AlertCircle className="w-2.5 h-2.5" /> Please complete personal details
+                </p>
+            )}
+            <div className="flex items-center justify-center gap-3 opacity-40">
+                <ShieldCheck className="w-4 h-4 text-[#bc6746]" />
+                <p className="text-[9px] font-black uppercase tracking-widest text-[#a55a3d]">Secure Booking Verified</p>
+            </div>
         </div>
       </div>
     </div>
