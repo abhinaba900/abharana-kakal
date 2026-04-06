@@ -1,5 +1,4 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import { useRef, memo } from "react";
 
@@ -37,7 +36,7 @@ export default function WhyInPersonSection() {
       <div className="absolute bottom-1/4 -right-20 w-[40rem] h-[40rem] bg-[#f1e4da]/40 organic-blob-alt blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
-        <motion.div
+        <div
           
           className="text-center mb-24"
         >
@@ -47,7 +46,7 @@ export default function WhyInPersonSection() {
           <p className="text-[#bc6746] font-handwriting text-3xl md:text-4xl">
             something shifts when you are there
           </p>
-        </motion.div>
+        </div>
 
         <div className="flex flex-col gap-40 md:gap-64">
           {reasons.map((r, idx) => (
@@ -60,19 +59,14 @@ export default function WhyInPersonSection() {
 }
 
 const Chapter = memo(function Chapter({ reason, index }: { reason: any; index: number }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
+  
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, -40]);
 
   const isEven = index % 2 === 0;
 
   return (
     <div 
-      ref={ref}
+      
       style={{ position: 'relative' }}
       className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 md:gap-12`}
     >
@@ -101,9 +95,8 @@ const Chapter = memo(function Chapter({ reason, index }: { reason: any; index: n
       </div>
 
       {/* Text Content - The "Bubble" */}
-      <motion.div 
-        style={{ y, willChange: "transform" }}
-        className={`relative z-20 w-[90%] md:w-2/5 p-10 md:p-16 soft-glass rounded-[80px_30px_90px_40px] flex flex-col justify-center items-start ${isEven ? 'md:-ml-16' : 'md:-mr-16'} -mt-20 md:mt-0`}
+      <div 
+          className={`relative z-20 w-[90%] md:w-2/5 p-10 md:p-16 soft-glass rounded-[80px_30px_90px_40px] flex flex-col justify-center items-start ${isEven ? 'md:-ml-16' : 'md:-mr-16'} -mt-20 md:mt-0`}
       >
         <span className="text-[#bc6746] font-handwriting text-2xl mb-4 opacity-80">
           {index === 0 ? "Presence" : index === 1 ? "Guided" : "Integration"}
@@ -117,7 +110,7 @@ const Chapter = memo(function Chapter({ reason, index }: { reason: any; index: n
         
         {/* Subtle detail */}
         <div className="mt-10" />
-      </motion.div>
+      </div>
     </div>
   );
 });

@@ -118,6 +118,17 @@ export const bookingService = {
   create: (data: any) => api.post('/bookings', data), // Unified creation entry
 };
 
+export const pagesService = {
+  get: (slug: string) => api.get(`/pages/${slug}`),
+  update: (slug: string, data: any) => api.patch(`/pages/${slug}`, data),
+};
+
+export const downloadService = {
+  list: () => api.get('/downloads'),
+  create: (data: any) => api.post('/downloads', data),
+  delete: (id: string) => api.delete(`/downloads/${id}`),
+};
+
 export const adminService = {
   paymentSettings: {
     get: () => api.get('/admin/payment-settings'),

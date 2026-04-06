@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "motion/react";
 
 export default function FinalCTA() {
   return (
@@ -8,15 +7,12 @@ export default function FinalCTA() {
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#a55a3d] via-[#bc6746] to-transparent mix-blend-multiply opacity-50 pointer-events-none" />
 
       {/* Glowing orb — same as retreats FinalCTA */}
-      <motion.div
-        animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.05, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 bg-[#fffdf8]/10 rounded-full blur-3xl z-0"
       />
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
+        
         className="relative z-10 max-w-2xl"
       >
         <p className="font-handwriting text-3xl text-[#f1e4da] mb-6 opacity-80">
@@ -42,7 +38,7 @@ export default function FinalCTA() {
             Enquire
           </a>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

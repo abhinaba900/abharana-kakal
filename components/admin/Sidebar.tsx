@@ -13,7 +13,10 @@ import {
   BookOpen, 
   Settings, 
   LogOut,
-  CalendarDays
+  CalendarDays,
+  FileText,
+  Download,
+  Palette
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -31,6 +34,8 @@ const MENU_ITEMS = [
   { icon: CalendarDays, label: 'Upcoming Sessions', href: '/admin/upcoming-sessions' },
   { icon: Palmtree, label: 'Retreats', href: '/admin/retreats' },
   { icon: BookOpen, label: 'Journal', href: '/admin/journal' },
+  { icon: Palette, label: 'Pages', href: '/admin/pages' },
+  { icon: Download, label: 'Downloads', href: '/admin/downloads' },
   { icon: Settings, label: 'Settings', href: '/admin/settings' },
 ];
 

@@ -8,9 +8,16 @@ interface BlockData {
 
 interface BlockRendererProps {
   content: string | any;
+  theme?: 'light' | 'dark';
 }
 
-const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
+const BlockRenderer: React.FC<BlockRendererProps> = ({ content, theme = 'dark' }) => {
+  const isLight = theme === 'light';
+  const primaryText = isLight ? 'text-[#4a3b32]' : 'text-[#f1e4da]';
+  const mutedText = isLight ? 'text-[#4a3b32]/80' : 'text-[#f1e4da]/80';
+  const captionText = isLight ? 'text-[#4a3b32]/50' : 'text-[#f1e4da]/50';
+  const quoteBg = isLight ? 'bg-[#bc6746]/5 border-[#bc6746]/10' : 'bg-[#fffdf8]/8 border-[#fffdf8]/10';
+
   if (!content) return null;
 
   let blocks: BlockData[] = [];
@@ -26,7 +33,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
   } catch (e) {
     // Fallback for legacy plain text or structured data
     if (typeof content === 'string') {
-      return <p className="text-[#f1e4da]/80 text-base md:text-lg leading-loose mb-6">{content}</p>;
+      return <p className={`${mutedText} text-base md:text-lg leading-loose mb-6`}>{content}</p>;
     }
     return null;
   }
@@ -38,10 +45,10 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
           case 'header':
             const level = block.data.level || 2;
             const headerClasses = {
-              1: 'text-3xl md:text-5xl font-serif text-[#f1e4da] mb-6 tracking-wide',
-              2: 'text-2xl md:text-3xl font-serif text-[#f1e4da] mb-5 tracking-wide',
-              3: 'text-xl md:text-2xl font-serif text-[#f1e4da] mb-4 tracking-wide',
-              4: 'text-lg md:text-xl font-serif text-[#f1e4da] mb-3 tracking-wide',
+              1: `text-3xl md:text-5xl font-serif ${primaryText} mb-6 tracking-wide`,
+              2: `text-2xl md:text-3xl font-serif ${primaryText} mb-5 tracking-wide`,
+              3: `text-xl md:text-2xl font-serif ${primaryText} mb-4 tracking-wide`,
+              4: `text-lg md:text-xl font-serif ${primaryText} mb-3 tracking-wide`,
             };
             const className = (headerClasses as any)[level] || headerClasses[2];
             
@@ -54,7 +61,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
             return (
               <p 
                 key={index} 
-                className="text-[#f1e4da]/80 text-base md:text-lg leading-loose transition-all duration-300"
+                className={`${mutedText} text-base md:text-lg leading-loose transition-all duration-300`}
                 dangerouslySetInnerHTML={{ __html: block.data.text }}
               />
             );
@@ -62,7 +69,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
           case 'list':
             const ListTag = block.data.style === 'ordered' ? 'ol' : 'ul';
             return (
-              <ListTag key={index} className={`space-y-3 ${ListTag === 'ol' ? 'list-decimal' : 'list-disc'} pl-6 text-[#f1e4da]/80 text-base md:text-lg transition-all duration-300`}>
+              <ListTag key={index} className={`space-y-3 ${ListTag === 'ol' ? 'list-decimal' : 'list-disc'} pl-6 ${mutedText} text-base md:text-lg transition-all duration-300`}>
                 {block.data.items.map((item: any, i: number) => {
                   const content = typeof item === 'string' ? item : (item.content || '');
                   return <li key={i} dangerouslySetInnerHTML={{ __html: content }} />;
@@ -74,7 +81,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
             return (
               <div key={index} className="space-y-3">
                 {block.data.items.map((item: any, i: number) => (
-                  <div key={i} className="flex items-start gap-3 text-[#f1e4da]/80 text-base md:text-lg">
+                  <div key={i} className={`flex items-start gap-3 ${mutedText} text-base md:text-lg`}>
                     <div className={`mt-1.5 w-4 h-4 rounded border ${item.checked ? 'bg-[#bc6746] border-[#bc6746]' : 'border-[#bc6746]/40'} flex-shrink-0 flex items-center justify-center`}>
                       {item.checked && (
                         <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,13 +98,13 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
           case 'quote':
             return (
               <blockquote key={index} className="relative my-12 px-10 py-10 rounded-2xl overflow-hidden">
-                <div className="absolute inset-0 bg-[#fffdf8]/8 backdrop-blur-md border border-[#fffdf8]/10 rounded-2xl" />
+                <div className={`absolute inset-0 ${quoteBg} backdrop-blur-md rounded-2xl`} />
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-bottom from-[#bc6746] to-transparent" />
                 <span className="absolute top-4 left-6 font-serif text-7xl leading-none opacity-15 text-[#bc6746] select-none">&ldquo;</span>
                 <div className="relative z-10">
-                  <p className="font-serif text-xl md:text-2xl text-[#FFFDF8]/95 italic leading-relaxed text-center" dangerouslySetInnerHTML={{ __html: block.data.text }} />
+                  <p className={`font-serif text-xl md:text-2xl ${isLight ? 'text-[#4a3b32]' : 'text-[#FFFDF8]/95'} italic leading-relaxed text-center`} dangerouslySetInnerHTML={{ __html: block.data.text }} />
                   {block.data.caption && (
-                    <cite className="block mt-4 text-center text-[#f1e4da]/50 text-sm uppercase tracking-widest not-italic" dangerouslySetInnerHTML={{ __html: block.data.caption }} />
+                    <cite className={`block mt-4 text-center ${captionText} text-sm uppercase tracking-widest not-italic`} dangerouslySetInnerHTML={{ __html: block.data.caption }} />
                   )}
                 </div>
               </blockquote>
@@ -114,10 +121,10 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content }) => {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
                     className="object-cover"
                   />
-                  {block.data.stretched && <div className="absolute inset-0 ring-1 ring-inset ring-white/20" />}
+                  {block.data.stretched && <div className={`absolute inset-0 ring-1 ring-inset ${isLight ? 'ring-black/5' : 'ring-white/20'}`} />}
                 </div>
                 {block.data.caption && (
-                  <figcaption className="text-center text-[#f1e4da]/50 text-xs italic tracking-wide" dangerouslySetInnerHTML={{ __html: block.data.caption }} />
+                  <figcaption className={`text-center ${captionText} text-xs italic tracking-wide`} dangerouslySetInnerHTML={{ __html: block.data.caption }} />
                 )}
               </figure>
             );

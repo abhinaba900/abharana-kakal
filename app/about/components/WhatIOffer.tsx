@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "motion/react";
 import { HandHeart, Waves, Sparkles, Flower2 } from "lucide-react";
 
 const offerings = [
@@ -46,10 +45,8 @@ export default function WhatIOffer() {
       </div>
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
-        <motion.div
-           initial={{ opacity: 0, y: 10 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1.2 }}
+        <div
+           
            className="text-center mb-32"
         >
           <span className="text-[#bc6746] font-mono text-xs uppercase tracking-[0.4em] mb-4 block">the nature of my work</span>
@@ -57,15 +54,13 @@ export default function WhatIOffer() {
             What I <br />
             <span className="text-[#bc6746] italic font-light">Offer</span>
           </h2>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-x-16 md:gap-y-24">
           {offerings.map((offer, idx) => (
-            <motion.div
+            <div
               key={offer.id}
-              initial={{ opacity: 0, scale: 1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: idx * 0.15 }}
+              
               className="relative group cursor-default"
             >
               {/* Textured Background Glow */}
@@ -93,7 +88,7 @@ export default function WhatIOffer() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

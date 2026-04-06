@@ -60,12 +60,12 @@ export default function ExperienceSection() {
       </div>
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
-        <motion.div
+        <div
           className="text-center mb-24"
         >
           <h2 className="text-4xl md:text-7xl font-serif text-[#a55a3d] tracking-tight">The Experience</h2>
           <p className="mt-4 text-[#bc6746] font-handwriting text-3xl md:text-4xl">what awaits you</p>
-        </motion.div>
+        </div>
 
         {/* The Mosaic Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px] md:auto-rows-[350px]">
@@ -79,12 +79,9 @@ export default function ExperienceSection() {
 }
 
 const ExperienceTile = memo(function ExperienceTile({ exp, index }: { exp: any; index: number }) {
-  const tileRef = useRef(null);
   
   return (
-    <motion.div
-      ref={tileRef}
-      style={{ willChange: "transform, opacity" }}
+    <div
       className={`relative group overflow-hidden rounded-[40px] shadow-xl hover:shadow-[0_40px_100px_rgba(188,103,70,0.15)] transition-all duration-700 ${exp.size}`}
     >
       {/* Image Layer */}
@@ -122,7 +119,7 @@ const ExperienceTile = memo(function ExperienceTile({ exp, index }: { exp: any; 
       
       {/* Subtle border accent */}
       <div className="absolute inset-0 border border-white/10 rounded-[40px] pointer-events-none z-20" />
-    </motion.div>
+    </div>
   );
 });
 

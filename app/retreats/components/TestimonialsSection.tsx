@@ -10,31 +10,26 @@ export default function TestimonialsSection() {
 
   return (
     <section className="relative py-24 px-6 flex flex-col items-center">
-      <motion.h2 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+      <h2 
         className="text-4xl md:text-5xl font-serif text-[#FFFDF8] text-center mb-20 text-shadow-soft"
       >
         Voices
-      </motion.h2>
+      </h2>
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 max-w-6xl w-full justify-center">
         {testimonials.map((t, i) => (
-          <motion.div
+          <div
             key={i}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
             className={`bg-[#fffdf8] p-8 md:p-10 shadow-xl w-full max-w-sm flex flex-col justify-between ${t.rotation} paper-grain border border-black/5`}
           >
             {/* Tape detail at the top */}
             <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 w-16 h-4 bg-white/40 backdrop-blur-md rotate-1 shadow-sm"></div>
             
-            <p className="font-handwriting text-2xl md:text-3xl text-[#4a3b32] leading-relaxed mb-8">
+            <p className="font-handwriting text-md md:text-2xl text-[#4a3b32] leading-relaxed mb-8">
               &quot;{t.quote}&quot;
             </p>
             <p className="text-sm uppercase tracking-widest text-[#bc6746] font-medium">— {t.author}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>
