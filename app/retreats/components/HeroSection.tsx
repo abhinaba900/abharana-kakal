@@ -8,10 +8,7 @@ export default function HeroSection() {
   useEffect(() => setMounted(true), []);
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
-      <motion.div
-        initial={{ opacity: 0, y: 0 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.0, ease: "easeOut" }}
+      <div
         className="relative z-10 text-center px-4 max-w-4xl mx-auto"
       >
         <h1 className="text-5xl md:text-7xl font-serif text-[#FFFDF8] uppercase tracking-widest text-shadow-soft mb-6">
@@ -34,13 +31,13 @@ export default function HeroSection() {
             Explore Retreats
           </Link>
         </div>
-      </motion.div>
+      </div>
 
       {/* Floating Particles Simulation */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {mounted &&
           [...Array(12)].map((_, i) => (
-            <motion.div
+            <div
               key={i}
               className="absolute rounded-full bg-[#fffdf8]/30 blur-sm"
               style={{
@@ -49,16 +46,7 @@ export default function HeroSection() {
                 left: Math.random() * 100 + "%",
                 top: Math.random() * 100 + "%",
               }}
-              animate={{
-                y: [0, -50, 0],
-                x: [0, Math.random() * 30 - 15, 0],
-                opacity: [0.1, 0.4, 0.1],
-              }}
-              transition={{
-                duration: Math.random() * 8 + 7,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+             
             />
           ))}
       </div>

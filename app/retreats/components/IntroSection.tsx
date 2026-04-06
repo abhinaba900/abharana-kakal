@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "motion/react";
 import Image from "next/image";
 
 export default function IntroSection() {
@@ -66,7 +65,7 @@ export default function IntroSection() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <motion.path
+              <path
                 d="M5 10Q50 2 100 12T195 8"
                 stroke="currentColor"
                 strokeWidth="2.5"
