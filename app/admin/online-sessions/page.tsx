@@ -909,11 +909,11 @@ export default function OnlineSessionsAdmin() {
                   <div className="grid grid-cols-2 gap-3 mt-auto">
                     <div className="bg-[#fffdf8] border border-[#f1e4da] p-4 rounded-3xl text-center shadow-sm">
                         <p className="text-[9px] font-black uppercase tracking-widest text-[#a55a3d]/40 mb-1">Standard</p>
-                        <p className="text-xl font-serif font-black text-[#bc6746] tracking-tighter">₹{offering.single_price}</p>
+                        <p className="text-xl font-serif font-black text-[#bc6746] tracking-tighter">₹{typeof offering.single_price === 'number' ? offering.single_price.toFixed(2).replace(/\.00$/, '') : offering.single_price}</p>
                     </div>
                     <div className="bg-[#bc6746] p-4 rounded-3xl text-center shadow-lg shadow-[#bc6746]/20">
                         <p className="text-[9px] font-black uppercase tracking-widest text-white/50 mb-1">PK 5</p>
-                        <p className="text-xl font-serif font-black text-white tracking-tighter">₹{offering.package_5_price}</p>
+                        <p className="text-xl font-serif font-black text-white tracking-tighter">₹{typeof offering.package_5_price === 'number' ? offering.package_5_price.toFixed(2).replace(/\.00$/, '') : offering.package_5_price}</p>
                     </div>
                   </div>
                 </GlassCard>

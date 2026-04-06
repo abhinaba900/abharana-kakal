@@ -96,14 +96,14 @@ export default function BookingPortal({ isOpen, onClose, type, itemData }: Booki
 
   const totalAmount = useMemo(() => {
     const base = type === 'yoga' ? (selectedOffering?.single_price || 0) : (itemData?.price || 0);
-    return base * (1 + gstPercent / 100);
+    return Number((base * (1 + gstPercent / 100)).toFixed(2));
   }, [type, selectedOffering, itemData, gstPercent]);
 
   const finalizeBooking = async (paymentData: { reference: string, screenshotUrl?: string }) => {
     setIsSubmitting(true);
     try {
       const baseAmount = type === 'yoga' ? (selectedOffering?.single_price || 0) : (itemData?.price || 0);
-      const gstAmount = baseAmount * (gstPercent / 100);
+      const gstAmount = Number((baseAmount * (gstPercent / 100)).toFixed(2));
       
       const payload = {
         booking_type: type,
@@ -230,7 +230,7 @@ export default function BookingPortal({ isOpen, onClose, type, itemData }: Booki
                           </div>
                           <div className="text-right">
                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#bc6746]/40 block mb-1">Energy Exchange</span>
-                               <span className="text-4xl font-serif font-black text-[#bc6746] tracking-tighter italic">₹{itemData.price}</span>
+                               <span className="text-4xl font-serif font-black text-[#bc6746] tracking-tighter italic">₹{typeof itemData.price === 'number' ? itemData.price.toFixed(2).replace(/\.00$/, '') : itemData.price}</span>
                           </div>
                       </motion.div>
                   )}

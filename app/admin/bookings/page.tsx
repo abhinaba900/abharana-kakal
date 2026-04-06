@@ -158,7 +158,7 @@ export default function BookingsAdmin() {
           { label: 'Pending Review', value: stats.pending, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
           { label: 'Yoga Bookings', value: stats.yoga, icon: Tag, color: 'text-[#bc6746]', bg: 'bg-[#bc6746]/10' },
           { label: 'Upcoming / Retreats', value: stats.upcoming + stats.retreat, icon: Calendar, color: 'text-stone-600', bg: 'bg-stone-100' },
-          { label: 'Total Volume', value: `₹${bookings.reduce((acc, curr) => acc + curr.total_amount, 0).toLocaleString()}`, icon: CreditCard, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+          { label: 'Total Volume', value: `₹${bookings.reduce((acc, curr) => acc + curr.total_amount, 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`, icon: CreditCard, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         ].map((stat, i) => (
           <GlassCard key={i} className="p-6">
             <div className="flex items-center space-x-4">
@@ -224,8 +224,12 @@ export default function BookingsAdmin() {
       {/* Main Content Area */}
       <div className="flex flex-col gap-8 lg:flex-row lg:h-[calc(100vh-420px)] overflow-hidden">
         {/* Bookings List */}
-        <div className="flex-1 overflow-y-auto pr-4 custom-scrollbar will-change-transform overscroll-contain">
-          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 pb-12">
+        <div 
+          className="flex-1 overflow-y-auto p-4 custom-scrollbar will-change-transform overscroll-contain"
+          data-lenis-prevent
+          style={{ touchAction: 'pan-y' }}
+        >
+          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
             {loading ? (
               <div className="flex h-64 flex-col items-center justify-center space-y-4">
                 <Loader2 className="h-8 w-8 animate-spin text-[#bc6746]" />
@@ -272,7 +276,7 @@ export default function BookingsAdmin() {
 
                     {/* Footer: Amount & Status */}
                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#f1e4da]/50">
-                      <p className="text-lg font-bold text-[#bc6746]">₹{booking.total_amount}</p>
+                      <p className="text-lg font-bold text-[#bc6746]">₹{typeof booking.total_amount === 'number' ? booking.total_amount.toFixed(2).replace(/\.00$/, '') : booking.total_amount}</p>
                       <div className={cn(
                           "flex items-center text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full",
                           (booking.payment_status === 'verified' || booking.payment_status === 'paid') ? "bg-emerald-50 text-emerald-600" : 
@@ -297,6 +301,8 @@ export default function BookingsAdmin() {
           {selectedBooking ? (
             <div 
               className="w-full lg:w-96 overflow-y-auto pr-1 overscroll-contain will-change-transform"
+              data-lenis-prevent
+              style={{ touchAction: 'pan-y' }}
             >
               <GlassCard className="sticky top-0 overflow-hidden p-0 border-[#bc6746]/10">
                 {/* Panel Header */}
@@ -351,7 +357,7 @@ export default function BookingsAdmin() {
                         </div>
                         <div className="flex items-center justify-between border-b border-[#f1e4da] pb-4">
                             <span className="text-xs text-[#4a3b32]/40">Total Settled</span>
-                            <span className="text-lg font-bold text-[#bc6746]">₹{selectedBooking.total_amount}</span>
+                            <span className="text-lg font-bold text-[#bc6746]">₹{typeof selectedBooking.total_amount === 'number' ? selectedBooking.total_amount.toFixed(2).replace(/\.00$/, '') : selectedBooking.total_amount}</span>
                         </div>
                    </div>
 

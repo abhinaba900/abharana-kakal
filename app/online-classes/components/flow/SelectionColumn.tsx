@@ -202,7 +202,11 @@ export default function SelectionColumn({
               <Clock className="w-3 h-3" /> Select Time
           </label>
           
-          <div className="flex overflow-x-auto gap-3 pb-3 custom-scrollbar">
+          <div 
+            className="flex overflow-x-auto gap-3 pb-3 custom-scrollbar"
+            data-lenis-prevent
+            style={{ touchAction: 'pan-x' }}
+          >
             {selectedDate ? (
                 availableSlots.length > 0 ? (
                     availableSlots.map(slot => {

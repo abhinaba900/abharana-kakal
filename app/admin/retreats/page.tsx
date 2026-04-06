@@ -269,7 +269,11 @@ export default function RetreatsPage() {
             >
               <div className="h-2 bg-[#bc6746] w-full" />
               
-              <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+              <div 
+                className="flex-1 overflow-y-auto p-8 custom-scrollbar"
+                data-lenis-prevent
+                style={{ touchAction: 'pan-y' }}
+              >
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-bold text-[#4a3b32] uppercase tracking-widest">

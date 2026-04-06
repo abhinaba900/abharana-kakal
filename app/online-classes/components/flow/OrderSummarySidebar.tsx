@@ -86,7 +86,7 @@ export default function OrderSummarySidebar({
         <div className="mt-10 pt-10 border-t-2 border-dashed border-[#f1e4da] space-y-4">
             <div className="flex justify-between items-center text-xs font-bold text-[#4a3b32]/60 uppercase tracking-widest">
                 <span>Class Fee</span>
-                <span>₹{pricing.base.toLocaleString()}</span>
+                <span>₹{pricing.base.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>
             </div>
             <div className="flex justify-between items-center text-xs font-bold text-[#bc6746]/60 uppercase tracking-widest">
                 <div className="flex items-center gap-2">
@@ -98,11 +98,11 @@ export default function OrderSummarySidebar({
                         </span>
                     </div>
                 </div>
-                <span>₹{pricing.gst.toLocaleString()}</span>
+                <span>₹{pricing.gst.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>
             </div>
             <div className="pt-4 flex justify-between items-end">
                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#bc6746]">Total Amount</span>
-                <span className="text-4xl font-serif font-black text-[#bc6746] tracking-tighter italic">₹{pricing.total.toLocaleString()}</span>
+                <span className="text-4xl font-serif font-black text-[#bc6746] tracking-tighter italic">₹{pricing.total.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>
             </div>
         </div>
       </div>

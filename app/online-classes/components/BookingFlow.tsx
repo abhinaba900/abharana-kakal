@@ -72,8 +72,8 @@ export default function BookingFlow() {
     try {
       const GST_RATE = 0.18;
       const base_amount = selectedOffering?.single_price || 0;
-      const gst_amount = base_amount * GST_RATE;
-      const total_amount = base_amount + gst_amount;
+      const gst_amount = Number((base_amount * GST_RATE).toFixed(2));
+      const total_amount = Number((base_amount + gst_amount).toFixed(2));
 
       const payload = {
         reference_id: selectedSession?.id,
@@ -329,7 +329,7 @@ export default function BookingFlow() {
                    session={selectedSession}
                    bookingMode="single"
                    packageSize={1}
-                   totalAmount={(selectedOffering!.single_price * (1 + gstPercent/100))} 
+                   totalAmount={Number((selectedOffering!.single_price * (1 + gstPercent/100)).toFixed(2))} 
                    userData={userData}
                    isSubmitting={isSubmitting}
                    onFinalize={() => {}} 

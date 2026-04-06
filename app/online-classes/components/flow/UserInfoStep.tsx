@@ -25,8 +25,8 @@ export default function UserInfoStep({
 }: UserInfoStepProps) {
   
   const basePrice = offering.single_price;
-  const gstAmount = basePrice * (gstPercent / 100);
-  const totalAmount = basePrice + gstAmount;
+  const gstAmount = Number((basePrice * (gstPercent / 100)).toFixed(2));
+  const totalAmount = Number((basePrice + gstAmount).toFixed(2));
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-6xl mx-auto items-start">
@@ -75,11 +75,11 @@ export default function UserInfoStep({
                  </div>
                  <div className="flex justify-between items-center text-xs opacity-40">
                     <span>GST ({gstPercent}%)</span>
-                    <span>₹{gstAmount.toFixed(0)}</span>
+                    <span>₹{gstAmount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>
                  </div>
                  <div className="flex justify-between items-center pt-4">
                     <span className="text-xs font-black uppercase tracking-widest text-[#bc6746]">Total Amount</span>
-                    <span className="text-3xl font-serif italic text-white">₹{totalAmount.toFixed(0)}</span>
+                    <span className="text-3xl font-serif italic text-white">₹{totalAmount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}</span>
                  </div>
               </div>
            </div>

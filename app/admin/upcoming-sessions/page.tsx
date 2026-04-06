@@ -242,7 +242,7 @@ export default function UpcomingSessionsPage() {
               {/* Badge Overlay */}
               <div className="absolute top-4 left-4">
                 <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-[#f1e4da] shadow-sm flex items-center gap-2">
-                    <span className="text-[10px] font-black text-[#bc6746] uppercase tracking-widest leading-none">₹{session.price}</span>
+                    <span className="text-[10px] font-black text-[#bc6746] uppercase tracking-widest leading-none">₹{typeof session.price === 'number' ? session.price.toFixed(2).replace(/\.00$/, '') : session.price}</span>
                 </div>
               </div>
 

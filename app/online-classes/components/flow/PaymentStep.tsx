@@ -157,7 +157,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({
 
                     <div className="flex justify-between items-end pt-4 border-t border-[#f1e4da]">
                         <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#bc6746]">Total Amount</span>
-                        <span className="text-3xl font-serif font-black text-[#bc6746] tracking-tighter italic leading-none">₹{totalAmount}</span>
+                        <span className="text-3xl font-serif font-black text-[#bc6746] tracking-tighter italic leading-none">₹{typeof totalAmount === 'number' ? totalAmount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 }) : totalAmount}</span>
                     </div>
                 </div>
             </div>

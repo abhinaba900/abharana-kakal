@@ -338,7 +338,12 @@ export default function JournalPage() {
                 className="w-full max-w-5xl rounded-3xl overflow-hidden bg-[#fffdf8] border border-[#f1e4da] shadow-2xl flex flex-col max-h-[90vh] paper-grain"
             >
               <div className="h-1.5 bg-gradient-to-r from-[#bc6746] via-[#a55a3d] to-[#bc6746] w-full" />
-              <form onSubmit={handlePostSubmit} className="p-8 flex-1 overflow-y-auto custom-scrollbar space-y-8">
+              <form 
+                onSubmit={handlePostSubmit} 
+                className="p-8 flex-1 overflow-y-auto custom-scrollbar space-y-8"
+                data-lenis-prevent
+                style={{ touchAction: 'pan-y' }}
+              >
                  <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-serif font-bold text-[#4a3b32] uppercase tracking-widest">
                        {editingPost ? 'Edit Resonance' : 'Write Eternal Inspiration'}

@@ -212,7 +212,11 @@ export default function DashboardPage() {
               <ArrowUpRight className="h-3 w-3 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
-          <div className="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+          <div 
+            className="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar"
+            data-lenis-prevent
+            style={{ touchAction: 'pan-y' }}
+          >
             {recentEnquiries.length > 0 ? (
               recentEnquiries.map((enquiry, i) => (
                 <Link 
