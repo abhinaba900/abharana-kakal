@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "motion/react";
 
 const testimonials = [
   {
@@ -39,7 +38,6 @@ export default function TestimonialsSection() {
         {testimonials.map((t, i) => (
           <div
             key={t.id}
-            id={t.id}
             className={`relative bg-[#fffdf8] p-8 md:p-10 shadow-xl w-full max-w-sm flex flex-col justify-between ${t.rotation} paper-grain border border-black/5`}
           >
             {/* Tape detail — same as retreats */}

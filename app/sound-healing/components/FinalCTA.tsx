@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function FinalCTA() {
   return (
     <section className="relative py-24 px-6 overflow-hidden flex flex-col items-center text-center">
@@ -23,20 +25,20 @@ export default function FinalCTA() {
         </h2>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12">
-          <a
-            href="/contact"
+          <Link
+            href="/online-classes"
             id="sh-final-book"
             className="w-full sm:w-auto px-10 py-4 rounded-full bg-[#f1e4da] text-[#a55a3d] uppercase tracking-widest text-sm font-semibold hover:bg-white transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#f1e4da]/20"
           >
             Book Now
-          </a>
-          <a
+          </Link>
+          <Link
             href="/contact"
             id="sh-final-enquire"
             className="w-full sm:w-auto px-10 py-4 rounded-full bg-transparent border border-[#FFFDF8] text-[#FFFDF8] uppercase tracking-widest text-sm font-semibold hover:bg-[#FFFDF8]/10 transition-all hover:-translate-y-1"
           >
             Enquire
-          </a>
+          </Link>
         </div>
       </div>
     </section>
