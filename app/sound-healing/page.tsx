@@ -27,8 +27,6 @@ export default function SoundHealingPage() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-[#f1e4da]/20 mix-blend-overlay" />
-        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       <HeroSection />

@@ -1,12 +1,9 @@
 "use client";
-import { motion, useInView } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mounted, setMounted] = useState(false);
-  const isInView = useInView(containerRef, { margin: "0px" });
 
   useEffect(() => {
     setMounted(true);
@@ -20,7 +17,6 @@ export default function HeroSection() {
     let ripples: { x: number; y: number; r: number; alpha: number }[] = [];
 
     const addRipple = () => {
-      if (!isInView) return;
       ripples.push({ x: Math.random() * width, y: Math.random() * height, r: 0, alpha: 0.18 });
     };
 
@@ -28,11 +24,6 @@ export default function HeroSection() {
     let animId: number;
 
     const animate = () => {
-      if (!isInView) {
-        animId = requestAnimationFrame(animate);
-        return;
-      }
-
       ctx.clearRect(0, 0, width, height);
       for (let i = ripples.length - 1; i >= 0; i--) {
         const rp = ripples[i];
@@ -63,17 +54,14 @@ export default function HeroSection() {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", onResize);
     };
-  }, [isInView]);
+  }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
       {/* Canvas ripple layer */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-[1]" />
 
-      <motion.div
-        initial={{ opacity: 0, y: 0 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.0, ease: "easeOut" }}
+      <div
         className="relative z-10 text-center px-4 max-w-4xl mx-auto"
       >
         <p className="font-handwriting text-2xl text-[#f1e4da] mb-4 opacity-80">
@@ -103,12 +91,12 @@ export default function HeroSection() {
             Book Session
           </a>
         </div>
-      </motion.div>
+      </div>
 
       {/* Floating particles — same as retreats hero */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {mounted && [...Array(12)].map((_, i) => (
-          <motion.div
+          <div
             key={i}
             className="absolute rounded-full bg-[#fffdf8]/20"
             style={{
@@ -118,8 +106,6 @@ export default function HeroSection() {
               top: Math.random() * 100 + "%",
               willChange: "transform, opacity",
             }}
-            animate={{ y: [0, -50, 0], x: [0, Math.random() * 30 - 15, 0], opacity: [0.05, 0.3, 0.05] }}
-            transition={{ duration: Math.random() * 8 + 7, repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
       </div>

@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "motion/react";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import BookingPortal from "@/app/components/BookingPortal";
@@ -18,9 +17,8 @@ function SessionCard({
  console.log(session.image_url,'image url');
  
   return (
-    <motion.div className={`relative group ${idx === 1 ? "md:mt-12" : ""}`}>
-      <motion.div
-        transition={{ duration: 10 + idx, repeat: Infinity, ease: "linear" }}
+    <div className={`relative group ${idx === 1 ? "md:mt-12" : ""}`}>
+      <div
         className="absolute inset-0 -m-4 bg-[#f1e4da]/40 rounded-[60px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
       />
 
@@ -124,7 +122,7 @@ function SessionCard({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -170,7 +168,7 @@ export default function SessionsSection() {
       className="relative py-24 px-6 z-10 w-full bg-[#fffdf8]"
     >
       <div className="max-w-7xl mx-auto">
-        <motion.div className="text-center mb-24">
+        <div className="text-center mb-24">
           <span className="text-[#bc6746] font-mono text-xs uppercase tracking-[.3em] mb-4 block">
             the circle of gathering
           </span>
@@ -181,7 +179,7 @@ export default function SessionsSection() {
             Intentional spaces for deep restoration, held across the peaceful
             landscapes of Bangalore and Mysore.
           </p>
-        </motion.div>
+        </div>
 
         {loading ? (
           <div className="text-center py-20 text-[#bc6746] italic font-light">
