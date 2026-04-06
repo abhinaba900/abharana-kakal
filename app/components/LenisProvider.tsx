@@ -13,6 +13,11 @@ export default function LenisProvider({
       options={{
         duration: 1.2,
         smoothWheel: true,
+        syncTouch: true,
+        syncTouchLerp: 0.08,
+        touchMultiplier: 1,
+        overscroll: true,
+        anchors: true,
         autoRaf: true,
       }}
     >

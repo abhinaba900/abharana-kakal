@@ -16,9 +16,9 @@ export const metadata: Metadata = {
 
 export default function SoundHealingPage() {
   return (
-    <main className="relative min-h-screen text-[#4a3b32] paper-grain pt-[70px]">
+    <main className="relative min-h-screen overflow-x-hidden text-[#4a3b32] paper-grain pt-[70px]">
       {/* Global Background Image — same as retreats page */}
-      <div className="fixed inset-0 z-[-2]">
+      <div className="fixed inset-0 z-[-2] pointer-events-none">
         <Image
           src="/tibetan-singing-bowl.webp"
           alt="Sound Healing Background"
