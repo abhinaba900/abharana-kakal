@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function OnlineClassesPage() {
   return (
-    <main className="relative min-h-screen md:h-screen text-[#4a3b32] paper-grain pt-[70px] bg-[#fffdf8] md:overflow-hidden overflow-y-auto flex flex-col">
+    <main className="relative text-[#4a3b32] paper-grain pt-[70px] bg-[#fffdf8] md:overflow-hidden overflow-y-auto flex flex-col">
       {/* Premium Sanctuary Background */}
       <div className="fixed inset-0 z-[-2] pointer-events-none">
         <div className="absolute inset-0 bg-[#f1e4da]/40 mix-blend-overlay"></div>
@@ -22,8 +22,8 @@ export default function OnlineClassesPage() {
       </div>
 
       {/* The main booking interface - Adaptive Layout */}
-      <section id="book" className="min-h-[calc(100vh-70px)] md:h-[80vh] px-4 relative z-10 flex flex-col justify-center md:my-auto md:overflow-hidden">
-        <div className="max-w-7xl mx-auto w-full max-h-full md:overflow-y-auto custom-scrollbar pt-8 pb-12 md:py-4">
+      <section id="book" className="px-4 relative z-10 flex flex-col pt-8 pb-32">
+        <div className="max-w-7xl mx-auto w-full relative">
           <BookingFlow />
           
           {/* Internal Mobile Only Trust Section */}

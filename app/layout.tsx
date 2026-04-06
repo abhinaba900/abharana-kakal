@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Caveat } from "next/font/google";
+import { Roboto_Slab } from "next/font/google";
 import "./globals.css";
 import NavbarWrapper from "./components/NavbarWrapper";
 import Footer from "./components/Footer";
@@ -7,19 +7,10 @@ import Script from "next/script";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const robotoSlab = Roboto_Slab({
+  variable: "--font-roboto-slab",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-});
-
-const fontCaveat = Caveat({
-  variable: "--font-caveat",
-  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -39,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${fontCaveat.variable} h-full antialiased`}
+      className={`${robotoSlab.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" cz-shortcut-listen="true">
         <NavbarWrapper>{children}</NavbarWrapper>

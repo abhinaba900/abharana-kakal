@@ -89,38 +89,38 @@ export default function Footer() {
         </div>
 
         {/* SECTION 5 — SUB-FOOTER */}
-        <div className="w-full pt-8 border-t border-[#bc6746]/10 flex flex-col md:flex-row items-center justify-center gap-4 text-[10px] md:text-[11px] tracking-[0.1em] text-[#a55a3d]/50 uppercase">
+        <div className="w-full pt-8 border-t text-md border-[#bc6746]/10 flex flex-col md:flex-row items-center justify-center gap-4 text-[10px] md:text-[11px] tracking-[0.1em] text-[#a55a3d]/50 uppercase">
           <div className="flex items-center gap-4 md:gap-6">
             <Link
               href="/downloads"
-              className="hover:text-[#bc6746] transition-colors"
+              className="hover:text-[#bc6746] text-black transition-colors text-md font-semibold"
             >
               Downloads
             </Link>
             <span>·</span>
             <Link
               href="/privacy-policy"
-              className="hover:text-[#bc6746] transition-colors"
+              className="hover:text-[#bc6746] text-black transition-colors text-md font-semibold"
             >
               Privacy Policy
             </Link>
             <span>·</span>
             <Link
               href="/terms-conditions"
-              className="hover:text-[#bc6746] transition-colors"
+              className="hover:text-[#bc6746] text-black transition-colors text-md font-semibold"
             >
               Terms
             </Link>
             <span>·</span>
             <Link
               href="/refund-policy"
-              className="hover:text-[#bc6746] transition-colors"
+              className="hover:text-[#bc6746] text-black transition-colors text-md font-semibold"
             >
               Refund Policy
             </Link>
           </div>
-          <span className="hidden md:inline">·</span>
-          <span>© {currentYear} Abharana Kakal</span>
+          <span className="hidden md:inline text-md font-semibold">·</span>
+          <span className="text-md font-semibold text-black">© {currentYear} Abharana Kakal</span>
         </div>
       </div>
     </footer>

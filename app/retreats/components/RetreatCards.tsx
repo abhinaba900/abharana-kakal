@@ -5,7 +5,6 @@ import { useRef, useState, useEffect } from "react";
 import BookingPortal from "@/app/components/BookingPortal";
 
 export default function RetreatCards() {
-  const containerRef = useRef(null);
   const [retreats, setRetreats] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRetreat, setSelectedRetreat] = useState<any>(null);
@@ -38,15 +37,13 @@ export default function RetreatCards() {
   };
 
   return (
-    <section ref={containerRef} className="relative py-24 md:py-24 px-6 z-10 w-full overflow-hidden">
+    <section id="explore-retreats" className="relative py-24 md:py-24 px-6 z-10 w-full overflow-hidden">
       {/* Background Subtle Gradient */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-gradient-to-br from-[#bc6746]/10 via-transparent to-[#a55a3d]/5 blur-3xl pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 0 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1.0, ease: "easeOut" }}
+           
            className="text-center mb-32"
         >
           <span className="font-handwriting text-3xl text-[#f1e4da] mb-4 block opacity-80">Join us in Sacred Spaces</span>

@@ -14,12 +14,15 @@ import { yogaService } from "@/lib/api/client";
 import { toast } from "react-toastify";
 
 // Sub-components
-import SelectionColumn from "./flow/SelectionColumn";
+import OfferingStep from "./flow/OfferingStep";
+import DateTimeStep from "./flow/DateTimeStep";
+import UserInfoStep from "./flow/UserInfoStep";
 import OrderSummarySidebar from "./flow/OrderSummarySidebar";
 import PaymentStep from "./flow/PaymentStep"; // For the manual screenshot upload part
 import Antigravity from "@/app/components/Antaigravity";
 import { useYogaRealtime } from "@/lib/hooks/useYogaRealtime";
 import { Offering, Session, UserData } from "./flow/types";
+import { cn, formatDateLocal } from "@/lib/utils";
 
 export default function BookingFlow() {
   const [mounted, setMounted] = useState(false);
@@ -32,6 +35,7 @@ export default function BookingFlow() {
   const [gstPercent, setGstPercent] = useState(18);
 
   // Selections
+  const [currentStep, setCurrentStep] = useState(1);
   const [selectedOffering, setSelectedOffering] = useState<Offering | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
@@ -59,9 +63,9 @@ export default function BookingFlow() {
     load();
   }, []);
 
-  const canProceed = useMemo(() => {
-    return !!selectedOffering && !!selectedDate && !!selectedSession && !!userData.name && !!userData.email && !!userData.phone;
-  }, [selectedOffering, selectedDate, selectedSession, userData]);
+  const canProceedToStep2 = !!selectedOffering;
+  const canProceedToStep3 = !!selectedDate && !!selectedSession;
+  const canProceedToPayment = !!userData.name && !!userData.email && !!userData.phone;
 
   const finalizeBooking = async (verifiedPaymentData: { reference: string, screenshotUrl?: string }) => {
     setIsSubmitting(true);
@@ -116,7 +120,7 @@ export default function BookingFlow() {
 
       <AnimatePresence mode="wait">
         
-        {/* VIEW 1: Main Selections */}
+        {/* VIEW 1: Main Selections (Wizard) */}
         {view === 'booking' && (
           <motion.div 
             key="booking-view"
@@ -125,42 +129,173 @@ export default function BookingFlow() {
             exit={{ opacity: 0, y: -20 }}
             className="max-w-7xl mx-auto"
           >
-             <div className="bg-white/40 md:bg-white/60 md:backdrop-blur-2xl md:rounded-[60px] md:border md:border-[#f1e4da] md:shadow-2xl md:shadow-[#bc6746]/5 p-2 md:p-6 lg:p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                   
-                   {/* Column Left: Inputs */}
-                   <div className="lg:col-span-12 xl:col-span-9 order-2 lg:order-1">
-                   <SelectionColumn 
-                      offerings={offerings}
-                      sessions={sessions}
-                      exceptions={realtimeExceptions}
-                      selectedOffering={selectedOffering}
-                      selectedDate={selectedDate}
-                      selectedSession={selectedSession}
-                      userData={userData}
-                      onSelectOffering={setSelectedOffering}
-                      onSelectDate={setSelectedDate}
-                      onSelectSession={setSelectedSession}
-                      setUserData={setUserData}
-                   />
+             <div className="bg-white/60 backdrop-blur-2xl md:rounded-[60px] md:border md:border-[#f1e4da] md:shadow-2xl md:shadow-[#bc6746]/5 p-6 md:p-14 relative">
+                
+                {/* Progress Indicator - Integrated inside */}
+                <div className="max-w-md mx-auto mb-12 w-full">
+                    <div className="flex justify-between items-center relative">
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1px] bg-[#f1e4da] -z-10" />
+                      <div className={`absolute left-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#bc6746] transition-all duration-500 -z-10`} style={{ width: `${(currentStep - 1) * 50}%` }} />
+                      
+                      {[1, 2, 3].map((step) => (
+                          <div key={step} className="flex flex-col items-center gap-2">
+                            <div className={cn(
+                                "w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black transition-all duration-300 border-2",
+                                currentStep === step ? "bg-[#bc6746] border-[#bc6746] text-white scale-110 shadow-lg shadow-[#bc6746]/20" : 
+                                currentStep > step ? "bg-white border-[#bc6746] text-[#bc6746]" : "bg-white border-[#f1e4da] text-[#a55a3d]/40"
+                            )}>
+                                {currentStep > step ? <Check className="w-4 h-4" /> : step}
+                            </div>
+                            <span className={cn(
+                                "text-[8px] font-black uppercase tracking-widest transition-opacity duration-300",
+                                currentStep === step ? "text-[#bc6746] opacity-100" : "text-[#a55a3d]/40 opacity-60"
+                            )}>
+                                {step === 1 ? "Practice" : step === 2 ? "Schedule" : "Details"}
+                            </span>
+                          </div>
+                      ))}
+                    </div>
                 </div>
 
-                {/* Column Right: Order Summary */}
-                <div className="lg:col-span-12 xl:col-span-3 order-1 lg:order-2">
-                   <OrderSummarySidebar 
-                      offering={selectedOffering}
-                      session={selectedSession}
-                      date={selectedDate}
-                      gstPercent={gstPercent}
-                      isSubmitting={isSubmitting}
-                      canProceed={canProceed}
-                      onProceed={() => setView('payment')}
-                   />
-                </div>
-              </div>
-            </div>
+                <AnimatePresence mode="wait">
+                   {currentStep === 1 && (
+                      <motion.div 
+                        key="step1"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        className="space-y-12"
+                      >
+                         <div className="text-center max-w-2xl mx-auto space-y-4 mb-8">
+                            <h2 className="text-4xl md:text-5xl font-serif text-[#4a3b32] italic leading-tight uppercase tracking-tight">Choose Your Practice</h2>
+                            <p className="text-[#a55a3d]/60 font-light text-lg">Select the sanctuary experience that resonates with your spirit today.</p>
+                         </div>
+                         
+                         <div className="px-2">
+                            <OfferingStep 
+                                offerings={offerings}
+                                selectedOffering={selectedOffering}
+                                onSelect={(off) => {
+                                   setSelectedOffering(off);
+                                }}
+                             />
+                         </div>
+
+                         <div className="flex justify-center pt-8">
+                            <button 
+                               disabled={!canProceedToStep2}
+                               onClick={() => setCurrentStep(2)}
+                               className={cn(
+                                  "px-12 py-5 rounded-full flex items-center gap-4 transition-all uppercase text-[10px] font-black tracking-[0.4em] shadow-xl",
+                                  canProceedToStep2 
+                                     ? "bg-[#4a3b32] text-white hover:bg-[#bc6746] hover:gap-6 shadow-[#bc6746]/20" 
+                                     : "bg-[#f1e4da] text-[#a55a3d]/40 cursor-not-allowed"
+                               )}
+                            >
+                               Next Step <ChevronRight className="w-4 h-4" />
+                            </button>
+                         </div>
+                      </motion.div>
+                   )}
+
+                   {currentStep === 2 && (
+                      <motion.div 
+                        key="step2"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        className="space-y-12"
+                      >
+                         <div className="text-center max-w-2xl mx-auto space-y-4 mb-8">
+                            <h2 className="text-4xl md:text-5xl font-serif text-[#4a3b32] italic leading-tight">Schedule Your Visit</h2>
+                            <p className="text-[#a55a3d]/60 font-light text-lg">Select a date and time portal for your <strong>{selectedOffering?.title}</strong>.</p>
+                         </div>
+
+                         <div className="px-4">
+                            <DateTimeStep 
+                               selectedDate={selectedDate}
+                               selectedSession={selectedSession}
+                               onSelectDate={setSelectedDate}
+                               onSelectSession={setSelectedSession}
+                               availabilityData={{ sessions, exceptions: realtimeExceptions }}
+                               offeringId={selectedOffering?.id}
+                            />
+                         </div>
+
+                         <div className="flex items-center justify-between pt-8 max-w-4xl mx-auto w-full">
+                            <button 
+                               onClick={() => setCurrentStep(1)}
+                               className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/60 hover:text-[#bc6746] transition-all"
+                            >
+                               <ChevronLeft className="w-5 h-5" /> Previous
+                            </button>
+                            <button 
+                               disabled={!canProceedToStep3}
+                               onClick={() => setCurrentStep(3)}
+                               className={cn(
+                                  "px-12 py-5 rounded-full flex items-center gap-4 transition-all uppercase text-[10px] font-black tracking-[0.4em] shadow-xl",
+                                  canProceedToStep3 
+                                     ? "bg-[#4a3b32] text-white hover:bg-[#bc6746] hover:gap-6 shadow-[#bc6746]/20" 
+                                     : "bg-[#f1e4da] text-[#a55a3d]/40 cursor-not-allowed"
+                               )}
+                            >
+                               Finalize Details <ChevronRight className="w-4 h-4" />
+                            </button>
+                         </div>
+                      </motion.div>
+                   )}
+
+                   {currentStep === 3 && (
+                      <motion.div 
+                        key="step3"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        className="space-y-12"
+                      >
+                         <div className="text-center max-w-2xl mx-auto space-y-4 mb-8">
+                            <h2 className="text-4xl md:text-5xl font-serif text-[#4a3b32] italic leading-tight">Personal Details</h2>
+                            <p className="text-[#a55a3d]/60 font-light text-lg">Complete your reservation for <strong>{selectedOffering?.title}</strong> on <strong>{selectedDate ? formatDateLocal(selectedDate) : ''}</strong>.</p>
+                         </div>
+
+                         <div className="px-4">
+                            <UserInfoStep 
+                               userData={userData}
+                               setUserData={setUserData}
+                               offering={selectedOffering!}
+                               session={selectedSession!}
+                               date={selectedDate!}
+                               gstPercent={gstPercent}
+                            />
+                         </div>
+
+                         <div className="flex items-center justify-between pt-8 max-w-4xl mx-auto w-full">
+                            <button 
+                               onClick={() => setCurrentStep(2)}
+                               className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/60 hover:text-[#bc6746] transition-all"
+                            >
+                               <ChevronLeft className="w-5 h-5" /> Back to Schedule
+                            </button>
+                            <button 
+                               disabled={!canProceedToPayment || isSubmitting}
+                               onClick={() => setView('payment')}
+                               className={cn(
+                                  "px-12 py-5 rounded-full flex items-center gap-4 transition-all uppercase text-[10px] font-black tracking-[0.4em] shadow-xl",
+                                  canProceedToPayment 
+                                     ? "bg-[#bc6746] text-white hover:gap-6 shadow-[#bc6746]/40" 
+                                     : "bg-[#f1e4da] text-[#a55a3d]/40 cursor-not-allowed"
+                               )}
+                            >
+                               {isSubmitting ? <Loader2 className="animate-spin w-4 h-4" /> : "Proceed to Payment"} <ChevronRight className="w-4 h-4" />
+                            </button>
+                         </div>
+                      </motion.div>
+                   )}
+                </AnimatePresence>
+             </div>
           </motion.div>
         )}
+
 
         {/* VIEW 2: Payment Step (Dedicated Modal/View) */}
         {view === 'payment' && (

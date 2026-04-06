@@ -1,45 +1,44 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const downloads = [
   {
     title: "Retreat Brochure 2025",
-    description: "A comprehensive guide to our upcoming sacred gatherings and locations.",
+    description:
+      "A comprehensive guide to our upcoming sacred gatherings and locations.",
     size: "2.4 MB",
-    link: "#"
+    link: "#",
   },
   {
     title: "Daily Yoga Practice Guide",
-    description: "A minimal sequence to help you maintain your practice at home.",
+    description:
+      "A minimal sequence to help you maintain your practice at home.",
     size: "1.1 MB",
-    link: "#"
+    link: "#",
   },
   {
     title: "Sound Healing Introduction",
-    description: "Understanding the frequencies that heal and restore the nervous system.",
+    description:
+      "Understanding the frequencies that heal and restore the nervous system.",
     size: "1.8 MB",
-    link: "#"
+    link: "#",
   },
   {
     title: "Beginner's Guide to Pranayama",
-    description: "Simple breathwork techniques for daily grounding and presence.",
+    description:
+      "Simple breathwork techniques for daily grounding and presence.",
     size: "0.9 MB",
-    link: "#"
-  }
+    link: "#",
+  },
 ];
 
 export default function DownloadsPage() {
   return (
     <main className="min-h-screen bg-[#fffdf8] pt-32 pb-20 px-6">
       <div className="max-w-3xl mx-auto">
-        
         {/* HERO */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-16 md:mb-24"
-        >
+        <motion.div className="mb-16 md:mb-24">
           <h1 className="text-4xl md:text-5xl font-light text-[#bc6746] mb-6 tracking-tight">
             Downloads
           </h1>
@@ -51,23 +50,20 @@ export default function DownloadsPage() {
         {/* LIST */}
         <div className="space-y-4">
           {downloads.map((item, index) => (
-            <motion.div 
+            <motion.div
               key={item.title}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
               className="group p-6 md:p-8 rounded-3xl bg-[#f1e4da]/30 border border-[#bc6746]/5 hover:bg-[#f1e4da]/50 hover:border-[#bc6746]/20 transition-all duration-500"
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="space-y-2">
-                  <h3 className="text-xl font-medium text-[#bc6746]">
+                  <h3 className="text-2xl font-medium text-[#bc6746]">
                     {item.title}
                   </h3>
-                  <p className="text-[#a55a3d]/70 text-sm md:text-base leading-relaxed max-w-md italic">
+                  <p className="text-[#a55a3d]/70 text-md md:text-xl leading-relaxed max-w-md italic">
                     {item.description}
                   </p>
                 </div>
-                
+
                 <div className="flex items-center justify-between md:justify-end gap-6 border-t border-[#bc6746]/10 pt-4 md:border-0 md:pt-0">
                   <span className="text-[10px] tracking-widest uppercase text-[#a55a3d]/40 font-bold">
                     {item.size}
