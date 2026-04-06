@@ -95,6 +95,15 @@ export default function BookingFlow() {
       const res = await yogaService.bookings.create(payload);
       if (res.data.success) {
         toast.success("Booking request initialized!");
+        
+        // Reset states but keep name for Success UI
+        const finalName = userData.name;
+        setSelectedOffering(null);
+        setSelectedDate(null);
+        setSelectedSession(null);
+        setUserData({ name: finalName, email: "", phone: "", message: "" });
+        setCurrentStep(1);
+        
         setView('success');
       }
     } catch (err: any) {

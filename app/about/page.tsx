@@ -16,7 +16,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="relative min-h-screen text-[#4a3b32] paper-grain  overflow-hidden">
+    <main 
+      style={{ position: 'relative' }}
+      className="min-h-screen text-[#4a3b32] paper-grain overflow-x-hidden"
+    >
       {/* Global Background Image */}
       <div className="fixed inset-0 z-[-2] pointer-events-none">
         <Image
@@ -24,6 +27,7 @@ export default function AboutPage() {
           alt="About Background"
           fill
           priority
+          sizes="100vw"
           className="object-cover opacity-60"
         />
         <div className="absolute inset-0 bg-[#f1e4da]/20 mix-blend-overlay" />

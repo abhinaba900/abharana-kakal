@@ -1,5 +1,5 @@
 "use client";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "motion/react";
 import Image from "next/image";
 import { useRef } from "react";
 
@@ -12,12 +12,14 @@ export default function AboutHero() {
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-20">
+    <section 
+      ref={containerRef} 
+      style={{ position: 'relative' }}
+      className="min-h-screen flex items-center justify-center overflow-hidden px-6 pt-20"
+    >
       {/* Full-Bleed Misty Sanctuary Background */}
       <motion.div 
         initial={{ scale: 1.1, opacity: 0 }}
@@ -38,18 +40,22 @@ export default function AboutHero() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#f1e4da]/40 to-[#fffdf8]" />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-32">
+      <div 
+        style={{ position: 'relative' }}
+        className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-32"
+      >
         {/* Left Side: Floating Editorial Heading */}
         <motion.div 
-          style={{ opacity, willChange: "opacity, transform" }}
+          style={{ opacity }}
           initial={{ opacity: 0, x: 0 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
           className="w-full md:w-1/2 flex flex-col items-start"
         >
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-px bg-[#bc6746]" />
-            <span className="font-handwriting text-3xl text-[#bc6746]">A journey inward</span>
+          <div className="flex items-center gap-4 mb-6 opacity-60">
+            <span className="font-handwriting text-2xl text-[#bc6746] tracking-wide">
+              A journey inward
+            </span>
           </div>
           <h1 className="text-7xl md:text-[10rem] font-serif text-[#a55a3d] leading-[0.85] tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-[#a55a3d] to-[#bc6746]">
             About

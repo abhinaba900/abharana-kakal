@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { type BlogPost } from "../data";
+import BlockRenderer from "./BlockRenderer";
 
 interface Props {
   post: BlogPost;
@@ -64,6 +65,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
             alt={post.title}
             fill
             priority
+            sizes="100vw"
             className="object-cover"
           />
           {/* Dark gradient overlay */}
@@ -128,101 +130,105 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
       <section className="relative py-20 px-6">
         <div className="max-w-2xl mx-auto">
 
-          {/* Intro paragraph */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
-          >
-            {/* Decorative divider */}
-            <div className="flex items-center gap-4 mb-12">
-              <div className="flex-1 h-px bg-[#bc6746]/20" />
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="opacity-40">
-                <circle cx="12" cy="12" r="3" fill="#bc6746" />
-                <circle cx="12" cy="4" r="1.5" fill="#bc6746" />
-                <circle cx="12" cy="20" r="1.5" fill="#bc6746" />
-                <circle cx="4" cy="12" r="1.5" fill="#bc6746" />
-                <circle cx="20" cy="12" r="1.5" fill="#bc6746" />
-              </svg>
-              <div className="flex-1 h-px bg-[#bc6746]/20" />
-            </div>
+          {/* Article Content */}
+          <div className="prose prose-invert max-w-none">
+            {typeof post.content === 'string' ? (
+              <BlockRenderer content={post.content} />
+            ) : (
+              <>
+                {/* Legacy Structured Content */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9 }}
+                >
+                  {/* Decorative divider */}
+                  <div className="flex items-center gap-4 mb-12">
+                    <div className="flex-1 h-px bg-[#bc6746]/20" />
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="opacity-40">
+                      <circle cx="12" cy="12" r="3" fill="#bc6746" />
+                      <circle cx="12" cy="4" r="1.5" fill="#bc6746" />
+                      <circle cx="12" cy="20" r="1.5" fill="#bc6746" />
+                      <circle cx="4" cy="12" r="1.5" fill="#bc6746" />
+                      <circle cx="20" cy="12" r="1.5" fill="#bc6746" />
+                    </svg>
+                    <div className="flex-1 h-px bg-[#bc6746]/20" />
+                  </div>
 
-            <p className="text-xl md:text-2xl text-[#FFFDF8]/90 font-serif leading-relaxed italic mb-14">
-              {post.content.intro}
-            </p>
-          </motion.div>
+                  <p className="text-xl md:text-2xl text-[#FFFDF8]/90 font-serif leading-relaxed italic mb-14">
+                    {post.content.intro}
+                  </p>
+                </motion.div>
 
-          {/* Content sections */}
-          {post.content.sections.map((section, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.05 }}
-              className="mb-12"
-            >
-              <h2 className="font-serif text-2xl md:text-3xl text-[#f1e4da] mb-5 tracking-wide">
-                {section.heading}
-              </h2>
-              <p className="text-[#f1e4da]/80 text-base md:text-lg leading-loose">
-                {section.body}
-              </p>
-            </motion.div>
-          ))}
+                {/* Content sections */}
+                {post.content.sections.map((section, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: i * 0.05 }}
+                    className="mb-12"
+                  >
+                    <h2 className="font-serif text-2xl md:text-3xl text-[#f1e4da] mb-5 tracking-wide">
+                      {section.heading}
+                    </h2>
+                    <p className="text-[#f1e4da]/80 text-base md:text-lg leading-loose">
+                      {section.body}
+                    </p>
+                  </motion.div>
+                ))}
 
-          {/* Pull quote */}
-          {post.content.pullQuote && (
-            <motion.blockquote
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.9 }}
-              className="relative my-16 px-10 py-10 rounded-2xl overflow-hidden"
-            >
-              {/* Glass card */}
-              <div className="absolute inset-0 bg-[#fffdf8]/8 backdrop-blur-md border border-[#fffdf8]/10 rounded-2xl" />
-              {/* Terracotta accent */}
-              <div
-                className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl"
-                style={{ background: `linear-gradient(to bottom, ${catColor}, transparent)` }}
-              />
-              {/* Large quote mark */}
-              <span
-                className="absolute top-4 left-6 font-serif text-7xl leading-none opacity-15 select-none"
-                style={{ color: catColor }}
-              >
-                &ldquo;
-              </span>
-              <p className="relative z-10 font-serif text-xl md:text-2xl text-[#FFFDF8]/95 italic leading-relaxed text-center">
-                {post.content.pullQuote}
-              </p>
-            </motion.blockquote>
-          )}
+                {/* Pull quote */}
+                {post.content.pullQuote && (
+                  <motion.blockquote
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.9 }}
+                    className="relative my-16 px-10 py-10 rounded-2xl overflow-hidden"
+                  >
+                    {/* Glass card */}
+                    <div className="absolute inset-0 bg-[#fffdf8]/8 backdrop-blur-md border border-[#fffdf8]/10 rounded-2xl" />
+                    {/* Terracotta accent */}
+                    <div
+                      className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl"
+                      style={{ background: `linear-gradient(to bottom, ${catColor}, transparent)` }}
+                    />
+                    {/* Large quote mark */}
+                    <span
+                      className="absolute top-4 left-6 font-serif text-7xl leading-none opacity-15 select-none"
+                      style={{ color: catColor }}
+                    >
+                      &ldquo;
+                    </span>
+                    <p className="relative z-10 font-serif text-xl md:text-2xl text-[#FFFDF8]/95 italic leading-relaxed text-center">
+                      {post.content.pullQuote}
+                    </p>
+                  </motion.blockquote>
+                )}
 
-          {/* Closing paragraph */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-16"
-          >
-            <p className="text-[#f1e4da]/75 text-base md:text-lg leading-loose">
-              {post.content.closing}
-            </p>
-          </motion.div>
+                {/* Closing paragraph */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="mb-16"
+                >
+                  <p className="text-[#f1e4da]/75 text-base md:text-lg leading-loose">
+                    {post.content.closing}
+                  </p>
+                </motion.div>
+              </>
+            )}
+          </div>
 
           {/* End divider */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="flex items-center gap-6 mb-10"
-          >
-            <div className="flex-1 h-px bg-[#bc6746]/20" />
-            <span className="text-[10px] uppercase tracking-widest text-[#f1e4da]/40">
-              Abharana Kakal
-            </span>
-            <div className="flex-1 h-px bg-[#bc6746]/20" />
-          </motion.div>
+          <div className="flex items-center gap-6 mb-10">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#a55a3d]/30">End of Resonance</p>
+          </div>
 
           {/* Action buttons */}
           <motion.div
@@ -254,11 +260,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
         <section className="relative py-20 px-6">
           {/* Subtle separator */}
           <div className="max-w-2xl mx-auto mb-14 flex items-center gap-6">
-            <div className="flex-1 h-px bg-[#fffdf8]/10" />
-            <p className="text-[#f1e4da]/50 text-xs uppercase tracking-widest whitespace-nowrap">
-              More from the Journal
-            </p>
-            <div className="flex-1 h-px bg-[#fffdf8]/10" />
+            <p className="text-center text-[10px] uppercase tracking-[0.3em] font-medium text-[#f1e4da]/40">Explore Sacred Spaces</p>
           </div>
 
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -279,6 +281,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
                         src={related.image}
                         alt={related.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1a1008]/50 to-transparent" />
@@ -333,12 +336,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
           </div>
 
           {/* View all link */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex justify-center mt-14"
-          >
+          <div className="flex justify-center mt-14">
             <Link
               href="/journal"
               id="journal-detail-view-all"
@@ -360,7 +358,7 @@ export default function JournalDetailClient({ post, relatedPosts }: Props) {
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </Link>
-          </motion.div>
+          </div>
         </section>
       )}
 

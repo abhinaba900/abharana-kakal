@@ -20,7 +20,11 @@ export default function LocationsSection() {
   const textY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
 
   return (
-    <section ref={containerRef} className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
+    <section 
+      ref={containerRef} 
+      style={{ position: 'relative' }}
+      className="py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain"
+    >
       {/* Decorative Background Accents */}
       <div className="absolute top-0 right-0 w-[60%] h-full bg-[#f1e4da]/10 organic-blob blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none z-0" />
 
@@ -30,7 +34,6 @@ export default function LocationsSection() {
           className="w-full md:w-2/5 flex flex-col items-start"
         >
           <div className="flex items-center gap-4 mb-6 opacity-60">
-            <div className="w-10 h-px bg-[#bc6746]" />
             <span className="font-handwriting text-2xl text-[#bc6746] tracking-wide">The Sanctuary Map</span>
           </div>
 

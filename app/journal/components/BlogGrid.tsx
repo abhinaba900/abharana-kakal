@@ -2,10 +2,11 @@
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { blogPosts, type Category } from "../data";
+import { useState, useEffect } from "react";
+import { type Category as StaticCategory } from "../data";
+import { blogService } from "@/lib/api/client";
+import { Loader2 } from "lucide-react";
 
-const CATEGORIES: Category[] = ["All", "Yoga", "Sound Healing", "Feminine Energy", "Retreats"];
 const PER_PAGE = 6;
 
 const categoryColors: Record<string, string> = {
@@ -13,7 +14,19 @@ const categoryColors: Record<string, string> = {
   "Sound Healing": "#8b7ab5",
   "Feminine Energy": "#c47a8a",
   Retreats: "#bc6746",
+  Wisdom: "#bc6746",
 };
+
+interface UnifiedPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  category: string;
+  image: string;
+  readTime: string;
+  isDynamic?: boolean;
+}
 
 function ArrowRight({ className }: { className?: string }) {
   return (
@@ -36,17 +49,67 @@ function ArrowRight({ className }: { className?: string }) {
 }
 
 export default function BlogGrid() {
-  const [activeCategory, setActiveCategory] = useState<Category>("All");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
   const [visibleCount, setVisibleCount] = useState(PER_PAGE);
+  const [dynamicPosts, setDynamicPosts] = useState<UnifiedPost[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchResonances = async () => {
+      try {
+        const [postsRes, catsRes] = await Promise.all([
+          blogService.posts.list(),
+          blogService.categories.list()
+        ]);
+
+        if (postsRes.data.success) {
+          const transformed: UnifiedPost[] = postsRes.data.data.map((p: any) => ({
+            slug: p.id,
+            title: p.title,
+            excerpt: p.content.length > 150 && p.content.startsWith('{') ? 'Exploring the depths of inner awareness through sacred practice...' : p.content.substring(0, 160) + '...',
+            date: new Date(p.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+            category: p.journal_categories?.name || 'Wisdom',
+            image: p.image_url || '/journal-yoga.png',
+            readTime: 'Read',
+            isDynamic: true
+          }));
+          setDynamicPosts(transformed);
+        }
+
+        if (catsRes.data.success) {
+          setCategories(catsRes.data.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic resonances:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchResonances();
+  }, []);
+
+  const allPosts: UnifiedPost[] = dynamicPosts;
 
   const filtered =
     activeCategory === "All"
-      ? blogPosts
-      : blogPosts.filter((p) => p.category === activeCategory);
+      ? allPosts
+      : allPosts.filter((p) => p.category === activeCategory);
 
   const featured = filtered[0];
   const rest = filtered.slice(1, visibleCount);
   const hasMore = visibleCount < filtered.length;
+
+  const filterList = ["All", ...categories.map(c => c.name)];
+
+  if (loading && dynamicPosts.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 space-y-4">
+        <Loader2 className="w-8 h-8 animate-spin text-[#bc6746]/50" />
+        <p className="text-xs font-bold uppercase tracking-widest text-[#a55a3d]/40">Unfolding the sacred archives...</p>
+      </div>
+    );
+  }
 
   return (
     <section className="relative pb-24 px-6">
@@ -54,11 +117,12 @@ export default function BlogGrid() {
         {/* ── Category Filters ───────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex flex-wrap justify-center gap-3 mb-16"
         >
-          {CATEGORIES.map((cat) => (
+          {filterList.map((cat) => (
             <button
               key={cat}
               id={`journal-filter-${cat.toLowerCase().replace(/\s+/g, "-")}`}
@@ -94,7 +158,8 @@ export default function BlogGrid() {
               >
                 <motion.article
                   initial={{ opacity: 0, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.7 }}
                   className="relative w-full rounded-3xl overflow-hidden border border-white/10"
                 >
@@ -157,7 +222,8 @@ export default function BlogGrid() {
                     <motion.article
                       key={post.slug}
                       initial={{ opacity: 0, y: 0 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
                       transition={{ duration: 0.6, delay: i * 0.08 }}
                       className="group"
                     >
@@ -227,17 +293,6 @@ export default function BlogGrid() {
               Load More
             </button>
           </motion.div>
-        )}
-
-        {/* End of journal divider */}
-        {!hasMore && filtered.length > 0 && (
-          <div className="flex items-center gap-6 mt-20 max-w-xs mx-auto">
-            <div className="flex-1 h-px bg-[#bc6746]/20" />
-            <span className="text-[10px] uppercase tracking-widest text-[#f1e4da]/40">
-              End of journal
-            </span>
-            <div className="flex-1 h-px bg-[#bc6746]/20" />
-          </div>
         )}
       </div>
     </section>

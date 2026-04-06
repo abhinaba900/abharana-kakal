@@ -15,7 +15,7 @@ export default function Navbar() {
     setAudio(bgAudio);
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 10);
     };
 
     const handleFirstClick = () => {

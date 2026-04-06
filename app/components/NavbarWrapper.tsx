@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
-import SmoothScroll from './SmoothScroll';
+import Lanes from './Lanes';
 
 export default function NavbarWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,7 +15,8 @@ export default function NavbarWrapper({ children }: { children: React.ReactNode 
   return (
     <>
       <Navbar />
-      <SmoothScroll>{children}</SmoothScroll>
+      <Lanes />
+      {children}
     </>
   );
 }

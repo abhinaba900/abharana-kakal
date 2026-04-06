@@ -18,11 +18,9 @@ export default function RetreatsPage() {
           alt="Organic Watercolor Background"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
-        {/* Soft global overlay to ensure readability */}
-        <div className="absolute inset-0 bg-[#f1e4da]/20 mix-blend-overlay"></div>
-        <div className="absolute inset-0 bg-black/10"></div>
       </div>
 
       <HeroSection />

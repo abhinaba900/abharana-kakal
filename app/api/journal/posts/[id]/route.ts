@@ -16,10 +16,13 @@ async function patchHandler(req: NextRequest, { params, admin }: any) {
       const formData = await req.formData();
       const updates: any = {};
 
-      for (const [key, value] of formData.entries()) {
-        if (typeof value === 'string' && key !== 'image') {
-          updates[key] = value;
-          if (key === 'category_id' && value === '') updates[key] = null;
+      // Explicitly pick allowed fields from FormData
+      const allowedFields = ['title', 'content', 'category_id', 'image_url'];
+      for (const field of allowedFields) {
+        const value = formData.get(field);
+        if (value !== null) {
+          updates[field] = value;
+          if (field === 'category_id' && value === '') updates[field] = null;
         }
       }
 
@@ -40,11 +43,17 @@ async function patchHandler(req: NextRequest, { params, admin }: any) {
 
       return NextResponse.json({ success: true, data: post });
     } else {
-      // Standard JSON update
-      const body = await req.json();
+      // Standard JSON update - explicitly pick allowed fields
+      const { title, content, category_id, image_url } = await req.json();
+      const updates: any = {};
+      if (title !== undefined) updates.title = title;
+      if (content !== undefined) updates.content = content;
+      if (category_id !== undefined) updates.category_id = category_id || null;
+      if (image_url !== undefined) updates.image_url = image_url;
+
       const { data: post, error } = await supabaseAdmin
         .from('journal_posts')
-        .update(body)
+        .update(updates)
         .eq('id', id)
         .select()
         .single();

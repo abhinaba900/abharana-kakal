@@ -1,5 +1,5 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import Image from "next/image";
 
 export default function IntroSection() {
@@ -28,6 +28,7 @@ export default function IntroSection() {
               src="/retreat.webp"
               alt="Serene sacred space"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover scale-105 transition-transform duration-[4s] group-hover:scale-100"
               priority
             />
@@ -44,7 +45,6 @@ export default function IntroSection() {
           className="relative z-30 w-full md:w-1/2 flex flex-col items-start"
         >
           <div className="flex items-center gap-4 mb-6 opacity-60">
-            <div className="w-10 h-px bg-[#bc6746]" />
             <span className="font-handwriting text-2xl text-[#bc6746] tracking-wide">
               The Invitation
             </span>

@@ -4,40 +4,75 @@ import { notFound } from "next/navigation";
 import { blogPosts } from "@/app/journal/data";
 import JournalDetailClient from "@/app/journal/components/JournalDetailClient";
 
+import { supabaseAdmin } from "@/lib/supabase-admin";
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
-}
-
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) return {};
-  return {
-    title: `${post.title} | Journal | Abharana Kakal`,
-    description: post.excerpt,
-  };
+  
+  try {
+    const { data: dynamicPost } = await supabaseAdmin
+      .from('journal_posts')
+      .select('title, content')
+      .eq('id', slug)
+      .single();
+    
+    if (dynamicPost) {
+      return {
+        title: `${dynamicPost.title} | Journal | Abharana Kakal`,
+        description: 'Exploring the depths of inner awareness through sacred practice...',
+      };
+    }
+  } catch (err) {
+    // Fall through
+  }
+
+  return { title: 'Journal | Abharana Kakal' };
 }
 
 export default async function JournalPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) notFound();
+  
+  // Fetch post from database
+  const { data: dbPost, error } = await supabaseAdmin
+    .from('journal_posts')
+    .select('*, journal_categories(name)')
+    .eq('id', slug)
+    .single();
 
-  const related = blogPosts
-    .filter((p) => p.slug !== slug && p.category === post.category)
-    .slice(0, 2);
+  if (!dbPost || error) notFound();
 
-  const relatedSlugs = new Set([slug, ...related.map((p) => p.slug)]);
+  const post = {
+    slug: dbPost.id,
+    title: dbPost.title,
+    excerpt: '',
+    date: new Date(dbPost.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+    category: (dbPost.journal_categories as any)?.name || 'Wisdom',
+    image: dbPost.image_url || '/journal-yoga.png',
+    readTime: 'Read',
+    content: dbPost.content,
+  };
 
-  const fallbackRelated = blogPosts
-    .filter((p) => !relatedSlugs.has(p.slug))
-    .slice(0, 2 - related.length);
+  // Find related posts from DB
+  const { data: relatedDb } = await supabaseAdmin
+    .from('journal_posts')
+    .select('id, title, category_id, image_url, created_at, journal_categories(name)')
+    .neq('id', slug)
+    .limit(2);
 
-  const relatedPosts = [...related, ...fallbackRelated].slice(0, 2);
+  const relatedPosts: any[] = (relatedDb || []).map(rp => ({
+    slug: rp.id,
+    title: rp.title,
+    excerpt: '',
+    date: new Date(rp.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+    category: (rp.journal_categories as any)?.name || 'Wisdom',
+    image: rp.image_url || '/journal-yoga.png',
+    readTime: 'Read',
+    content: ''
+  }));
 
   return (
     <main className="relative min-h-screen text-[#4a3b32] paper-grain">
@@ -48,13 +83,14 @@ export default async function JournalPostPage({ params }: Props) {
           alt="Soft nature background"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-[#f1e4da]/20 mix-blend-overlay" />
         <div className="absolute inset-0 bg-black/10" />
       </div>
 
-      <JournalDetailClient post={post} relatedPosts={relatedPosts} />
+      <JournalDetailClient post={post as any} relatedPosts={relatedPosts} />
     </main>
   );
 }

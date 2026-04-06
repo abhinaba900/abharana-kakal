@@ -16,7 +16,8 @@ export default function IntroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain"
+      style={{ position: 'relative' }}
+      className="py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain"
     >
       {/* Background Decorative Watermark */}
       <motion.div
@@ -31,14 +32,9 @@ export default function IntroSection() {
         <motion.div
           className="w-full md:w-2/5 flex flex-col items-start"
         >
-          <motion.div
-            className="flex items-center gap-4 mb-8"
-          >
-            <div className="w-12 h-px bg-[#bc6746]" />
-            <span className="font-handwriting text-2xl text-[#bc6746] tracking-wide">
-              The Science of Soul
-            </span>
-          </motion.div>
+          <div className="flex items-center gap-4 mb-6 opacity-60">
+            <span className="font-handwriting text-2xl text-[#bc6746] tracking-wide">The Sound Healing Invitation</span>
+          </div>
 
           <motion.h2
             
@@ -69,9 +65,10 @@ export default function IntroSection() {
 
           {/* Decorative index/touch */}
           <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            className="mt-16 h-px bg-gradient-to-r from-[#bc6746]/20 to-transparent"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.0, delay: 0.5 }}
+            className="mt-16 text-[#bc6746]/40"
           />
         </motion.div>
 

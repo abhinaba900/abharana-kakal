@@ -1,5 +1,5 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import { useRef, memo } from "react";
 
@@ -73,7 +73,8 @@ const Chapter = memo(function Chapter({ reason, index }: { reason: any; index: n
   return (
     <div 
       ref={ref}
-      className={`relative flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 md:gap-12`}
+      style={{ position: 'relative' }}
+      className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 md:gap-12`}
     >
       {/* Decorative Index Number */}
       <span 
@@ -115,7 +116,7 @@ const Chapter = memo(function Chapter({ reason, index }: { reason: any; index: n
         </p>
         
         {/* Subtle detail */}
-        <div className="mt-10 w-16 h-px bg-[#bc6746]/40" />
+        <div className="mt-10" />
       </motion.div>
     </div>
   );

@@ -58,9 +58,9 @@ async function postHandler(req: NextRequest, { admin }: any) {
       const { data: post, error } = await supabaseAdmin
         .from('journal_posts')
         .insert({
-          title,
-          content,
-          category_id: category_id || null,
+          title: formData.get('title') as string,
+          content: formData.get('content') as string,
+          category_id: (formData.get('category_id') as string) || null,
           image_url: imageUrl,
         })
         .select()
@@ -70,11 +70,11 @@ async function postHandler(req: NextRequest, { admin }: any) {
 
       return NextResponse.json({ success: true, data: post });
     } else {
-      // Standard JSON insert
-      const body = await req.json();
+      // Standard JSON insert - explicitly pick allowed fields
+      const { title, content, category_id, image_url } = await req.json();
       const { data: post, error } = await supabaseAdmin
         .from('journal_posts')
-        .insert(body)
+        .insert({ title, content, category_id, image_url })
         .select()
         .single();
 

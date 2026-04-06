@@ -1,5 +1,5 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import { useRef } from "react";
 
 const experiences = [
@@ -10,16 +10,9 @@ const experiences = [
 ];
 
 export default function ExperienceList() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const textY = useTransform(scrollYProgress, [0, 1], [30, -30]);
 
   return (
-    <section ref={containerRef} className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
+    <section className="relative py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain">
       {/* Editorial Watermark */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15rem] md:text-[25rem] font-serif text-[#bc6746]/5 pointer-events-none select-none z-0 tracking-widest">
         ARCHIVES
@@ -58,7 +51,7 @@ export default function ExperienceList() {
                 <p className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#4a3b32]/40 font-mono font-bold">
                   {exp.subtitle}
                 </p>
-                <div className="mt-6 w-0 group-hover:w-full h-px bg-[#bc6746]/20 transition-all duration-1000" />
+                <div className="mt-6" />
               </div>
             </motion.div>
           ))}

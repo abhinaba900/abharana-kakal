@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Script from "next/script";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LenisProvider from "./components/LenisProvider";
 
 const robotoSlab = Roboto_Slab({
   variable: "--font-roboto-slab",
@@ -33,26 +34,28 @@ export default function RootLayout({
       className={`${robotoSlab.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" cz-shortcut-listen="true">
-        <NavbarWrapper>{children}</NavbarWrapper>
-        <Footer />
-        <ToastContainer
-          position="bottom-right"
-          theme="light"
-          toastStyle={{ 
-            backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-            backdropFilter: 'blur(10px)', 
-            border: '1px solid #f1e4da', 
-            borderRadius: '20px',
-            color: '#4a3b32',
-            fontFamily: 'inherit'
-          }}
-        />
+        <LenisProvider>
+          <NavbarWrapper>{children}</NavbarWrapper>
+          <Footer />
+          <ToastContainer
+            position="bottom-right"
+            theme="light"
+            toastStyle={{ 
+              backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+              backdropFilter: 'blur(10px)', 
+              border: '1px solid #f1e4da', 
+              borderRadius: '20px',
+              color: '#4a3b32',
+              fontFamily: 'inherit'
+            }}
+          />
 
-        <Script id="chatbase-script" strategy="afterInteractive">
-          {`
-            (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="df9Ij5N_aJDFR-rXbuldG";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-          `}
-        </Script>
+          <Script id="chatbase-script" strategy="afterInteractive">
+            {`
+              (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="df9Ij5N_aJDFR-rXbuldG";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+            `}
+          </Script>
+        </LenisProvider>
       </body>
     </html>
   );

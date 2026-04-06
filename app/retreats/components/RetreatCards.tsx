@@ -43,7 +43,10 @@ export default function RetreatCards() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-           
+           initial={{ opacity: 0 }}
+           whileInView={{ opacity: 1 }}
+           viewport={{ once: true }}
+           transition={{ duration: 1.2 }}
            className="text-center mb-32"
         >
           <span className="font-handwriting text-3xl text-[#f1e4da] mb-4 block opacity-80">Join us in Sacred Spaces</span>
@@ -79,8 +82,9 @@ function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; 
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 0 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 1.0, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       className={`relative group flex flex-col h-[650px] md:h-[750px] rounded-[50px] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[0_40px_100px_rgba(188,103,70,0.25)]`}
     >
@@ -90,6 +94,7 @@ function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; 
           src={retreat.image_urls?.[0] || "/RT-bali.png"} 
           alt={retreat.title} 
           fill 
+          sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover scale-110 group-hover:scale-100 transition-transform duration-[4s] ease-out" 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#4a3b32] via-[#4a3b32]/40 to-transparent mix-blend-multiply opacity-80"></div>
@@ -106,8 +111,9 @@ function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; 
         {/* Header Segment */}
         <div>
            <motion.p 
-             initial={{ opacity: 0, x: 0 }}
-             animate={{ opacity: 0.8, x: 0 }}
+             initial={{ opacity: 0 }}
+             whileInView={{ opacity: 0.8 }}
+             viewport={{ once: true }}
              transition={{ duration: 1.0, delay: 0.3 + index * 0.1 }}
              className="font-handwriting text-3xl text-[#f1e4da] mb-2"
            >
@@ -121,7 +127,6 @@ function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; 
 
         {/* Footer Segment */}
         <div className="flex flex-col gap-8">
-           <div className="w-16 h-px bg-[#bc6746]/50 transition-all duration-700 group-hover:w-full" />
            
            <p className="font-light text-lg md:text-xl italic text-[#f1e4da]/90 leading-relaxed max-w-[280px] line-clamp-3">
              &quot;{retreat.description}&quot;

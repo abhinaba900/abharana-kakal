@@ -24,6 +24,7 @@ export default function SoundHealingPage() {
           alt="Sound Healing Background"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-[#f1e4da]/20 mix-blend-overlay" />
