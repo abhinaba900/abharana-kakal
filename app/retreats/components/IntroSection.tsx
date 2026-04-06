@@ -1,7 +1,6 @@
 "use client";
 import { motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
-import { useRef } from "react";
 
 export default function IntroSection() {
   
