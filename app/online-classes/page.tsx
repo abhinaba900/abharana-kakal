@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function OnlineClassesPage() {
   return (
-    <main className="relative text-[#4a3b32] paper-grain pt-[70px] bg-[#fffdf8] md:overflow-hidden overflow-y-auto flex flex-col">
+    <main className="relative overflow-x-hidden text-[#4a3b32] paper-grain pt-[70px] bg-[#fffdf8] overflow-y-auto flex flex-col">
       {/* Premium Sanctuary Background */}
       <div className="fixed inset-0 z-[-2] pointer-events-none">
         <div className="absolute inset-0 bg-[#f1e4da]/40 mix-blend-overlay"></div>

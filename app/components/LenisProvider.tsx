@@ -15,7 +15,11 @@ export default function LenisProvider({
     pathname === "/sound-healing" ||
     pathname.startsWith("/sound-healing/") ||
     pathname === "/journal" ||
-    pathname.startsWith("/journal/");
+    pathname.startsWith("/journal/") ||
+    pathname === "/online-classes" ||
+    pathname.startsWith("/online-classes/") ||
+    pathname === "/about" ||
+    pathname.startsWith("/about/");
 
   if (disableSmoothScroll) {
     return <>{children}</>;
