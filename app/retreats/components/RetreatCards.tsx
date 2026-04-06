@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import {  useState, useEffect } from "react";
 import BookingPortal from "@/app/components/BookingPortal";
 
 export default function RetreatCards() {
@@ -42,18 +42,15 @@ export default function RetreatCards() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-gradient-to-br from-[#bc6746]/10 via-transparent to-[#a55a3d]/5 blur-3xl pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <motion.div
-           initial={{ opacity: 0 }}
-           whileInView={{ opacity: 1 }}
-           viewport={{ once: true }}
-           transition={{ duration: 1.2 }}
+        <div
+           
            className="text-center mb-32"
         >
           <span className="font-handwriting text-3xl text-[#f1e4da] mb-4 block opacity-80">Join us in Sacred Spaces</span>
           <h2 className="text-5xl md:text-7xl font-serif text-[#FFFDF8] uppercase tracking-widest text-shadow-soft">
             Upcoming Immersions
           </h2>
-        </motion.div>
+        </div>
 
         {loading ? (
             <div className="text-center py-20 text-[#bc6746] italic font-light">Tuning into rhythms...</div>
@@ -76,16 +73,9 @@ export default function RetreatCards() {
   );
 }
 
-function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; onBook: () => void }) {
-  const cardRef = useRef(null);
-  
+function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; onBook: () => void }) {  
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 1.0, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+    <div
       className={`relative group flex flex-col h-[650px] md:h-[750px] rounded-[50px] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[0_40px_100px_rgba(188,103,70,0.25)]`}
     >
       {/* Image Layer */}
@@ -110,15 +100,11 @@ function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; 
       <div className="relative z-20 flex flex-col h-full justify-between p-10 md:p-14 text-[#FFFDF8]">
         {/* Header Segment */}
         <div>
-           <motion.p 
-             initial={{ opacity: 0 }}
-             whileInView={{ opacity: 0.8 }}
-             viewport={{ once: true }}
-             transition={{ duration: 1.0, delay: 0.3 + index * 0.1 }}
+           <p 
              className="font-handwriting text-3xl text-[#f1e4da] mb-2"
            >
              {retreat.location || "Sanctuary Venue"}
-           </motion.p>
+           </p>
            <h3 className="text-4xl md:text-5xl font-serif leading-[1.1] mb-2 tracking-tight group-hover:tracking-normal transition-all duration-700">
              {retreat.title}
            </h3>
@@ -148,7 +134,7 @@ function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; 
            </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

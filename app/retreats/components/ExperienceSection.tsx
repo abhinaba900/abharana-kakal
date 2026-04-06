@@ -85,7 +85,7 @@ const ExperienceTile = memo(function ExperienceTile({ exp, index }: { exp: any; 
       className={`relative group overflow-hidden rounded-[40px] shadow-xl hover:shadow-[0_40px_100px_rgba(188,103,70,0.15)] transition-all duration-700 ${exp.size}`}
     >
       {/* Image Layer */}
-      <div className="absolute inset-0 z-0 transition-transform duration-[3s] ease-out group-hover:scale-110">
+      <div className="absolute inset-0 z-0 ">
          <Image 
           src={exp.img} 
           alt={exp.title} 
@@ -107,7 +107,7 @@ const ExperienceTile = memo(function ExperienceTile({ exp, index }: { exp: any; 
         </div>
 
         {/* Bottom Segment: Text */}
-        <div className="group-hover:translate-x-2 transition-transform duration-500">
+        <div className="">
            <h3 className="text-3xl font-serif mb-2 leading-tight">
              {exp.title}
            </h3>
