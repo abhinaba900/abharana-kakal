@@ -1,7 +1,5 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
 
 // Dynamically import map to avoid SSR issues with Leaflet
 const MapComponent = dynamic(() => import("./MapComponent"), { 
@@ -10,18 +8,10 @@ const MapComponent = dynamic(() => import("./MapComponent"), {
 });
 
 export default function LocationsSection() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const mapY = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const textY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+  
 
   return (
     <section 
-      ref={containerRef} 
       style={{ position: 'relative' }}
       className="py-24 md:py-24 px-6 overflow-hidden bg-[#fffdf8] paper-grain"
     >
@@ -30,7 +20,7 @@ export default function LocationsSection() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-16 md:gap-24">
         {/* Left Side: Editorial Context */}
-        <motion.div 
+        <div 
           className="w-full md:w-2/5 flex flex-col items-start"
         >
           <div className="flex items-center gap-4 mb-6 opacity-60">
@@ -66,10 +56,10 @@ export default function LocationsSection() {
                 <span className="uppercase tracking-widest text-[10px] font-semibold text-[#bc6746]/60">Urban Retreats</span>
              </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Right Side: Interactive Cartography */}
-        <motion.div
+        <div
           className="w-full md:w-3/5 aspect-square md:aspect-[4/5] relative"
         >
           {/* Decorative shadowing for depth */}
@@ -79,7 +69,7 @@ export default function LocationsSection() {
           <MapComponent />
 
           
-        </motion.div>
+        </div>
       </div>
     </section>
   );
