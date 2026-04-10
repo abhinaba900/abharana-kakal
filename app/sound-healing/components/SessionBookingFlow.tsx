@@ -3,18 +3,6 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Check, 
-  Loader2, 
-  ChevronLeft,
-  Calendar,
-  Clock,
-  MapPin,
-  Sparkles,
-  ShieldCheck,
-  ChevronRight,
-  Info
-} from "lucide-center"; // Wait, it's lucide-react. I'll correct this.
-import { 
   Check as CheckIcon, 
   Loader2 as LoaderIcon, 
   ChevronLeft as ChevronLeftIcon,
