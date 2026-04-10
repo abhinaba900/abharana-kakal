@@ -8,7 +8,8 @@ import {
   Loader2,
   Check,
   CalendarCheck,
-  Zap
+  Zap,
+  X
 } from "lucide-react"; 
 import { yogaService } from "@/lib/api/client";
 import { toast } from "react-toastify";
@@ -24,7 +25,12 @@ import { useYogaRealtime } from "@/lib/hooks/useYogaRealtime";
 import { Offering, Session, UserData } from "./flow/types";
 import { cn, formatDateLocal } from "@/lib/utils";
 
-export default function BookingFlow() {
+interface BookingFlowProps {
+  initialOffering?: Offering | null;
+  onClose?: () => void;
+}
+
+export default function BookingFlow({ initialOffering, onClose }: BookingFlowProps) {
   const [mounted, setMounted] = useState(false);
   const [view, setView] = useState<'booking' | 'payment' | 'success'>('booking');
   const [loading, setLoading] = useState(true);
@@ -35,8 +41,8 @@ export default function BookingFlow() {
   const [gstPercent, setGstPercent] = useState(18);
 
   // Selections
-  const [currentStep, setCurrentStep] = useState(1);
-  const [selectedOffering, setSelectedOffering] = useState<Offering | null>(null);
+  const [currentStep, setCurrentStep] = useState(initialOffering ? 2 : 1);
+  const [selectedOffering, setSelectedOffering] = useState<Offering | null>(initialOffering || null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [userData, setUserData] = useState<UserData>({ name: "", email: "", phone: "", message: "" });
@@ -63,7 +69,6 @@ export default function BookingFlow() {
     load();
   }, []);
 
-  const canProceedToStep2 = !!selectedOffering;
   const canProceedToStep3 = !!selectedDate && !!selectedSession;
   const canProceedToPayment = !!userData.name && !!userData.email && !!userData.phone;
 
@@ -133,13 +138,20 @@ export default function BookingFlow() {
         {view === 'booking' && (
           <motion.div 
             key="booking-view"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+           
             className="max-w-7xl mx-auto"
           >
              <div className="bg-white/60 backdrop-blur-2xl md:rounded-[60px] md:border md:border-[#f1e4da] md:shadow-2xl md:shadow-[#bc6746]/5 p-6 md:p-14 relative">
                 
+                {onClose && (
+                  <button 
+                    onClick={onClose}
+                    className="absolute top-8 right-8 text-[#a55a3d]/40 hover:text-[#bc6746] transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                )}
+
                 {/* Progress Indicator - Integrated inside */}
                 <div className="max-w-md mx-auto mb-12 w-full">
                     <div className="flex justify-between items-center relative">
@@ -167,12 +179,10 @@ export default function BookingFlow() {
                 </div>
 
                 <AnimatePresence mode="wait">
-                   {currentStep === 1 && (
+                   {/* {currentStep === 1 && (
                       <motion.div 
                         key="step1"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
+                        
                         className="space-y-12"
                       >
                          <div className="text-center max-w-2xl mx-auto space-y-4 mb-8">
@@ -205,14 +215,12 @@ export default function BookingFlow() {
                             </button>
                          </div>
                       </motion.div>
-                   )}
+                   )} */}
 
                    {currentStep === 2 && (
                       <motion.div 
                         key="step2"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
+                        
                         className="space-y-12"
                       >
                          <div className="text-center max-w-2xl mx-auto space-y-4 mb-8">
@@ -233,10 +241,10 @@ export default function BookingFlow() {
 
                          <div className="flex items-center justify-between pt-8 max-w-4xl mx-auto w-full">
                             <button 
-                               onClick={() => setCurrentStep(1)}
-                               className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/60 hover:text-[#bc6746] transition-all"
+                               onClick={() => initialOffering ? onClose?.() : setCurrentStep(1)}
+                               className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-[#bc6746]/60 hover:text-[#bc6746] transition-all"
                             >
-                               <ChevronLeft className="w-5 h-5" /> Previous
+                               <ChevronLeft className="w-5 h-5" /> Return to Classes
                             </button>
                             <button 
                                disabled={!canProceedToStep3}
@@ -257,9 +265,7 @@ export default function BookingFlow() {
                    {currentStep === 3 && (
                       <motion.div 
                         key="step3"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
+                        
                         className="space-y-12"
                       >
                          <div className="text-center max-w-2xl mx-auto space-y-4 mb-8">
@@ -281,7 +287,7 @@ export default function BookingFlow() {
                          <div className="flex items-center justify-between pt-8 max-w-4xl mx-auto w-full">
                             <button 
                                onClick={() => setCurrentStep(2)}
-                               className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/60 hover:text-[#bc6746] transition-all"
+                               className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-[#bc6746]/60 hover:text-[#bc6746] transition-all"
                             >
                                <ChevronLeft className="w-5 h-5" /> Back to Schedule
                             </button>
@@ -318,7 +324,7 @@ export default function BookingFlow() {
                 <div className="mb-12">
                    <button 
                       onClick={() => setView('booking')}
-                      className="group flex items-center text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/40 hover:text-[#bc6746] transition-all"
+                      className="group flex items-center text-[10px] font-black uppercase tracking-[0.4em] text-[#bc6746]/60 hover:text-[#bc6746] transition-all"
                    >
                      <ChevronLeft className="w-5 h-5 mr-3" /> Back to Selection
                    </button>

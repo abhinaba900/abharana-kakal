@@ -4,46 +4,46 @@ import { useRef, memo } from "react";
 import { HandHeart, Waves, Sparkles, Flower2, CloudRain } from "lucide-react";
 
 const experiences = [
-  { 
+  {
     id: "yoga",
-    icon: <HandHeart strokeWidth={1} size={32} />, 
-    title: "Yoga", 
+    icon: <HandHeart strokeWidth={1} size={32} />,
+    title: "Yoga",
     desc: "Embodied movement to release and restore.",
     img: "/exp-yoga.png",
     size: "md:col-span-1 md:row-span-2", // Vertical Tall
   },
-  { 
+  {
     id: "breathwork",
-    icon: <CloudRain strokeWidth={1} size={32} />, 
-    title: "Breathwork", 
+    icon: <CloudRain strokeWidth={1} size={32} />,
+    title: "Pranayama",
     desc: "Harnessing prana for deep inner alignment.",
     img: "/exp-breathwork.png",
     size: "md:col-span-1 md:row-span-1", // Square
   },
-  { 
+  {
     id: "sound",
-    icon: <Sparkles strokeWidth={1} size={32} />, 
-    title: "Sound Healing", 
+    icon: <Sparkles strokeWidth={1} size={32} />,
+    title: "Sound Healing",
     desc: "Vibrational medicine for cellular clearing.",
     img: "/exp-sound.png",
     size: "md:col-span-2 md:row-span-1", // Horizontal Wide
   },
-  { 
+  {
     id: "circles",
-    icon: <Flower2 strokeWidth={1} size={32} />, 
-    title: "Feminine Circles", 
+    icon: <Flower2 strokeWidth={1} size={32} />,
+    title: "Feminine Circles",
     desc: "Sacred space to share, heal, and connect.",
     img: "/exp-circle.png",
     size: "md:col-span-1 md:row-span-1", // Square
   },
-  { 
+  {
     id: "nature",
-    icon: <Waves strokeWidth={1} size={32} />, 
-    title: "Nature", 
+    icon: <Waves strokeWidth={1} size={32} />,
+    title: "Nature",
     desc: "Grounding roots into the wild earth.",
     img: "/exp-nature.png",
     size: "md:col-span-1 md:row-span-1", // Square
-  }
+  },
 ];
 
 export default function ExperienceSection() {

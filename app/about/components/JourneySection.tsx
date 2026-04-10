@@ -33,12 +33,16 @@ export default function JourneySection() {
         <div className="w-full md:w-1/2 flex flex-col items-start relative z-20 md:-ml-24">
           <div className="soft-glass p-8 md:p-16 rounded-[40px] md:rounded-[60px] shadow-2xl space-y-10 border border-white/40">
             <div className="flex items-center gap-4 mb-6 opacity-60">
-              <span className="font-handwriting text-2xl text-[#bc6746] tracking-wide">The Path Forward</span>
+              <span className="font-handwriting text-2xl text-[#bc6746] tracking-wide">
+                The Path Forward
+              </span>
             </div>
 
             <p className="text-2xl md:text-3xl font-light text-[#4a3b32] leading-relaxed">
-              My journey with yoga began as a personal exploration—seeking
-              balance, clarity, and a deeper connection with myself.
+              My journey with yoga began at the age of eight during my school
+              years. I went on to compete in national and international Yogasana
+              championships. Since 2017, I have been sharing this lifelong
+              passion by teaching yoga.
             </p>
 
             <p className="text-lg md:text-xl font-light text-[#4a3b32]/80 leading-relaxed">

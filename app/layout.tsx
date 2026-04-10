@@ -16,8 +16,8 @@ const robotoSlab = Roboto_Slab({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://abharana-kakal.com"),
-  title: "Abharana Kakal | From Within: Yoga & Feminine Awakening",
-  description: "Discover 'From Within' - immersive yoga retreats and feminine awakening in Bangalore & Mysore with Abharana Kakal. Beginners welcome.",
+  title: "Abharana Kakal | Yoga, Sacred Retreats & From Within",
+  description: "Experience immersive yoga retreats and 'From Within' reflections in Bangalore & Mysore with Abharana Kakal. Sacred spaces for deep restoration.",
   openGraph: {
     images: ['/bg-images.webp'],
   },

@@ -15,7 +15,7 @@ export default function HeroSection() {
           Yoga & Feminine <br className="hidden md:block" /> Awakening: From Within
         </h1>
         <p className="text-lg md:text-2xl text-[#f1e4da] font-light max-w-2xl mx-auto mb-10 drop-shadow-md">
-          Immersive experiences across India, Sri Lanka & Indonesia
+          Immersive experiences across India, Sri Lanka & Nepal
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">

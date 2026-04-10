@@ -25,8 +25,8 @@ export default function Navbar() {
   const navLinks = [
     { name: "About", href: "/about" },
     { name: "Sound Healing", href: "/sound-healing" },
-    { name: "From Within", href: "/retreats" },
-    { name: "Journal", href: "/journal" },
+    { name: "Retreats", href: "/retreats" },
+    { name: "From Within", href: "/journal" },
     { name: "Contact", href: "/contact" },
   ];
 
