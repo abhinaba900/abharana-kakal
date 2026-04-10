@@ -21,7 +21,7 @@ const offerings = [
   { 
     id: "retreats",
     icon: <Waves strokeWidth={1} size={32} />, 
-    title: "Retreats", 
+    title: "From Within", 
     benefit: "Sacred Immersion",
     desc: "Immersive experiences across India, Sri Lanka, and Indonesia for deep soulful rest.",
     texture: "radial-gradient(circle at 10% 80%, #a55a3d 0%, transparent 40%)",

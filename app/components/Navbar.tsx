@@ -3,54 +3,29 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+import { useAudio } from "@/context/AudioContext";
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const { isBgPlaying, toggleBgAudio } = useAudio();
 
   useEffect(() => {
-    const bgAudio = new Audio("/bg-audio.mp3");
-    bgAudio.loop = true;
-    setAudio(bgAudio);
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
 
-    const handleFirstClick = () => {
-      if (bgAudio.paused) {
-        bgAudio.play().then(() => {
-          setIsPlaying(true);
-        }).catch((err) => console.log("Audio play blocked:", err));
-      }
-      window.removeEventListener("mousedown", handleFirstClick);
-    };
-
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("mousedown", handleFirstClick);
     
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousedown", handleFirstClick);
-      bgAudio.pause();
     };
   }, []);
-
-  useEffect(() => {
-    if (audio) {
-      if (isPlaying) {
-        audio.play().catch((err) => console.log("Audio play blocked:", err));
-      } else {
-        audio.pause();
-      }
-    }
-  }, [isPlaying, audio]);
 
   const navLinks = [
     { name: "About", href: "/about" },
     { name: "Sound Healing", href: "/sound-healing" },
-    { name: "Retreats", href: "/retreats" },
+    { name: "From Within", href: "/retreats" },
     { name: "Journal", href: "/journal" },
     { name: "Contact", href: "/contact" },
   ];
@@ -104,8 +79,8 @@ export default function Navbar() {
           <div className="flex-1 flex justify-end items-center gap-4 lg:gap-6">
             {/* 1. Audio Visual Toggle with NEW Minimalist Play/Pause Icons */}
             <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              aria-label={isPlaying ? "Pause Audio" : "Play Audio"}
+              onClick={toggleBgAudio}
+              aria-label={isBgPlaying ? "Pause Audio" : "Play Audio"}
               className={`hidden md:flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-500 hover:scale-110 ${
                 scrolled
                   ? "border-[#bc6746]/30 text-[#bc6746] hover:bg-[#bc6746]/5"
@@ -113,7 +88,7 @@ export default function Navbar() {
               }`}
             >
               <svg
-                className={`w-8 h-8 transition-transform duration-300 ${!isPlaying ? "ml-0.5" : ""}`}
+                className={`w-8 h-8 transition-transform duration-300 ${!isBgPlaying ? "ml-0.5" : ""}`}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={1.5}
@@ -121,7 +96,7 @@ export default function Navbar() {
                 strokeLinejoin="round"
                 viewBox="0 0 24 24"
               >
-                {isPlaying ? (
+                {isBgPlaying ? (
                   /* Minimalist Thin Pause Lines */
                   <>
                     <line x1="10" y1="8" x2="10" y2="16" />

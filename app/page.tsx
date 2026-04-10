@@ -54,7 +54,7 @@ export default function Home() {
             {/* Center Focus Area */}
             <div className="relative flex flex-col items-center justify-center h-full w-full min-h-[60vh] md:min-h-[80vh] pt-[15vh]">
               <CircularText
-                text="Yoga ✦ Sound Healing ✦ Retreats ✦ Feminine Circles "
+                text="Yoga ✦ Sound Healing ✦ From Within ✦ Feminine Circles "
                 onHover="speedUp"
                 spinDuration={20}
                 className="custom-class"

@@ -139,5 +139,28 @@ async function deleteHandler(req: NextRequest, { params, admin }: any) {
   }
 }
 
+/**
+ * GET /api/retreats/[id]
+ * Public: Fetch a single retreat's details.
+ */
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    const { data: retreat, error } = await supabaseAdmin
+      .from('retreats')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+    if (!retreat) return NextResponse.json({ error: 'Retreat not found' }, { status: 404 });
+
+    return NextResponse.json({ success: true, data: retreat });
+  } catch (err: any) {
+    console.error('Retreat fetch error:', err);
+    return NextResponse.json({ error: 'Failed to fetch retreat', details: err.message }, { status: 500 });
+  }
+}
+
 export const PATCH = withAuth(patchHandler);
 export const DELETE = withAuth(deleteHandler);

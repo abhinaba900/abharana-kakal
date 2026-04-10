@@ -28,7 +28,7 @@ export default function JournalCTA() {
             id="journal-cta-retreats"
             className="w-full sm:w-auto px-9 py-3 rounded-full bg-[#f1e4da] text-[#a55a3d] uppercase tracking-widest text-xs font-semibold hover:bg-white transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#f1e4da]/20"
           >
-            Explore Retreats
+            Explore From Within
           </Link>
           <Link
             href="/contact"

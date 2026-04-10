@@ -22,7 +22,7 @@ export default function FinalCTA() {
             }
             className="w-full sm:w-auto px-10 py-4 rounded-full bg-[#f1e4da] text-[#a55a3d] uppercase tracking-widest text-sm font-semibold hover:bg-white transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#f1e4da]/20"
           >
-            Book a Retreat
+            Book Your Immersion
           </button>
         </div>
       </div>

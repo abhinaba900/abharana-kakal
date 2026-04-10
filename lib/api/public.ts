@@ -17,5 +17,16 @@ export const publicService = {
       if (!res.ok) throw new Error(data.error || 'Failed to fetch session details');
       return data;
     }
+  },
+  retreats: {
+    get: async (id: string) => {
+      // Use absolute URL for server-side fetching in RSC if needed, 
+      // but relative works for client-side or if configured with base URL.
+      // For simplicity in this env, we'll use relative.
+      const res = await fetch(`/api/retreats/${id}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to fetch retreat details');
+      return data;
+    }
   }
 };

@@ -108,7 +108,7 @@ export default function ContactForm() {
                 </span>
               </h2>
               <p className="text-base md:text-lg font-light text-[#4a3b32]/60 italic leading-relaxed">
-                Whether you’re exploring yoga, sound healing, or retreats,
+                Whether you’re exploring yoga, sound healing, or From Within,
                 you’re welcome to connect.
               </p>
             </div>
@@ -181,7 +181,7 @@ export default function ContactForm() {
                   >
                     <option>Yoga</option>
                     <option>Sound Healing</option>
-                    <option>Retreats</option>
+                    <option>From Within</option>
                     <option>Other</option>
                   </select>
                   <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none text-[#bc6746]/60">

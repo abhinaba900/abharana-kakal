@@ -12,7 +12,7 @@ export default function HeroSection() {
         className="relative z-10 text-center px-4 max-w-4xl mx-auto"
       >
         <h1 className="text-5xl md:text-7xl font-serif text-[#FFFDF8] uppercase tracking-widest text-shadow-soft mb-6">
-          Yoga & Feminine <br className="hidden md:block" /> Awakening Retreats
+          Yoga & Feminine <br className="hidden md:block" /> Awakening: From Within
         </h1>
         <p className="text-lg md:text-2xl text-[#f1e4da] font-light max-w-2xl mx-auto mb-10 drop-shadow-md">
           Immersive experiences across India, Sri Lanka & Indonesia
@@ -28,7 +28,7 @@ export default function HeroSection() {
             }
             className="px-8 py-3 rounded-full bg-[#bc6746] text-[#FFFDF8] uppercase tracking-widest text-sm font-medium hover:-translate-y-1 transition-transform shadow-[0_4px_15px_rgba(188,103,70,0.4)]"
           >
-            Explore Retreats
+            Explore Immersions
           </Link>
         </div>
       </div>

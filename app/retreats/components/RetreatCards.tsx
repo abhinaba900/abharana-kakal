@@ -2,13 +2,11 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import {  useState, useEffect } from "react";
-import BookingPortal from "@/app/components/BookingPortal";
+import Link from "next/link";
 
 export default function RetreatCards() {
   const [retreats, setRetreats] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRetreat, setSelectedRetreat] = useState<any>(null);
-  const [isPortalOpen, setIsPortalOpen] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -24,17 +22,6 @@ export default function RetreatCards() {
     }
     load();
   }, []);
-
-  const handleBookNow = (retreat: any) => {
-    setSelectedRetreat({
-        id: retreat.id,
-        title: retreat.title,
-        price: retreat.price,
-        date: retreat.date,
-        location: retreat.location
-    });
-    setIsPortalOpen(true);
-  };
 
   return (
     <section id="explore-retreats" className="relative py-24 md:py-24 px-6 z-10 w-full overflow-hidden">
@@ -57,25 +44,19 @@ export default function RetreatCards() {
         ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 pb-32">
             {retreats.map((retreat, idx) => (
-                <RetreatCard key={retreat.id} retreat={retreat} index={idx} onBook={() => handleBookNow(retreat)} />
+                <RetreatCard key={retreat.id} retreat={retreat} index={idx} />
             ))}
             </div>
         )}
       </div>
-
-      <BookingPortal 
-        isOpen={isPortalOpen}
-        onClose={() => setIsPortalOpen(false)}
-        type="retreat"
-        itemData={selectedRetreat}
-      />
     </section>
   );
 }
 
-function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; onBook: () => void }) {  
+function RetreatCard({ retreat, index }: { retreat: any; index: number }) {  
   return (
-    <div
+    <Link
+      href={`/retreats/${retreat.id}`}
       className={`relative group flex flex-col h-[650px] md:h-[750px] rounded-[50px] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[0_40px_100px_rgba(188,103,70,0.25)]`}
     >
       {/* Image Layer */}
@@ -123,18 +104,15 @@ function RetreatCard({ retreat, index, onBook }: { retreat: any; index: number; 
                     <span className="text-[10px] uppercase tracking-widest opacity-40">Immersion Fee</span>
                     <span className="text-2xl font-serif text-[#bc6746]">₹{retreat.price}</span>
                 </div>
-                <motion.button 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={onBook}
-                    className="soft-glass self-end uppercase tracking-widest text-[10px] font-black py-4 px-10 rounded-full border border-white/20 hover:bg-[#bc6746] hover:border-[#bc6746] transition-all duration-500 shadow-xl"
+                <div 
+                    className="soft-glass self-end uppercase tracking-widest text-[10px] font-black py-4 px-10 rounded-full border border-white/20 group-hover:bg-[#bc6746] group-hover:border-[#bc6746] transition-all duration-500 shadow-xl"
                 >
-                    Book Now
-                </motion.button>
+                    View Details
+                </div>
            </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

@@ -1,23 +1,22 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import BookingPortal from "@/app/components/BookingPortal";
+import Link from "next/link";
 import { publicService } from "@/lib/api/public";
 
 function SessionCard({
   session,
   idx,
-  onBook,
 }: {
   session: any;
   idx: number;
-  onBook: () => void;
-  }) {
+}) {
   
- console.log(session.image_url,'image url');
- 
   return (
-    <div className={`relative group ${idx === 1 ? "md:mt-12" : ""}`}>
+    <Link 
+      href={`/sound-healing/sessions/${session.id}`}
+      className={`relative group ${idx === 1 ? "md:mt-12" : ""}`}
+    >
       <div
         className="absolute inset-0 -m-4 bg-[#f1e4da]/40 rounded-[60px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
       />
@@ -94,43 +93,22 @@ function SessionCard({
           <div className="mt-auto flex flex-col gap-3">
             <div className="h-[1px] w-full bg-[#f1e4da] mb-4" />
             <div className="flex gap-4">
-              <button
-                onClick={onBook}
-                className="flex-1 text-center py-4 rounded-2xl bg-[#bc6746] text-[#FFFDF8] text-[10px] font-mono uppercase tracking-[.2em] hover:bg-[#a55a3d] transition-all transform hover:-translate-y-1 active:translate-y-0"
+              <div
+                className="flex-1 text-center py-4 rounded-2xl bg-[#bc6746] text-[#FFFDF8] text-[10px] font-mono uppercase tracking-[.2em] group-hover:bg-[#a55a3d] transition-all transform group-hover:-translate-y-1"
               >
-                Book Now
-              </button>
-              <a
-                href="/contact"
-                className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-2xl border border-[#bc6746]/30 text-[#bc6746] hover:bg-[#f1e4da]/30 transition-all"
-                aria-label="Enquire"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-              </a>
+                View Details
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
 export default function SessionsSection() {
   const [sessions, setSessions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isPortalOpen, setIsPortalOpen] = useState(false);
-  const [selectedSession, setSelectedSession] = useState<any>(null);
 
   useEffect(() => {
     async function fetchSessions() {
@@ -145,22 +123,6 @@ export default function SessionsSection() {
     }
     fetchSessions();
   }, []);
-
-  const handleBook = (session: any) => {
-    setSelectedSession({
-      id: session.id,
-      title: session.title,
-      price: session.price,
-      date: session.date,
-      time: session.time,
-      duration: session.duration,
-      upi_id: session.upi_id,
-      payee_name: session.payee_name,
-      qr_image_url: session.qr_image_url,
-      instructions: session.instructions,
-    });
-    setIsPortalOpen(true);
-  };
 
   return (
     <section
@@ -192,7 +154,6 @@ export default function SessionsSection() {
                 key={session.id}
                 session={session}
                 idx={idx}
-                onBook={() => handleBook(session)}
               />
             ))}
           </div>
@@ -206,13 +167,6 @@ export default function SessionsSection() {
           <div className="h-[1px] w-[200px] bg-gradient-to-r from-transparent via-[#bc6746]/30 to-transparent" />
         </div>
       </div>
-
-      <BookingPortal
-        isOpen={isPortalOpen}
-        onClose={() => setIsPortalOpen(false)}
-        type="upcoming"
-        itemData={selectedSession}
-      />
     </section>
   );
 }

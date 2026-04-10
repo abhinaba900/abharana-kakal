@@ -6,7 +6,7 @@ const experiences = [
   { id: "01", title: "BSc in Yoga", subtitle: "Traditional Gurukula System — Mysore, India" },
   { id: "02", title: "Masters in Yoga", subtitle: "Somatic Therapy & Philosophy — Bangalore, India" },
   { id: "03", title: "International Practice", subtitle: "Holistic Immersion — Ubud, Indonesia" },
-  { id: "04", title: "Sacred Retreats", subtitle: "Lead Facilitator — Kandy, Sri Lanka" }
+  { id: "04", title: "Sacred Immersions", subtitle: "Lead Facilitator — Kandy, Sri Lanka" }
 ];
 
 export default function ExperienceList() {

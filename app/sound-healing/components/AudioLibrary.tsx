@@ -1,6 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect } from "react";
+import { useAudio } from "@/context/AudioContext";
 
 // Tracks are now fetched from the backend API
 
@@ -61,12 +62,17 @@ export default function AudioLibrary() {
     }
   };
 
+  const { pauseBgAudio } = useAudio();
+
   const toggle = (id: string, src: string) => {
     if (playing === id) {
       audioRefs.current[id]?.pause();
       setPlaying(null);
       if (progressInterval.current) clearInterval(progressInterval.current);
     } else {
+      // Pause background music
+      pauseBgAudio();
+
       // Pause others
       Object.entries(audioRefs.current).forEach(([k, a]) => {
         if (k !== id) a?.pause();
@@ -89,6 +95,7 @@ export default function AudioLibrary() {
 
   useEffect(() => {
     return () => {
+      // We keep meditation pausing on unmount for now as requested/clarified by user focusing on Navbar
       Object.values(audioRefs.current).forEach((a) => a?.pause());
       if (progressInterval.current) clearInterval(progressInterval.current);
     };
