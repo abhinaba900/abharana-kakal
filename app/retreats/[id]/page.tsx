@@ -59,9 +59,6 @@ export default function ImmersionDetailPage({ params }: { params: Promise<{ id: 
       {/* Hero Section */}
       <section className="relative h-[80vh] w-full overflow-hidden">
         <motion.div 
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, ease: "easeOut" }}
             className="absolute inset-0 z-0"
         >
           <Image
@@ -79,9 +76,7 @@ export default function ImmersionDetailPage({ params }: { params: Promise<{ id: 
 
         <div className="relative z-20 h-full max-w-7xl mx-auto px-6 flex flex-col justify-end pb-24">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+           
             className="max-w-4xl"
           >
             <Link 
