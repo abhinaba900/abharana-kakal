@@ -84,14 +84,14 @@ export const retreatService = {
 
 export const blogService = {
   posts: {
-    list: (category_id?: string) => api.get('/journal/posts', { params: { category_id } }),
-    create: (data: FormData | any) => api.post('/journal/posts', data),
-    update: (id: string, data: FormData | any) => api.patch(`/journal/posts/${id}`, data),
-    delete: (id: string) => api.delete(`/journal/posts/${id}`),
+    list: (category_id?: string) => api.get('/within/posts', { params: { category_id } }),
+    create: (data: FormData | any) => api.post('/within/posts', data),
+    update: (id: string, data: FormData | any) => api.patch(`/within/posts/${id}`, data),
+    delete: (id: string) => api.delete(`/within/posts/${id}`),
   },
   categories: {
-    list: () => api.get('/journal/categories'),
-    create: (name: string) => api.post('/journal/categories', { name }),
+    list: () => api.get('/within/categories'),
+    create: (name: string) => api.post('/within/categories', { name }),
   },
 };
 

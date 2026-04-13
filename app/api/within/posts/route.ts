@@ -4,7 +4,7 @@ import { withAuth } from '@/lib/with-auth';
 import { uploadToBunny } from '@/lib/bunny';
 
 /**
- * GET /api/journal/posts
+ * GET /api/within/posts
  * Public: List all blog posts.
  * Query Parameters: ?category_id=...
  */
@@ -34,7 +34,7 @@ export async function GET(req: Request) {
 }
 
 /**
- * POST /api/journal/posts
+ * POST /api/within/posts
  * Protected: Admin only to create a new blog post.
  */
 async function postHandler(req: NextRequest, { admin }: any) {

@@ -42,7 +42,7 @@ interface Category {
   name: string;
 }
 
-export default function JournalPage() {
+export default function WithinAdminPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [activeTab, setActiveTab] = useState<'posts' | 'categories'>('posts');
@@ -82,7 +82,7 @@ export default function JournalPage() {
       setPosts(postsRes.data.data);
       setCategories(catsRes.data.data);
     } catch (err) {
-      toast.error('Failed to load journal vibrations');
+      toast.error('Failed to load wisdom vibrations');
     } finally {
       setLoading(false);
     }
@@ -155,7 +155,7 @@ export default function JournalPage() {
     try {
       if (editingPost) {
         await blogService.posts.update(editingPost.id, data);
-        toast.success('Journal entry Harmonized');
+        toast.success('Resonance Harmonized');
       } else {
         await blogService.posts.create(data);
         toast.success('New resonance Written');
@@ -207,7 +207,7 @@ export default function JournalPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <h1 className="text-4xl font-serif font-bold tracking-tight text-[#4a3b32]">The Sacred Journal</h1>
+          <h1 className="text-4xl font-serif font-bold tracking-tight text-[#4a3b32]">From Within</h1>
           <p className="mt-2 text-[#a55a3d]/70 italic">Share your wisdom and restorative insights.</p>
         </motion.div>
         

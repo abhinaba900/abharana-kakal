@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import { withAuth } from '@/lib/with-auth';
 
 /**
- * GET /api/journal/categories
+ * GET /api/within/categories
  * Public: List all blog categories.
  */
 export async function GET(req: Request) {
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
 }
 
 /**
- * POST /api/journal/categories
+ * POST /api/within/categories
  * Protected: Admin only to create a new category.
  */
 async function postHandler(req: NextRequest, { admin }: any) {

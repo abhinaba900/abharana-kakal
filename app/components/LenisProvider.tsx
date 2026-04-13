@@ -14,8 +14,8 @@ export default function LenisProvider({
     pathname.startsWith("/retreats/") ||
     pathname === "/sound-healing" ||
     pathname.startsWith("/sound-healing/") ||
-    pathname === "/journal" ||
-    pathname.startsWith("/journal/") ||
+    pathname === "/within" ||
+    pathname.startsWith("/within/") ||
     pathname === "/online-classes" ||
     pathname.startsWith("/online-classes/") ||
     pathname === "/about" ||

@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "motion/react";
 
-export default function JournalHero() {
+export default function WithinHero() {
   return (
     <section className="relative pt-40 pb-20 px-6 mb-10 text-center">
       {/* Very subtle tint layer */}
@@ -12,10 +12,10 @@ export default function JournalHero() {
           words from within
         </p>
         <h1 className="text-5xl md:text-7xl font-serif text-[#FFFDF8] uppercase tracking-widest text-shadow-soft mb-6 leading-tight">
-          Journal
+          Within
         </h1>
         <p className="text-base md:text-lg text-[#f1e4da]/90 font-light leading-relaxed max-w-lg mx-auto">
-          Reflections on yoga, feminine energy, and inner awareness
+          Reflections on yoga, feminine awareness, and inner presence
         </p>
       </motion.div>
     </section>

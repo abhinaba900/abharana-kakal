@@ -91,7 +91,7 @@ const Editor = ({ data, onChange, holder = 'editorjs' }: EditorProps) => {
             uploader: {
               uploadByFile: async (file: File) => {
                 try {
-                  const res = await mediaService.upload(file, 'journal');
+                  const res = await mediaService.upload(file, 'within');
                   if (res.data.success) {
                     return {
                       success: 1,

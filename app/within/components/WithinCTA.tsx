@@ -2,7 +2,7 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 
-export default function JournalCTA() {
+export default function WithinCTA() {
   return (
     <section className="relative py-24 px-6 overflow-hidden flex flex-col items-center text-center">
       {/* Terracotta gradient overlay */}
@@ -25,14 +25,14 @@ export default function JournalCTA() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
           <Link
             href="/retreats"
-            id="journal-cta-retreats"
+            id="within-cta-retreats"
             className="w-full sm:w-auto px-9 py-3 rounded-full bg-[#f1e4da] text-[#a55a3d] uppercase tracking-widest text-xs font-semibold hover:bg-white transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#f1e4da]/20"
           >
             Explore From Within
           </Link>
           <Link
             href="/contact"
-            id="journal-cta-session"
+            id="within-cta-session"
             className="w-full sm:w-auto px-9 py-3 rounded-full bg-transparent border border-[#FFFDF8] text-[#FFFDF8] uppercase tracking-widest text-xs font-semibold hover:bg-[#FFFDF8]/10 transition-all hover:-translate-y-1"
           >
             Book a Session

@@ -34,7 +34,7 @@ export default function Footer() {
             { name: "About", href: "/about" },
             { name: "Sound Healing", href: "/sound-healing" },
             { name: "Retreats", href: "/retreats" },
-            { name: "From Within", href: "/journal" },
+            { name: "From Within", href: "/within" },
             { name: "Contact", href: "/contact" },
           ].map((item) => (
             <Link

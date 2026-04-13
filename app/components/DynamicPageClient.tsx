@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import BlockRenderer from '@/app/journal/components/BlockRenderer';
+import BlockRenderer from '@/app/within/components/BlockRenderer';
 
 interface DynamicPageClientProps {
   title: string;

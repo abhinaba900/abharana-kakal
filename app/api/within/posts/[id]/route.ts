@@ -4,7 +4,7 @@ import { withAuth } from '@/lib/with-auth';
 import { uploadToBunny } from '@/lib/bunny';
 
 /**
- * PATCH /api/journal/posts/[id]
+ * PATCH /api/within/posts/[id]
  * Protected: Admin only to update blog post details or images.
  */
 async function patchHandler(req: NextRequest, { params, admin }: any) {
@@ -68,7 +68,7 @@ async function patchHandler(req: NextRequest, { params, admin }: any) {
 }
 
 /**
- * DELETE /api/journal/posts/[id]
+ * DELETE /api/within/posts/[id]
  * Protected: Admin only to remove a blog post.
  */
 async function deleteHandler(req: NextRequest, { params, admin }: any) {

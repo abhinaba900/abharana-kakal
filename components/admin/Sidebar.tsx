@@ -33,7 +33,7 @@ const MENU_ITEMS = [
   { icon: Music, label: 'Sound Healing', href: '/admin/sound-healing' },
   { icon: CalendarDays, label: 'Upcoming Sessions', href: '/admin/upcoming-sessions' },
   { icon: Palmtree, label: 'Retreats', href: '/admin/retreats' },
-  { icon: BookOpen, label: 'Journal', href: '/admin/journal' },
+  { icon: BookOpen, label: 'Within', href: '/admin/within' },
   { icon: Palette, label: 'Pages', href: '/admin/pages' },
   { icon: Download, label: 'Downloads', href: '/admin/downloads' },
   { icon: Settings, label: 'Settings', href: '/admin/settings' },

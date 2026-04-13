@@ -70,7 +70,7 @@ export default function BlogGrid() {
             excerpt: p.content.length > 150 && p.content.startsWith('{') ? 'Exploring the depths of inner awareness through sacred practice...' : p.content.substring(0, 160) + '...',
             date: new Date(p.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
             category: p.journal_categories?.name || 'Wisdom',
-            image: p.image_url || '/journal-yoga.png',
+            image: p.image_url || '/within-yoga.png',
             readTime: 'Read',
             isDynamic: true
           }));
@@ -112,7 +112,7 @@ export default function BlogGrid() {
   }
 
   return (
-    <section className="relative pb-24 px-6">
+    <section className="relative pb-24 px-6 ">
       <div className="max-w-5xl mx-auto">
         {/* ── Category Filters ───────────────────────── */}
         <motion.div
@@ -125,7 +125,7 @@ export default function BlogGrid() {
           {filterList.map((cat) => (
             <button
               key={cat}
-              id={`journal-filter-${cat.toLowerCase().replace(/\s+/g, "-")}`}
+              id={`within-filter-${cat.toLowerCase().replace(/\s+/g, "-")}`}
               onClick={() => {
                 setActiveCategory(cat);
                 setVisibleCount(PER_PAGE);
@@ -152,61 +152,51 @@ export default function BlogGrid() {
             {/* ── Featured Card ──────────────────────── */}
             {featured && (
               <Link
-                href={`/journal/${featured.slug}`}
-                id={`journal-featured-${featured.slug}`}
-                className="group block mb-14"
+                href={`/within/${featured.slug}`}
+                id={`within-featured-${featured.slug}`}
+                className="group block mb-24"
               >
                 <motion.article
-                  initial={{ opacity: 0, y: 0 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.7 }}
-                  className="relative w-full rounded-3xl overflow-hidden border border-white/10"
+                  transition={{ duration: 0.8 }}
+                  className="flex flex-col md:flex-row gap-8 md:gap-16 items-center"
                 >
-                  {/* Hero image */}
-                  <div className="relative w-full aspect-[16/7] md:aspect-[21/8]">
-                    <Image
-                      src={featured.image}
-                      alt={featured.title}
-                      fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                      className="object-cover transition-transform duration-[900ms] ease-in-out group-hover:scale-105"
-                    />
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1a1008]/80 via-[#1a1008]/25 to-transparent" />
+                  <div className="w-full md:w-3/5">
+                    <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
+                      <Image
+                        src={featured.image}
+                        alt={featured.title}
+                        fill
+                        priority
+                        sizes="(max-width: 768px) 100vw, 800px"
+                        className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
 
-                    {/* Content positioned at bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-                      {/* Category badge */}
-                      <div
-                        className="inline-block mb-4 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest text-white/90 font-semibold"
-                        style={{
-                          backgroundColor: (categoryColors[featured.category] ?? "#bc6746") + "cc",
-                        }}
+                  <div className="w-full md:w-2/5 flex flex-col items-start px-2">
+                    <div className="flex items-center gap-4 mb-6">
+                      <span
+                        className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.2em] text-white font-bold"
+                        style={{ backgroundColor: categoryColors[featured.category] ?? "#bc6746" }}
                       >
                         {featured.category}
-                      </div>
-
-                      <h2 className="font-serif text-3xl md:text-5xl text-[#FFFDF8] leading-tight tracking-wide mb-4 max-w-2xl group-hover:text-[#f1e4da] transition-colors duration-300">
-                        {featured.title}
-                      </h2>
-
-                      <p className="text-sm md:text-base text-[#f1e4da]/70 max-w-xl leading-relaxed mb-5 line-clamp-2 hidden md:block">
-                        {featured.excerpt}
-                      </p>
-
-                      <div className="flex items-center gap-5">
-                        <div className="flex items-center gap-3 text-[#f1e4da]/50 text-xs uppercase tracking-widest">
-                          <span>{featured.date}</span>
-                          <span className="w-1 h-1 rounded-full bg-[#bc6746]/60" />
-                          <span>{featured.readTime}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-[#bc6746] text-xs uppercase tracking-widest font-semibold ml-auto">
-                          <span>Read</span>
-                          <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-                        </div>
-                      </div>
+                      </span>
+                      <span className="text-[10px] text-[#4a3b32]/50 uppercase tracking-[0.2em] font-bold">
+                        {featured.date}
+                      </span>
+                    </div>
+                    <h2 className="font-serif text-3xl md:text-5xl text-[#ffffff] leading-tight mb-6 group-hover:text-[#bc6746] transition-colors">
+                      {featured.title}
+                    </h2>
+                    <p className="text-base text-[#ffff]/70 leading-relaxed mb-8 italic line-clamp-3">
+                      {featured.excerpt}
+                    </p>
+                    <div className="flex items-center gap-3 text-[#bc6746] text-[10px] uppercase tracking-[0.3em] font-bold">
+                      <span>Read More</span>
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-2" />
                     </div>
                   </div>
                 </motion.article>
@@ -215,58 +205,55 @@ export default function BlogGrid() {
 
             {/* ── Blog Grid ──────────────────────────── */}
             {rest.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
                 {rest.map((post, i) => {
                   const catColor = categoryColors[post.category] ?? "#bc6746";
                   return (
                     <motion.article
                       key={post.slug}
-                      initial={{ opacity: 0, y: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: i * 0.08 }}
-                      className="group"
+                      transition={{ duration: 0.6, delay: i * 0.1 }}
+                      className="group flex flex-col h-full"
                     >
-                      <Link href={`/journal/${post.slug}`} id={`journal-card-${post.slug}`}>
+                      <Link href={`/within/${post.slug}`} id={`within-card-${post.slug}`} className="flex flex-col h-full">
                         {/* Image */}
-                        <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-5 border border-white/10 shadow-sm">
+                        <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-6 shadow-sm ring-1 ring-[#f1e4da]/50">
                           <Image
                             src={post.image}
                             alt={post.title}
                             fill
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1008]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          {/* Category pill on image */}
-                          <div
-                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-[9px] uppercase tracking-widest text-white/90 font-semibold"
-                            style={{ backgroundColor: catColor + "cc" }}
-                          >
-                            {post.category}
-                          </div>
                         </div>
 
-                        {/* Card content */}
-                        <div className="px-1">
-                          <div className="flex items-center gap-4 mb-3">
-                            <span className="text-[11px] text-[#f1e4da]/60 uppercase tracking-widest">
+                        {/* Content */}
+                        <div className="flex flex-col flex-1 px-1">
+                          <div className="flex items-center justify-between mb-4">
+                            <span
+                              className="text-[9px] uppercase tracking-[0.2em] font-bold px-2 py-0.5 rounded-full text-white"
+                              style={{ backgroundColor: catColor }}
+                            >
+                              {post.category}
+                            </span>
+                            <span className="text-[10px] text-[#4a3b32]/40 uppercase tracking-[0.2em] font-bold">
                               {post.date}
                             </span>
-                            <span className="w-1 h-1 rounded-full bg-[#bc6746]/40" />
-                            <span className="text-[11px] text-[#f1e4da]/60 uppercase tracking-widest">
-                              {post.readTime}
-                            </span>
                           </div>
-                          <h2 className="text-xl md:text-2xl font-serif text-[#FFFDF8] mb-3 transition-colors duration-300 group-hover:text-[#f1e4da] leading-snug">
+
+                          <h2 className="text-xl md:text-2xl font-serif text-[#4a3b32] mb-4 group-hover:text-[#bc6746] transition-colors leading-tight min-h-[3rem]">
                             {post.title}
                           </h2>
-                          <p className="text-sm text-[#f1e4da]/70 leading-relaxed line-clamp-2">
+
+                          <p className="text-sm text-[#4a3b32]/70 leading-relaxed font-light line-clamp-2 mb-6">
                             {post.excerpt}
                           </p>
-                          <div className="mt-4 flex items-center gap-2 text-[#bc6746] text-xs uppercase tracking-widest font-medium">
-                            <span>Read</span>
-                            <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+
+                          <div className="mt-auto flex items-center gap-2 text-[#bc6746] text-[10px] uppercase tracking-[0.2em] font-bold">
+                            <span>Read resonance</span>
+                            <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-2" />
                           </div>
                         </div>
                       </Link>
@@ -286,11 +273,11 @@ export default function BlogGrid() {
             className="flex justify-center mt-20"
           >
             <button
-              id="journal-load-more"
+              id="within-load-more"
               onClick={() => setVisibleCount((n) => n + PER_PAGE)}
-              className="px-10 py-3 rounded-full border border-[#FFFDF8]/30 text-[#f1e4da] uppercase tracking-widest text-xs font-medium hover:bg-[#FFFDF8]/10 hover:-translate-y-1 transition-all duration-300"
+              className="px-12 py-4 rounded-full border border-[#bc6746]/30 text-[#bc6746] uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-[#bc6746] hover:text-white hover:shadow-xl hover:shadow-[#bc6746]/20 transition-all duration-500"
             >
-              Load More
+              Unfold More
             </button>
           </motion.div>
         )}

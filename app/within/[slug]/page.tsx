@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { blogPosts } from "@/app/journal/data";
-import JournalDetailClient from "@/app/journal/components/JournalDetailClient";
+import { blogPosts } from "@/app/within/data";
+import WithinDetailClient from "@/app/within/components/WithinDetailClient";
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props) {
     
     if (dynamicPost) {
       return {
-        title: `${dynamicPost.title} | Journal | Abharana Kakal`,
+        title: `${dynamicPost.title} | Within | Abharana Kakal`,
         description: 'Exploring the depths of inner awareness through sacred practice...',
       };
     }
@@ -30,10 +30,10 @@ export async function generateMetadata({ params }: Props) {
     // Fall through
   }
 
-  return { title: 'Journal | Abharana Kakal' };
+  return { title: 'Within | Abharana Kakal' };
 }
 
-export default async function JournalPostPage({ params }: Props) {
+export default async function WithinPostPage({ params }: Props) {
   const { slug } = await params;
   
   // Fetch post from database
@@ -51,7 +51,7 @@ export default async function JournalPostPage({ params }: Props) {
     excerpt: '',
     date: new Date(dbPost.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
     category: (dbPost.journal_categories as any)?.name || 'Wisdom',
-    image: dbPost.image_url || '/journal-yoga.png',
+    image: dbPost.image_url || '/within-yoga.png',
     readTime: 'Read',
     content: dbPost.content,
   };
@@ -69,7 +69,7 @@ export default async function JournalPostPage({ params }: Props) {
     excerpt: '',
     date: new Date(rp.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
     category: (rp.journal_categories as any)?.name || 'Wisdom',
-    image: rp.image_url || '/journal-yoga.png',
+    image: rp.image_url || '/within-yoga.png',
     readTime: 'Read',
     content: ''
   }));
@@ -90,7 +90,7 @@ export default async function JournalPostPage({ params }: Props) {
         <div className="absolute inset-0 bg-black/10" />
       </div>
 
-      <JournalDetailClient post={post as any} relatedPosts={relatedPosts} />
+      <WithinDetailClient post={post as any} relatedPosts={relatedPosts} />
     </main>
   );
 }

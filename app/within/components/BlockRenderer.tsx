@@ -116,7 +116,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ content, theme = 'dark' }
                 <div className="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                   <Image 
                     src={block.data.file.url} 
-                    alt={block.data.caption || 'Journal Image'} 
+                    alt={block.data.caption || 'Within Image'} 
                     fill 
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
                     className="object-cover"
