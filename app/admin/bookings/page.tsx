@@ -25,6 +25,9 @@ import {
 import { toast } from 'react-toastify';
 import { cn, formatDateLocal } from '@/lib/utils';
 import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
+import { AdminTable } from '@/components/admin/AdminTable';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ShieldCheck } from 'lucide-react';
 
 interface Booking {
   id: string;
@@ -219,188 +222,185 @@ export default function BookingsAdmin() {
             </div>
           </div>
         </div>
-      </GlassCard>
-
-      {/* Main Content Area */}
-      <div className="flex flex-col gap-8 lg:flex-row lg:h-[calc(100vh-420px)] overflow-hidden">
-        {/* Bookings List */}
-        <div 
-          className="flex-1 overflow-y-auto p-4 custom-scrollbar will-change-transform overscroll-contain"
-          data-lenis-prevent
-          style={{ touchAction: 'pan-y' }}
-        >
-          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
-            {loading ? (
-              <div className="flex h-64 flex-col items-center justify-center space-y-4">
-                <Loader2 className="h-8 w-8 animate-spin text-[#bc6746]" />
-                <p className="text-sm text-[#4a3b32]/40 italic">Syncing with Sanctuary records...</p>
+      </GlassCard>       <AdminTable 
+        data={filteredBookings}
+        isLoading={loading}
+        columns={[
+          {
+            header: "Date",
+            accessor: (item) => (
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-[#4a3b32]">{formatDateLocal(new Date(item.created_at))}</span>
+                <span className="text-[10px] text-[#a55a3d]/50 font-mono tracking-tighter uppercase">{new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
               </div>
-            ) : filteredBookings.length === 0 ? (
-              <div className="flex h-64 flex-col items-center justify-center space-y-4 rounded-3xl border-2 border-dashed border-[#bc6746]/10 bg-white/40">
-                <Search className="h-12 w-12 text-[#bc6746]/10" />
-                <p className="text-[#4a3b32]/40 italic">No bookings found matching your filters.</p>
+            )
+          },
+          {
+            header: "Type",
+            accessor: (item) => (
+              <span className={cn(
+                "text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border",
+                item.booking_type === 'yoga' ? "bg-amber-100 text-amber-700 border-amber-200" : item.booking_type === 'upcoming' ? "bg-emerald-100 text-emerald-700 border-emerald-200" : "bg-purple-100 text-purple-700 border-purple-200"
+              )}>
+                {item.booking_type}
+              </span>
+            )
+          },
+          {
+            header: "User",
+            accessor: (item) => (
+              <div className="flex flex-col max-w-[200px]">
+                <span className="truncate font-bold text-[#4a3b32] uppercase tracking-tight">{item.user_name}</span>
+                <span className="truncate text-[10px] font-bold text-[#bc6746] opacity-60 tracking-wider lowercase">{item.user_email}</span>
               </div>
-            ) : (
-              filteredBookings.map((booking) => (
-                <GlassCard
-                  key={booking.id}
-                  variant="static"
-                  onClick={() => setSelectedBooking(booking)}
-                  className={cn(
-                    "cursor-pointer p-0 rounded-[2rem] transition-all duration-300 flex flex-col h-full",
-                    selectedBooking?.id === booking.id 
-                      ? "ring-2 ring-[#bc6746] bg-white shadow-2xl" 
-                      : "border-transparent hover:shadow-xl"
-                  )}
+            )
+          },
+          {
+            header: "Amount",
+            accessor: (item) => (
+              <span className="text-sm font-black text-[#bc6746]">
+                ₹{typeof item.total_amount === 'number' ? item.total_amount.toFixed(2).replace(/\.00$/, '') : item.total_amount}
+              </span>
+            )
+          },
+          {
+            header: "Payment Status",
+            accessor: (item) => (
+              <div className={cn(
+                "flex items-center justify-center text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border min-w-[100px]",
+                (item.payment_status === 'verified' || item.payment_status === 'paid') ? "bg-emerald-50 text-emerald-600 border-emerald-200" : 
+                item.payment_status === 'submitted' ? "bg-amber-50 text-amber-600 border-amber-200" : 
+                item.payment_status === 'failed' ? "bg-red-50 text-red-600 border-red-200" :
+                "bg-stone-50 text-stone-400 border-stone-200"
+              )}>
+                {(item.payment_status === 'verified' || item.payment_status === 'paid') && <CheckCircle className="mr-1 h-3 w-3" />}
+                {item.payment_status === 'submitted' && <Clock className="mr-1 h-3 w-3" />}
+                {item.payment_status === 'failed' && <AlertCircle className="mr-1 h-3 w-3" />}
+                {item.payment_status}
+              </div>
+            )
+          },
+          {
+            header: "Actions",
+            className: "text-right",
+            accessor: (item) => (
+              <div className="flex items-center justify-end space-x-2">
+                <button 
+                  onClick={() => setSelectedBooking(item)}
+                  className="p-2 rounded-xl bg-white border border-[#f1e4da] text-[#bc6746] hover:bg-[#bc6746] hover:text-white transition-all shadow-sm active:scale-95"
                 >
-                  <div className="flex flex-col gap-4 p-6 h-full">
-                    {/* Header: Type & Date */}
-                    <div className="flex items-center justify-between">
-                         <span className={cn(
-                            "text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 rounded-full",
-                            booking.booking_type === 'yoga' ? "bg-amber-100 text-amber-700" : booking.booking_type === 'upcoming' ? "bg-emerald-100 text-emerald-700" : "bg-purple-100 text-purple-700"
-                         )}>
-                            {booking.booking_type}
-                         </span>
-                         <span className="text-[10px] text-[#4a3b32]/30">{formatDateLocal(new Date(booking.created_at))}</span>
-                    </div>
+                  <Search className="w-4 h-4" />
+                </button>
+              </div>
+            )
+          }
+        ]}
+        onRowClick={(item) => setSelectedBooking(item)}
+      />
 
-                    {/* Content: Main Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="truncate text-lg font-bold text-[#4a3b32]">{booking.user_name}</h3>
-                      <div className="mt-1 flex flex-col gap-1 text-[10px] text-[#4a3b32]/50">
-                          <span className="flex items-center truncate"><Mail className="mr-1 h-3 w-3" /> {booking.user_email}</span>
-                          {booking.user_phone && <span className="flex items-center"><Phone className="mr-1 h-3 w-3" /> {booking.user_phone}</span>}
-                      </div>
-                    </div>
-
-                    {/* Footer: Amount & Status */}
-                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#f1e4da]/50">
-                      <p className="text-lg font-bold text-[#bc6746]">₹{typeof booking.total_amount === 'number' ? booking.total_amount.toFixed(2).replace(/\.00$/, '') : booking.total_amount}</p>
-                      <div className={cn(
-                          "flex items-center text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full",
-                          (booking.payment_status === 'verified' || booking.payment_status === 'paid') ? "bg-emerald-50 text-emerald-600" : 
-                          booking.payment_status === 'submitted' ? "bg-amber-50 text-amber-600" : 
-                          booking.payment_status === 'failed' ? "bg-red-50 text-red-600" :
-                          "bg-stone-50 text-stone-400"
-                      )}>
-                          {(booking.payment_status === 'verified' || booking.payment_status === 'paid') && <CheckCircle className="mr-1 h-3 w-3" />}
-                          {booking.payment_status === 'submitted' && <Clock className="mr-1 h-3 w-3" />}
-                          {booking.payment_status === 'failed' && <AlertCircle className="mr-1 h-3 w-3" />}
-                          {booking.payment_status}
-                      </div>
-                    </div>
-                  </div>
-                </GlassCard>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* Details Panel (Desktop) */}
-          {selectedBooking ? (
-            <div 
-              className="w-full lg:w-96 overflow-y-auto pr-1 overscroll-contain will-change-transform"
-              data-lenis-prevent
-              style={{ touchAction: 'pan-y' }}
+      {/* Booking Details Modal */}
+      <AnimatePresence>
+        {selectedBooking && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-lg bg-[#fffdf8] border border-[#f1e4da] rounded-[40px] overflow-hidden shadow-2xl"
             >
-              <GlassCard className="sticky top-0 overflow-hidden p-0 border-[#bc6746]/10">
-                {/* Panel Header */}
-                <div className="bg-[#bc6746]/5 p-6 flex items-center justify-between">
-                   <h4 className="font-bold text-[#bc6746]">Booking Details</h4>
-                   <button onClick={() => setSelectedBooking(null)} className="rounded-full p-2 hover:bg-[#bc6746]/10 text-[#bc6746]">
-                      <X className="h-4 w-4" />
-                   </button>
-                </div>
+              <div className="bg-[#bc6746]/5 p-6 flex items-center justify-between border-b border-[#f1e4da]">
+                 <h4 className="font-bold text-[#bc6746] uppercase tracking-widest text-xs">Booking Details</h4>
+                 <button onClick={() => setSelectedBooking(null)} className="rounded-full p-2 hover:bg-[#bc6746]/10 text-[#bc6746] transition-colors">
+                    <X className="h-4 w-4" />
+                 </button>
+              </div>
 
-                <div className="p-8 space-y-8">
-                   {/* Payment Proof */}
-                   <div>
-                       <p className="text-[10px] uppercase font-bold tracking-widest text-[#4a3b32]/40 mb-3">Payment Proof</p>
-                       {selectedBooking.payment_screenshot_url ? (
-                           <div className="relative aspect-[3/4] group overflow-hidden rounded-3xl ring-1 ring-[#bc6746]/10">
-                              <img 
-                                src={selectedBooking.payment_screenshot_url} 
-                                alt="Payment Proof" 
-                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                 <a 
-                                    href={selectedBooking.payment_screenshot_url} 
-                                    target="_blank" 
-                                    className="flex items-center space-x-2 text-white text-xs font-medium"
-                                 >
-                                    <ExternalLink className="h-3 w-3" />
-                                    <span>Expand Image</span>
-                                 </a>
-                              </div>
-                           </div>
-                       ) : (
-                           <div className="flex aspect-square flex-col items-center justify-center rounded-3xl bg-[#4a3b32]/5 border border-dashed border-[#4a3b32]/10">
-                              <AlertCircle className="h-8 w-8 text-[#4a3b32]/20 mb-2" />
-                              <p className="text-[10px] text-[#4a3b32]/40">No screenshot provided.</p>
-                           </div>
-                       )}
-                   </div>
+              <div className="p-8 space-y-6 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                 {/* User Info */}
+                 <div className="flex items-center space-x-4 p-4 rounded-3xl bg-white border border-[#f1e4da]">
+                    <div className="h-12 w-12 rounded-2xl bg-[#bc6746]/10 flex items-center justify-center text-[#bc6746]">
+                       <User className="h-6 w-6" />
+                    </div>
+                    <div>
+                       <h3 className="font-bold text-[#4a3b32] uppercase">{selectedBooking.user_name}</h3>
+                       <p className="text-[10px] text-[#a55a3d]/60 font-medium">{selectedBooking.user_email}</p>
+                    </div>
+                 </div>
 
-                   {/* Reference Details */}
-                   <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                            <span className="text-xs text-[#4a3b32]/40">Reference Code</span>
-                            <span className="text-xs font-mono font-bold text-[#bc6746] bg-[#bc6746]/5 px-2 py-1 rounded-md">
-                                {selectedBooking.payment_reference || 'MANUAL_ENTRY'}
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between border-t border-[#f1e4da] pt-4">
-                            <span className="text-xs text-[#4a3b32]/40">GST (Include)</span>
-                            <span className="text-xs font-medium text-[#4a3b32]">Included in total</span>
-                        </div>
-                        <div className="flex items-center justify-between border-b border-[#f1e4da] pb-4">
-                            <span className="text-xs text-[#4a3b32]/40">Total Settled</span>
-                            <span className="text-lg font-bold text-[#bc6746]">₹{typeof selectedBooking.total_amount === 'number' ? selectedBooking.total_amount.toFixed(2).replace(/\.00$/, '') : selectedBooking.total_amount}</span>
-                        </div>
-                   </div>
+                 {/* Payment Proof */}
+                 <div>
+                     <p className="text-[10px] uppercase font-bold tracking-widest text-[#4a3b32]/40 mb-3 ml-2">Payment Documentation</p>
+                     {selectedBooking.payment_screenshot_url ? (
+                         <div className="relative aspect-[3/4] group overflow-hidden rounded-[40px] ring-1 ring-[#bc6746]/10 shadow-lg">
+                            <img 
+                              src={selectedBooking.payment_screenshot_url} 
+                              alt="Payment Proof" 
+                              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                               <a 
+                                  href={selectedBooking.payment_screenshot_url} 
+                                  target="_blank" 
+                                  className="flex items-center space-x-2 text-white text-[10px] font-black uppercase tracking-widest bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full"
+                               >
+                                  <ExternalLink className="h-3 w-3" />
+                                  <span>View Original</span>
+                               </a>
+                            </div>
+                         </div>
+                     ) : (
+                         <div className="flex aspect-square flex-col items-center justify-center rounded-[40px] bg-[#4a3b32]/5 border border-dashed border-[#4a3b32]/10">
+                            <AlertCircle className="h-8 w-8 text-[#4a3b32]/20 mb-2" />
+                            <p className="text-[10px] text-[#4a3b32]/40 uppercase font-black tracking-widest opacity-50">No screenshot provided</p>
+                         </div>
+                     )}
+                 </div>
 
-                   {/* Actions */}
-                   {selectedBooking.payment_status === 'submitted' && (
-                       <div className="grid grid-cols-2 gap-4">
-                           <button 
-                             onClick={() => handleUpdateStatus(selectedBooking.id, 'reject')}
-                             className="flex items-center justify-center space-x-2 rounded-2xl border border-red-100 py-4 text-xs font-bold text-red-500 transition-all hover:bg-red-50"
-                           >
-                               <ThumbsDown className="h-4 w-4" />
-                               <span>Reject</span>
-                           </button>
-                           <button 
-                             onClick={() => handleUpdateStatus(selectedBooking.id, 'verify')}
-                             className="flex items-center justify-center space-x-2 rounded-2xl bg-emerald-500 py-4 text-xs font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-600"
-                           >
-                               <ThumbsUp className="h-4 w-4" />
-                               <span>Verify</span>
-                           </button>
-                       </div>
-                   )}
+                 {/* Reference Details */}
+                 <div className="space-y-3 p-6 rounded-3xl bg-white border border-[#f1e4da]">
+                      <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-[#4a3b32]/40 uppercase tracking-widest">Reference</span>
+                          <span className="text-[10px] font-mono font-bold text-[#bc6746] bg-[#bc6746]/5 px-2 py-1 rounded-md">
+                              {selectedBooking.payment_reference || 'MANUAL_ENTRY'}
+                          </span>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-[#f1e4da]/50 pt-3">
+                          <span className="text-[10px] font-bold text-[#4a3b32]/40 uppercase tracking-widest">Total Settled</span>
+                          <span className="text-xl font-black text-[#bc6746]">₹{typeof selectedBooking.total_amount === 'number' ? selectedBooking.total_amount.toFixed(2).replace(/\.00$/, '') : selectedBooking.total_amount}</span>
+                      </div>
+                 </div>
 
-                   {(selectedBooking.payment_status === 'verified' || selectedBooking.payment_status === 'paid') && (
-                       <div className="flex items-center justify-center space-x-2 rounded-3xl bg-[#bc6746]/10 py-4 text-xs font-bold text-[#bc6746]">
-                           <ShieldCheck className="h-4 w-4" />
-                           <span>This booking is verified</span>
-                       </div>
-                   )}
-                </div>
-              </GlassCard>
-            </div>
-          ) : (
-            <div className="hidden lg:block w-96">
-                <div className="sticky top-0 rounded-3xl border-2 border-dashed border-[#bc6746]/10 bg-white/20 p-12 text-center">
-                    <User className="mx-auto h-12 w-12 text-[#bc6746]/10 mb-4" />
-                    <p className="text-xs italic text-[#4a3b32]/30 leading-relaxed">
-                        Select a booking record from the list to view full payment documentation and settlement actions.
-                    </p>
-                </div>
-            </div>
-          )}
-      </div>
+                 {/* Actions */}
+                 {selectedBooking.payment_status === 'submitted' && (
+                     <div className="grid grid-cols-2 gap-4">
+                         <button 
+                           onClick={() => handleUpdateStatus(selectedBooking.id, 'reject')}
+                           className="flex items-center justify-center space-x-2 rounded-[24px] border border-red-100 py-4 text-[10px] font-black uppercase tracking-widest text-red-500 transition-all hover:bg-red-50 active:scale-95"
+                         >
+                             <ThumbsDown className="h-4 w-4" />
+                             <span>Reject</span>
+                         </button>
+                         <button 
+                           onClick={() => handleUpdateStatus(selectedBooking.id, 'verify')}
+                           className="flex items-center justify-center space-x-2 rounded-[24px] bg-[#bc6746] py-4 text-[10px] font-black uppercase tracking-widest text-white shadow-xl shadow-[#bc6746]/20 transition-all hover:bg-[#a55a3d] active:scale-95"
+                         >
+                             <ThumbsUp className="h-4 w-4" />
+                             <span>Verify</span>
+                         </button>
+                     </div>
+                 )}
+
+                 {(selectedBooking.payment_status === 'verified' || selectedBooking.payment_status === 'paid') && (
+                     <div className="flex items-center justify-center space-x-2 rounded-[24px] bg-[#bc6746]/5 border border-[#bc6746]/10 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-[#bc6746]">
+                         <ShieldCheck className="h-4 w-4" />
+                         <span>Verified Sanctuary Member</span>
+                     </div>
+                 )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <ConfirmModal 
           {...modalState.confirm!} 
@@ -408,24 +408,4 @@ export default function BookingsAdmin() {
       />
     </div>
   );
-}
-
-function ShieldCheck(props: any) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-            <path d="m9 12 2 2 4-4" />
-        </svg>
-    );
 }

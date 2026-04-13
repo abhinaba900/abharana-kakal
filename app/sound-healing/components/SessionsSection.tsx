@@ -127,7 +127,7 @@ export default function SessionsSection() {
   return (
     <section
       id="sh-sessions"
-      className="relative py-24 px-6 z-10 w-full bg-[#fffdf8]"
+      className="relative py-12 pb-0 px-6 z-10 w-full bg-[#fffdf8]"
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">

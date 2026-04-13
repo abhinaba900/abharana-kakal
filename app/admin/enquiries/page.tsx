@@ -19,6 +19,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
+import { AdminTable } from '@/components/admin/AdminTable';
 
 interface Enquiry {
   id: string;
@@ -128,71 +129,76 @@ const [isUpdating, setIsUpdating] = useState(false);
         </span>
       </div>
 
-      {/* Grid of Cards */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
-          {enquiries.map((enquiry, i) => (
-            <GlassCard key={enquiry.id} delay={i * 0.05} className="group relative">
-              <div className="flex flex-col h-full space-y-4">
-                {/* Top Info */}
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <h3 className="font-bold text-[#4a3b32] group-hover:text-[#bc6746] transition-colors uppercase tracking-wide">
-                      {enquiry.name}
-                    </h3>
-                    <p className="text-xs text-[#a55a3d]/50 font-bold tracking-tighter uppercase">{enquiry.email}</p>
-                  </div>
-                  <div className="flex flex-col items-end gap-1.5">
-                    <div className={`px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase transition-all duration-300 ${getStatusColor(enquiry.status)}`}>
-                      {enquiry.status}
-                    </div>
-                    {enquiry.interest && (
-                      <span className="text-[9px] font-bold text-[#bc6746]/60 border border-[#bc6746]/20 bg-[#bc6746]/5 px-2 py-0.5 rounded-full uppercase tracking-tighter">
-                        {enquiry.interest}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Message Preview */}
-                <div className="flex-1">
-                  <p className="text-sm text-[#a55a3d]/70 line-clamp-3 italic leading-relaxed">
-                    "{enquiry.message}"
-                  </p>
-                </div>
-
-                {/* Date & Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-[#f1e4da]">
-                  <span className="text-[10px] text-[#a55a3d]/30 font-bold flex items-center">
-                    <Clock className="w-3 h-3 mr-1" />
-                    {new Date(enquiry.created_at).toLocaleDateString()}
-                  </span>
-                  <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={() => setSelectedEnquiry(enquiry)}
-                      className="p-2 rounded-lg bg-[#bc6746]/5 text-[#a55a3d]/30 hover:text-[#bc6746] hover:bg-[#bc6746]/10 transition-all active:scale-95"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => updateStatus(enquiry.id, enquiry.status === 'resolved' ? 'pending' : 'resolved')}
-                      className="p-2 rounded-lg bg-[#bc6746]/5 text-[#a55a3d]/30 hover:text-green-600 hover:bg-green-600/10 transition-all active:scale-95"
-                    >
-                      <CheckCircle className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => deleteEnquiry(enquiry.id)}
-                      className="p-2 rounded-lg bg-[#bc6746]/5 text-[#a55a3d]/30 hover:text-red-500 hover:bg-red-500/10 transition-all active:scale-95"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
+      {/* Table View */}
+      <AdminTable 
+        data={enquiries}
+        columns={[
+          { 
+            header: "Date", 
+            accessor: (item) => (
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-[#4a3b32]">{new Date(item.created_at).toLocaleDateString()}</span>
+                <span className="text-[10px] text-[#a55a3d]/50 font-mono tracking-tighter uppercase">{new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
               </div>
-            </GlassCard>
-          ))}
-        </AnimatePresence>
-      </div>
+            )
+          },
+          { 
+            header: "Seeker", 
+            accessor: (item) => (
+              <div className="flex flex-col">
+                <span className="font-bold text-[#4a3b32] uppercase tracking-tight">{item.name}</span>
+                <span className="text-[10px] font-bold text-[#bc6746] opacity-60 tracking-wider lowercase">{item.email}</span>
+              </div>
+            )
+          },
+          { 
+            header: "Interest", 
+            accessor: (item) => item.interest ? (
+               <span className="text-[9px] font-black uppercase tracking-widest text-[#bc6746] bg-[#bc6746]/5 px-3 py-1 rounded-full border border-[#bc6746]/10">
+                 {item.interest}
+               </span>
+            ) : <span className="text-[10px] italic text-[#4a3b32]/20">General</span>
+          },
+          { 
+            header: "Status", 
+            accessor: (item) => (
+              <div className={`px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest inline-block text-center min-w-[80px] ${getStatusColor(item.status)}`}>
+                {item.status}
+              </div>
+            )
+          },
+          { 
+            header: "Actions", 
+            className: "text-right",
+            accessor: (item) => (
+              <div className="flex items-center justify-end space-x-2">
+                <button 
+                  onClick={() => setSelectedEnquiry(item)}
+                  className="p-2 rounded-xl bg-white border border-[#f1e4da] text-[#bc6746] hover:bg-[#bc6746] hover:text-white transition-all shadow-sm active:scale-95"
+                  title="View Message"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={() => updateStatus(item.id, item.status === 'resolved' ? 'pending' : 'resolved')}
+                  className="p-2 rounded-xl bg-white border border-[#f1e4da] text-[#bc6746] hover:bg-green-600 hover:text-white transition-all shadow-sm active:scale-95"
+                  title={item.status === 'resolved' ? "Reopen" : "Mark Resolved"}
+                >
+                  <CheckCircle className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={() => deleteEnquiry(item.id)}
+                  className="p-2 rounded-xl bg-white border border-[#f1e4da] text-red-300 hover:bg-red-500 hover:text-white transition-all shadow-sm active:scale-95"
+                  title="Delete"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            )
+          }
+        ]}
+        onRowClick={(item) => setSelectedEnquiry(item)}
+      />
 
       {/* Modal - Enquiry Details */}
       <AnimatePresence>

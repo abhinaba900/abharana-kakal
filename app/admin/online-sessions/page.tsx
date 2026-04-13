@@ -30,6 +30,7 @@ import { Calendar } from '@/components/ui/Calendar';
 import { SlotSelector } from '@/components/booking/SlotSelector';
 import { cn, formatDateLocal, formatTime12h } from '@/lib/utils';
 import { useYogaRealtime } from '@/lib/hooks/useYogaRealtime';
+import { AdminTable } from '@/components/admin/AdminTable';
 
 // Custom Modals
 import { ConfirmModal } from '@/components/admin/modals/ConfirmModal';
@@ -864,80 +865,129 @@ export default function OnlineSessionsAdmin() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="space-y-6"
           >
-             {/* Create Card */}
-             <GlassCard 
-                onClick={() => {
-                  setEditingOffering(null);
-                  setOfferingForm({
-                    title: '',
-                    description: '',
-                    duration: '60 Mins',
-                    single_price: 500,
-                    package_5_price: 2250,
-                    package_10_price: 4000,
-                    package_15_price: 5500,
-                    image_url: ''
-                  });
-                  setIsOfferingModalOpen(true);
-                }}
-                className="flex flex-col items-center justify-center p-16 border-2 border-dashed border-[#f1e4da] hover:border-[#bc6746]/40 hover:bg-[#bc6746]/5 hover:scale-[0.98] transition-all cursor-pointer group rounded-[50px]"
-              >
-                <div className="rounded-3xl bg-white border border-[#f1e4da] p-6 shadow-xl group-hover:bg-[#bc6746] group-hover:text-white transition-all duration-500">
-                  <Plus className="h-10 w-10 text-[#bc6746] group-hover:text-white" />
-                </div>
-                <span className="mt-6 text-[10px] font-black uppercase tracking-[0.4em] text-[#bc6746] opacity-60 group-hover:opacity-100">Create Offering</span>
-              </GlassCard>
+             <div className="flex justify-end">
+                <button 
+                  onClick={() => {
+                    setEditingOffering(null);
+                    setOfferingForm({
+                      title: '',
+                      description: '',
+                      duration: '60 Mins',
+                      single_price: 500,
+                      package_5_price: 2250,
+                      package_10_price: 4000,
+                      package_15_price: 5500,
+                      image_url: ''
+                    });
+                    setIsOfferingModalOpen(true);
+                  }}
+                  className="flex items-center space-x-2 px-6 py-3 bg-[#bc6746] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[#bc6746]/20 hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Create New Offering</span>
+                </button>
+             </div>
 
-              {offerings.map((offering) => (
-                <GlassCard key={offering.id} className="relative group overflow-hidden flex flex-col h-full rounded-[50px] p-10 hover:shadow-2xl transition-all border-[#f1e4da]">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#bc6746]/5 to-transparent rounded-bl-[100px]" />
-                  
-                  <div className="flex justify-between items-start mb-8 relative">
-                    <div className="space-y-1">
-                        <h3 className="text-2xl font-serif text-[#4a3b32] uppercase italic tracking-tighter leading-none">{offering.title}</h3>
-                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#bc6746]/60 italic font-medium">
-                            <Clock className="w-3 h-3" /> {offering.duration}
+             <AdminTable 
+               data={offerings}
+               columns={[
+                 {
+                   header: "Offering",
+                   accessor: (item) => (
+                     <div className="flex items-center space-x-4">
+                        {item.image_url ? (
+                          <div className="h-10 w-10 rounded-xl overflow-hidden border border-[#f1e4da]">
+                            <img src={item.image_url} alt="" className="h-full w-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="h-10 w-10 rounded-xl bg-[#bc6746]/5 flex items-center justify-center text-[#bc6746]">
+                            <ImageIcon className="h-4 w-4" />
+                          </div>
+                        )}
+                        <div className="flex flex-col">
+                          <span className="font-bold text-[#4a3b32] uppercase tracking-tight">{item.title}</span>
+                          <span className="text-[10px] text-[#bc6746]/60 font-black uppercase tracking-widest leading-none mt-1">{item.duration}</span>
                         </div>
-                    </div>
-                    <div className="flex gap-2">
-                       <button 
+                     </div>
+                   )
+                 },
+                 {
+                    header: "Description",
+                    accessor: (item) => (
+                      <p className="text-[10px] italic text-[#a55a3d]/60 line-clamp-1 max-w-[200px]">
+                        {item.description}
+                      </p>
+                    )
+                 },
+                 {
+                   header: "Standard",
+                   accessor: (item) => (
+                     <span className="font-serif font-black text-[#bc6746]">
+                       ₹{typeof item.single_price === 'number' ? item.single_price.toFixed(2).replace(/\.00$/, '') : item.single_price}
+                     </span>
+                   )
+                 },
+                 {
+                   header: "PK 5",
+                   accessor: (item) => (
+                     <span className="font-serif font-bold text-[#4a3b32]/60">
+                       ₹{typeof item.package_5_price === 'number' ? item.package_5_price.toFixed(2).replace(/\.00$/, '') : item.package_5_price}
+                     </span>
+                   )
+                 },
+                 {
+                   header: "PK 10",
+                   accessor: (item) => (
+                     <span className="font-serif font-bold text-[#4a3b32]/60">
+                       ₹{typeof item.package_10_price === 'number' ? item.package_10_price.toFixed(2).replace(/\.00$/, '') : item.package_10_price}
+                     </span>
+                   )
+                 },
+                 {
+                   header: "PK 15",
+                   accessor: (item) => (
+                     <span className="font-serif font-bold text-[#4a3b32]/60">
+                       ₹{typeof item.package_15_price === 'number' ? item.package_15_price.toFixed(2).replace(/\.00$/, '') : item.package_15_price}
+                     </span>
+                   )
+                 },
+                 {
+                   header: "Actions",
+                   className: "text-right",
+                   accessor: (item) => (
+                     <div className="flex items-center justify-end space-x-2">
+                        <button 
                          onClick={() => {
-                           setEditingOffering(offering);
+                           setEditingOffering(item);
                            setOfferingForm({
-                             title: offering.title,
-                             description: offering.description,
-                             duration: offering.duration,
-                             single_price: offering.single_price,
-                             package_5_price: offering.package_5_price,
-                             package_10_price: offering.package_10_price,
-                             package_15_price: offering.package_15_price,
-                             image_url: offering.image_url || ''
+                             title: item.title,
+                             description: item.description,
+                             duration: item.duration,
+                             single_price: item.single_price,
+                             package_5_price: item.package_5_price,
+                             package_10_price: item.package_10_price,
+                             package_15_price: item.package_15_price,
+                             image_url: item.image_url || ''
                            });
                            setIsOfferingModalOpen(true);
                          }}
-                         className="p-3 bg-white border border-[#f1e4da] rounded-2xl shadow-sm hover:scale-110 transition-all text-[#bc6746]"
+                         className="p-2 rounded-xl bg-white border border-[#f1e4da] text-[#bc6746] hover:bg-[#bc6746] hover:text-white transition-all shadow-sm active:scale-95"
                        >
                          <RefreshCw className="h-4 w-4" />
                        </button>
-                    </div>
-                  </div>
-                  
-                  <p className="text-xs leading-relaxed text-[#a55a3d]/70 italic line-clamp-3 mb-10 flex-grow font-medium">{offering.description}</p>
-                  
-                  <div className="grid grid-cols-2 gap-3 mt-auto">
-                    <div className="bg-[#fffdf8] border border-[#f1e4da] p-4 rounded-3xl text-center shadow-sm">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[#a55a3d]/40 mb-1">Standard</p>
-                        <p className="text-xl font-serif font-black text-[#bc6746] tracking-tighter">₹{typeof offering.single_price === 'number' ? offering.single_price.toFixed(2).replace(/\.00$/, '') : offering.single_price}</p>
-                    </div>
-                    <div className="bg-[#bc6746] p-4 rounded-3xl text-center shadow-lg shadow-[#bc6746]/20">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-white/50 mb-1">PK 5</p>
-                        <p className="text-xl font-serif font-black text-white tracking-tighter">₹{typeof offering.package_5_price === 'number' ? offering.package_5_price.toFixed(2).replace(/\.00$/, '') : offering.package_5_price}</p>
-                    </div>
-                  </div>
-                </GlassCard>
-              ))}
+                       <button 
+                         onClick={() => handleDeleteOffering(item.id)}
+                         className="p-2 rounded-xl bg-white border border-[#f1e4da] text-red-300 hover:bg-red-500 hover:text-white transition-all shadow-sm active:scale-95"
+                       >
+                         <Trash2 className="h-4 w-4" />
+                       </button>
+                     </div>
+                   )
+                 }
+               ]}
+             />
           </motion.div>
         )}
 

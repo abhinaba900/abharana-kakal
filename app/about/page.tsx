@@ -3,8 +3,8 @@ import AboutHero from "./components/AboutHero";
 import JourneySection from "./components/JourneySection";
 import WhatIOffer from "./components/WhatIOffer";
 import ApproachSection from "./components/ApproachSection";
-import ExperienceList from "./components/ExperienceList";
 import WhyIDoThis from "./components/WhyIDoThis";
+import TestimonialsSection from "./components/TestimonialsSection";
 import AboutFinalCTA from "./components/AboutFinalCTA";
 import type { Metadata } from "next";
 
@@ -41,8 +41,8 @@ export default function AboutPage() {
         <JourneySection />
         <WhatIOffer />
         <ApproachSection />
-        <ExperienceList />
         <WhyIDoThis />
+        <TestimonialsSection />
         <AboutFinalCTA />
       </div>
 
