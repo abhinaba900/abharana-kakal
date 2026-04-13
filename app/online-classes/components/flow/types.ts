@@ -7,6 +7,7 @@ export interface Offering {
   package_5_price: number;
   package_10_price: number;
   package_15_price: number;
+  image_url?: string;
   upi_id?: string;
   payee_name?: string;
   qr_image_url?: string;

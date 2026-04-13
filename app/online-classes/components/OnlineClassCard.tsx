@@ -25,8 +25,8 @@ interface OnlineClassCardProps {
 }
 
 export default function OnlineClassCard({ offering, onBook, index }: OnlineClassCardProps) {
-  // Use mapping or fallback to a general yoga image
-  const imageSrc = Object.entries(imageMap).find(([key]) => offering.title.includes(key))?.[1] || "/exp-yoga.png";
+  // Use uploaded image, or mapping, or fallback to a general yoga image
+  const imageSrc = offering.image_url || Object.entries(imageMap).find(([key]) => offering.title.includes(key))?.[1] || "/exp-yoga.png";
 
   return (
     <motion.div

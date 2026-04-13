@@ -44,6 +44,7 @@ interface Offering {
   package_5_price: number;
   package_10_price: number;
   package_15_price: number;
+  image_url?: string;
 }
 
 interface Session {
@@ -98,7 +99,8 @@ export default function OnlineSessionsAdmin() {
     single_price: 500,
     package_5_price: 2250,
     package_10_price: 4000,
-    package_15_price: 5500
+    package_15_price: 5500,
+    image_url: ''
   });
 
   const [slotForm, setSlotForm] = useState({
@@ -350,6 +352,22 @@ export default function OnlineSessionsAdmin() {
       toast.success('QR Code uploaded');
     } catch (err) {
       toast.error('Failed to upload QR code');
+    } finally {
+      setActioningId(null);
+    }
+  };
+
+  const handleOfferingImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setActioningId('offering_image_upload');
+    try {
+      const res = await mediaService.upload(file, 'offerings');
+      setOfferingForm(prev => ({ ...prev, image_url: res.data.url }));
+      toast.success('Offering image synchronized');
+    } catch (err) {
+      toast.error('Failed to upload offering image');
     } finally {
       setActioningId(null);
     }
@@ -859,7 +877,8 @@ export default function OnlineSessionsAdmin() {
                     single_price: 500,
                     package_5_price: 2250,
                     package_10_price: 4000,
-                    package_15_price: 5500
+                    package_15_price: 5500,
+                    image_url: ''
                   });
                   setIsOfferingModalOpen(true);
                 }}
@@ -893,7 +912,8 @@ export default function OnlineSessionsAdmin() {
                              single_price: offering.single_price,
                              package_5_price: offering.package_5_price,
                              package_10_price: offering.package_10_price,
-                             package_15_price: offering.package_15_price
+                             package_15_price: offering.package_15_price,
+                             image_url: offering.image_url || ''
                            });
                            setIsOfferingModalOpen(true);
                          }}
@@ -953,6 +973,37 @@ export default function OnlineSessionsAdmin() {
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/50 ml-2">Intrinsic Description</label>
                     <textarea rows={2} required placeholder="What essence does this practice carry?" value={offeringForm.description} onChange={e => setOfferingForm({ ...offeringForm, description: e.target.value })} className="w-full bg-[#fffdf8] border border-[#f1e4da] rounded-[30px] p-6 text-md italic font-medium text-[#4a3b32] focus:border-[#bc6746] outline-none transition-all placeholder:text-[#bc6746]/10"/>
+                  </div>
+
+                  {/* Offering Image Upload */}
+                  <div className="space-y-4">
+                     <label className="text-[10px] font-black uppercase tracking-[0.4em] text-[#a55a3d]/50 ml-2">Offering Imagery</label>
+                     <div className="flex items-center gap-8 p-6 rounded-[40px] bg-[#bc6746]/5 border border-[#bc6746]/10">
+                        {offeringForm.image_url ? (
+                          <div className="relative w-24 h-24 rounded-2xl overflow-hidden ring-1 ring-[#bc6746]/20 group">
+                             <img src={offeringForm.image_url} alt="Preview" className="w-full h-full object-cover" />
+                             <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+                                <RefreshCw className="w-4 h-4 text-white" />
+                                <input type="file" className="hidden" accept="image/*" onChange={handleOfferingImageUpload} />
+                             </label>
+                          </div>
+                        ) : (
+                          <label className="flex w-24 h-24 flex-col items-center justify-center rounded-2xl bg-white border border-dashed border-[#bc6746]/20 cursor-pointer hover:bg-[#bc6746]/5 transition-colors">
+                             <Plus className="w-5 h-5 text-[#bc6746]/40" />
+                             <input type="file" className="hidden" accept="image/*" onChange={handleOfferingImageUpload} />
+                          </label>
+                        )}
+                        <div className="flex-1 space-y-1">
+                           <p className="text-[10px] font-black uppercase tracking-widest text-[#4a3b32]">Visual Resonance</p>
+                           <p className="text-[9px] text-[#bc6746]/60 italic">Upload a curated image to represent this flow on our digital sanctuary.</p>
+                           {actioningId === 'offering_image_upload' && (
+                             <div className="flex items-center gap-2 mt-2 text-[#bc6746]">
+                               <Loader2 className="w-3 h-3 animate-spin" />
+                               <span className="text-[8px] font-black uppercase tracking-widest">Bridging Storage...</span>
+                             </div>
+                           )}
+                        </div>
+                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">

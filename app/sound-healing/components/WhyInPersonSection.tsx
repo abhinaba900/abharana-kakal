@@ -6,7 +6,7 @@ const reasons = [
   {
     id: "01",
     label: "Full Presence",
-    image: "/sh-presence.png",
+    image: "/guidedsession.webp",
     body: "Speakers flatten sound. In the room, vibrations travel through the floor and walls — your whole body becomes the instrument of receiving.",
     align: "left",
   },
