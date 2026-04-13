@@ -3,12 +3,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAudio } from '@/context/AudioContext';
 
 interface AdminAudioPlayerProps {
   src: string;
 }
 
 export const AdminAudioPlayer: React.FC<AdminAudioPlayerProps> = ({ src }) => {
+  const { pauseBgAudio } = useAudio();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -53,6 +55,8 @@ export const AdminAudioPlayer: React.FC<AdminAudioPlayerProps> = ({ src }) => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
+      // Pause background music when playing a session
+      pauseBgAudio();
       audioRef.current.play().catch(err => {
         console.error("Audio playback failed:", err);
       });

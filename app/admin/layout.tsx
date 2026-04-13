@@ -5,12 +5,19 @@ import { usePathname } from 'next/navigation';
 import { AdminAuthProvider } from '@/context/AdminAuthContext';
 import { CosmicBackground } from '@/components/admin/CosmicBackground';
 import { Sidebar } from '@/components/admin/Sidebar';
+import { useAudio } from '@/context/AudioContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { pauseBgAudio } = useAudio();
   const pathname = usePathname();
   const isLoginPage = pathname === '/admin/login';
+
+  React.useEffect(() => {
+    // Automatically pause background music when in admin panel
+    pauseBgAudio();
+  }, [pauseBgAudio]);
 
   return (
     <AdminAuthProvider>
